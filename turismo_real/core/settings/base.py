@@ -40,7 +40,8 @@ LOCAL_APPS = [
 
 # Apps de terceros
 THIRD_APPS = [
-  'rest_framework',  
+    'rest_framework',  
+    'drf_yasg', # Auto documentar nuestra API
 ]
 
 # Asignación de la APPS del aplicativo
@@ -144,3 +145,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'../media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración de SWAGGER autodocumentación de API 
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION' : 'none'
+}
