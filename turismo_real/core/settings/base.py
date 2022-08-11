@@ -22,6 +22,8 @@ ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
 # Apps por defecto de django 
 BASE_APPS = [
+    'admin_interface', # Customización del Admin de Django
+    'colorfield', # Customización del Admin de Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
