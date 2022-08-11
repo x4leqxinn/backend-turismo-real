@@ -17,10 +17,10 @@ class UserRole(models.Model):
 class CustomUserManager(BaseUserManager):
     def _create_user(self,email,password,first_name,last_name,middle_name,surname,**extra_fields):
         if not email:
-            raise ValueError("No se ha entregado un email")
+            raise ValueError("No se ha entregado un correo electrónico")
 
         if not password:
-            raise ValueError("No se ha entregado un password")
+            raise ValueError("No se ha entregado una contraseña")
 
         user = self.model(
             email = self.normalize_email(email),
@@ -36,7 +36,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password, first_name, last_name, middle_name = None, surname = None, **extra_fields):
-        extra_fields.setdefault('is_staff',True)
+        extra_fields.setdefault('is_staff',False)
         extra_fields.setdefault('is_active' ,True)
         extra_fields.setdefault('is_superuser',False)
         return self._create_user(email, password, first_name, last_name,middle_name, surname, password, **extra_fields)
