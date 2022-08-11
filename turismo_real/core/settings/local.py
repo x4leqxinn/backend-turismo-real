@@ -34,4 +34,7 @@ DATABASE_ROUTERS = [
 
 STATIC_URL = 'static/'
 
+# Indicamos donde serviremos nuestras imágenes
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'../media')
 
