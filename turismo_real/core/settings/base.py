@@ -42,7 +42,7 @@ LOCAL_APPS = [
 THIRD_APPS = [
     'rest_framework',  
     'drf_yasg', # Auto documentar nuestra API
-    'rest_framework.authtoken', # Tokens de Autenticación.'
+    'rest_framework.authtoken', # Tokens de Autenticación
 ]
 
 # Asignación de la APPS del aplicativo
@@ -62,7 +62,8 @@ MIDDLEWARE = [
 # Definimos mi modelo de usuario CUSTOM
 AUTH_USER_MODEL = 'users.User'
 
-TOKEN_EXPIRED_AFTER_SECONDS = 5
+# Se define el tiempo de expiración del token a 15 minutos
+TOKEN_EXPIRED_AFTER_SECONDS = 900
 
 ROOT_URLCONF = 'core.urls'
 
