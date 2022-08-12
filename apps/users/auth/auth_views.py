@@ -24,7 +24,7 @@ Método que elimina todas las sesiones activas asociadas a un usuario
 {params} : user : str
 {params} : token : str
 '''
-def cerrarSesiones(user,token):
+def closeSessions(user,token):
     all_sessions = Session.objects.filter(expire_date__gte = datetime.now())
     if all_sessions.exists():
         for session in all_sessions:
@@ -78,7 +78,7 @@ class Login(ObtainAuthToken):
                     }, status=status.HTTP_201_CREATED)
                 else:
                     # Se cierran todas las sesiones activas
-                    cerrarSesiones(user,token)
+                    closeSessions(user,token)
                     # Se crea un nuevo token de sesión
                     token = Token.objects.create(user=user)
                     return Response({
@@ -103,7 +103,7 @@ class Logout(APIView):
             token = Token.objects.filter(key = token).first()
             if token:
                 user = token.user
-                cerrarSesiones(user,token)
+                closeSessions(user,token)
                 session_message = 'Sesiones de usuario eliminadas'
                 token_message = 'Token eliminado'
                 return Response({'token_message' : token_message, 'session_message' : session_message},status = status.HTTP_200_OK)

@@ -6,7 +6,7 @@ class UserTokenSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'role')
+        fields = ('email', 'first_name', 'last_name', 'role', 'image')
     
     # Se define la data a mostrar al iniciar sesión
     def to_representation(self, instance):
@@ -17,21 +17,8 @@ class UserTokenSerializer(serializers.ModelSerializer):
             'role' : {
                 'id' : instance.role.id,
                 'description' : instance.role.description
-            }
+            },
+            'image' : instance.image.url if instance.image != '' else ''
         }
 
 
-
-'''
-'id' : instance.id,
-'stock' : instance.stock.get('quantity__sum') if instance.stock.get('quantity__sum') is not None else 0,
-'name' : instance.name,
-'description' : instance.description,
-'image' : instance.image.url if instance.image != '' else '',
-'measure_unit' : instance.measure_unit.description if instance.measure_unit is not None else '',
-'category' : {
-    'id' : instance.category.id,
-    'description' : instance.category.description
-} if instance.category is not None else ''
-'''
-        

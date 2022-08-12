@@ -55,7 +55,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     last_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=240)
     surname = models.CharField(max_length=240)
-    image = models.ImageField('Imagen de perfil', upload_to='perfil/', default='', max_length=255, null=True, blank = True)
+    image = models.ImageField('Imagen de perfil', upload_to='user_profile/', default='', max_length=255, null=True, blank = True)
     role = models.ForeignKey(UserRole, on_delete = models.CASCADE, verbose_name = 'Rol Usuario', null = True)
 
     is_staff = models.BooleanField(default=True) # must needed, otherwise
