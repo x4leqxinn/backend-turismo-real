@@ -10,6 +10,7 @@ django-colorfield==0.7.2
 django-cors-headers==3.13.0
 django-flat-responsive==2.0
 django-flat-theme==1.1.4
+django-naomi==0.8
 djangorestframework==3.13.1
 drf-yasg==1.21.3
 idna==3.3
