@@ -40,6 +40,7 @@ LOCAL_APPS = [
 
 # Apps de terceros
 THIRD_APPS = [
+    'corsheaders', # Para habilitar la politica de cors
     'rest_framework',  
     'drf_yasg', # Auto documentar nuestra API
     'rest_framework.authtoken', # Tokens de Autenticación
@@ -50,6 +51,7 @@ INSTALLED_APPS =  BASE_APPS + LOCAL_APPS + THIRD_APPS
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
