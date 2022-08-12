@@ -44,6 +44,7 @@ THIRD_APPS = [
     'rest_framework',  
     'drf_yasg', # Auto documentar nuestra API
     'rest_framework.authtoken', # Tokens de Autenticación
+    'naomi', # Para permitir guardar archivos temporales de mails
 ]
 
 # Asignación de la APPS del aplicativo
@@ -72,7 +73,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, '../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,6 +141,20 @@ CORS_ALLOW_CREDENTIALS = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
+
+
+# Permite verificar los Mails sin enviarlos a usuarios.
+if DEBUG:
+    EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR,'../tmp')
 
 
 # Indicamos donde serviremos nuestras imágenes
