@@ -35,6 +35,8 @@ urlpatterns = [
     path('logout/', Logout.as_view(),name='logout'),
     path('login/',Login.as_view(),name='login'),
     path('refresh-token/',UserToken.as_view(), name = 'refresh_token'),
+    # Envio de mails prueba
+    path('',include('templates.urls')),
 ]
 
 
