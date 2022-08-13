@@ -12,14 +12,14 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default' : {},
     'turismo_real': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/orcl',
-        'USER': 'turismo_real',
-        'PASSWORD' : 'dGz?SfRdC?Y5Bsx?',
+        'ENGINE': env.str('DATABASE_ENGINE_1'),
+        'NAME': env.str('DATABASE_NAME_1'),
+        'USER': env.str('DATABASE_USER_1'),
+        'PASSWORD' : env.str('DATABASE_PASSWORD_1'),
         'TEST' : {
-            'USER' : 'default_test_tbls',
-            'TBLSPACE' : 'default_test_tbls',
-            'TBLSPACE_TMP' : 'default_test_tbls_tmp'
+            'USER' : env.str('DATABASE_TEST_USER_1'),
+            'TBLSPACE' : env.str('DATABASE_TBLSPACE_1'),
+            'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
         }
     }
 }
