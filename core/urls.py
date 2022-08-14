@@ -25,18 +25,34 @@ schema_view = get_schema_view(
   permission_classes=(permissions.AllowAny,),
 )
 
+
+# TODO: Cambiar la ruta catch all y eliminar el template de prueba de mails
+
+# ELIMINAR DESPUÉS
+from templates.views import index
+
 urlpatterns = [
-    # Open API
+    # Documentación Open API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    
     # Administración de Django
     path('admin/', admin.site.urls),
+    
+    # Autenticación de usuarios
     path('logout/', Logout.as_view(),name='logout'),
     path('login/',Login.as_view(),name='login'),
     path('refresh-token/',UserToken.as_view(), name = 'refresh_token'),
-    # Envio de mails prueba
-    path('',include('templates.urls')),
+    
+    # Enrutador de clientes
+    #path('admin-api/',include('apps.users.api.routers')), 
+    #path('office-api/',include('apps.users.api.routers')),
+    path('client-api/',include('apps.users.api.routers')),
+
+    # Ruta de redirección por url erronéa
+    # Momentareamente está la página de envio de mails
+    re_path(r'^.*', index, name='unmatched'),
 ]
 
 
