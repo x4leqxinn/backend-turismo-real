@@ -49,6 +49,8 @@ urlpatterns = [
     #path('admin-api/',include('apps.users.api.routers')), 
     #path('office-api/',include('apps.users.api.routers')),
     path('client-api/',include('apps.users.api.routers')),
+    # Enrutador para Países
+    path('country-api/',include('apps.locations.api.routers')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
