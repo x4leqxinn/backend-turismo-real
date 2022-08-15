@@ -1,7 +1,6 @@
 # Importamos la librería para conectarnos a la base de datos
 from django.db import connections
 
-# TODO: Retornar los valores del SP y cambiar el llamado
 def listClient(db_user):
     # La sentencia with se encarga de cerrar la conexión de forma implicita
     with connections[db_user].cursor() as cursor:

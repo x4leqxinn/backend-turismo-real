@@ -10,7 +10,7 @@ from apps.users.api.client.serializers.clients_serializers import *
 
 from apps.users.api.client.models.models import *
 
-from apps.users.db_routers.db_connection import *
+from db_routers.permissions.db_connection import *
 from apps.users.api.client.connections.clients_sp import *
 
 class ClientViewSet(viewsets.GenericViewSet):
