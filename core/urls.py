@@ -52,7 +52,7 @@ urlpatterns = [
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
-    re_path(r'^.*', index, name='unmatched'),
+    re_path(r'^.*/$', index, name='unmatched'),
 ]
 
 
