@@ -12,8 +12,6 @@ class UserTokenSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'email' : instance.email,
-            'first_name' : instance.first_name,
-            'last_name' : instance.last_name,
             'role' : {
                 'id' : instance.role.id,
                 'description' : instance.role.description
