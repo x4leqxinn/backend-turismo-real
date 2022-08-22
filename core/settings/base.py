@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Configuramos la lectura de nuestras variables de entorno
 import environ
 env = environ.Env()
-environ.Env.read_env(env_file=str(BASE_DIR) + '../../.env') 
+environ.Env.read_env(env_file='./.env') 
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
