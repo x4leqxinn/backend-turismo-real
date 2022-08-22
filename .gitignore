@@ -161,6 +161,19 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Librerias Oracle Mac
+network
+adrci
+BASIC_LICENSE
+BASIC_README
+genezi
+INSTALL_IC_README.txt
+install_ic.sh
+*.dylib*
+*jar*
+uidrvci
+turismo-real-env
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
