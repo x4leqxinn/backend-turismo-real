@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from apps.users.api.client.models.db_models import Persona
 
 class UserRole(models.Model):    
     description = models.CharField('Descripción',max_length=50, blank=False, null=False,unique=True)
@@ -49,11 +50,13 @@ class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     image = models.ImageField('Imagen de perfil', upload_to='user_profile/', default='', max_length=255, null=True, blank = True)
     role = models.ForeignKey(UserRole, on_delete = models.CASCADE, verbose_name = 'Rol Usuario', null = True)
+    person = models.OneToOneField(Persona, on_delete = models.CASCADE, verbose_name = 'Persona', null = True)
 
     is_staff = models.BooleanField(default=True) # must needed, otherwise
     is_active = models.BooleanField(default=True) # must needed, otherwise
     is_superuser = models.BooleanField(default=False) # this field we inherit
 
+    
     objects = CustomUserManager() 
 
     USERNAME_FIELD = 'email'
