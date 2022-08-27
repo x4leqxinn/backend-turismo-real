@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from apps.locations.general_serializers import CountrySerializers
-from apps.locations.models import Country
+from apps.locations.models import Pais
 
 from db_routers.permissions.db_connection import *
 from apps.locations.api.country.connections.country_sp import *
@@ -22,26 +22,28 @@ class CountryViewSet(viewsets.GenericViewSet):
             country_list = []
             
             for x in list:
-                c = Country()
+                c = Pais()
                 c.id = x[0]
-                c.sortname = x[1]
-                c.name = x[2]
-                c.phonecode = x[3]
+                c.cod_pais = x[1]
+                c.nombre = x[2]
+                c.cod_tel = x[3]
+                c.bandera = x[4]
                 # Creamos una nueva lista con nuestro modelo
                 country_list.append(c)
 
             return country_list
-        return Country(id=1)
+        return Pais(id=1)
 
     
     def get_object(self,pk):
         # Aquí se define la consulta a un objeto
         data = retrieveCountry(oracle_connection(1),pk)  
-        c = Country()
+        c = Pais()
         c.id = data[0][0]
-        c.sortname = data[0][1]
-        c.name = data[0][2]
-        c.phonecode = data[0][3]      
+        c.cod_pais = data[0][1]
+        c.nombre = data[0][2]
+        c.cod_tel = data[0][3]      
+        c.bandera = data[0][4]
         return c
 
 
