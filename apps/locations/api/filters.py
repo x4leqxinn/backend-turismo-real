@@ -15,3 +15,24 @@ class CountryFilter(django_filters.FilterSet):
             'bandera' : ['exact' ,'contains']
         }
             
+class CountryStateFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = EstadoPais
+        #fields = ('description',)
+        
+        fields = {
+            'id' : ['gt','lt','contains','exact'],
+            'nombre' : ['exact' ,'contains']
+        }
+
+class CityFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Ciudad
+        #fields = ('description',)
+        
+        fields = {
+            'id' : ['gt','lt','contains','exact'],
+            'nombre' : ['exact' ,'contains']
+        }
