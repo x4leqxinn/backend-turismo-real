@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 
 
@@ -17,7 +16,7 @@ class Ciudad(models.Model):
 
 
 class Pais(models.Model):
-    id = models.CharField(primary_key=True, max_length=4)
+    id = models.IntegerField(primary_key=True)
     cod_pais = models.CharField(max_length=10)
     nombre = models.CharField(max_length=100)
     cod_tel = models.CharField(max_length=10)
