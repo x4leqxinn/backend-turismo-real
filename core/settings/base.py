@@ -46,6 +46,7 @@ THIRD_APPS = [
     'drf_yasg', # Auto documentar nuestra API
     'rest_framework.authtoken', # Tokens de Autenticación
     'naomi', # Para permitir guardar archivos temporales de mails
+    'django_filters', # Registramos los filtros
 ]
 
 # Asignación de la APPS del aplicativo
@@ -137,6 +138,17 @@ CORS_ALLOW_METHODS = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+
+REST_FRAMEWORK = {
+    # Defino los filtros de la app por defecto como globales.
+    'DEFAULT_FILTER_BACKENDS' : ('django_filters.rest_framework.DjangoFilterBackend',
+    'rest_framework.filters.SearchFilter','rest_framework.filters.OrderingFilter'),
+    'SEARCH_PARAM' : 'q', # Cambiamos el parametro de busqueda para para los filtros search
+    'ORDERING_PARAM': 'order',
+    'DEFAULT_PAGINATION_CLASS' : 'core.pagination.CustomPageNumberPagination', # Definimos la paginación
+    'PAGE_SIZE' : 1,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
