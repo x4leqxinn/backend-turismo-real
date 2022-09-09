@@ -29,10 +29,9 @@ def closeSessions(user,token):
     if all_sessions.exists():
         for session in all_sessions:
             session_data = session.get_decoded()
-            if user.id == session_data.get('_auth_user_id'):
+            if str(user.id) == str(session_data.get('_auth_user_id')):
                 session.delete()
     token.delete()
-
 
 
 class UserToken(Authentication,APIView):
