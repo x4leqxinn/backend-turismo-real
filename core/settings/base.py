@@ -37,6 +37,7 @@ BASE_APPS = [
 LOCAL_APPS = [
     'apps.users',
     'apps.locations',
+    'apps.people'
 ]
 
 # Apps de terceros
