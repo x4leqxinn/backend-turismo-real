@@ -51,6 +51,8 @@ urlpatterns = [
     path('client-api/',include('apps.users.api.routers')),
     # Enrutador para Países
     path('location-api/',include('apps.locations.api.urls')),
+    # Enrutador para Personas
+    path('people-api/',include('apps.people.api.urls')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
