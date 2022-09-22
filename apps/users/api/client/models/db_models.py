@@ -599,7 +599,7 @@ class GaleriaInterior(models.Model):
 
 
 class Genero(models.Model):
-    id = models.BooleanField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=20)
     estado = models.CharField(max_length=15)
     creacion = models.DateTimeField()
