@@ -1,58 +1,40 @@
 # Para los viewset
-from xmlrpc import client
-from rest_framework import viewsets
-
 from rest_framework.response import Response
 # Para usar status codes
 from rest_framework import status
 
+from rest_framework import generics
+
 from apps.users.api.client.serializers.clients_serializers import *
 
 from apps.users.api.client.models.models import *
+from apps.users.api.filters import ClientFilter
 
 from db_routers.permissions.db_connection import *
 from apps.users.api.client.connections.clients_sp import *
 
-class ClientViewSet(viewsets.GenericViewSet):
+import json
 
-    serializer_class = ClientSerializers
+# LISTAR CLIENTES
+class ClientListAPIView(generics.ListAPIView):
+    #authentication_classes = ()
+    #permission_classes = ()
+    serializer_class = ClientListSerializers
+    filterset_class  = ClientFilter
+    search_fields = ['nombre','id']
+    ordering_fields = ['nombre','id']
+    ordering = ['id']
 
-    def get_queryset(self, pk = None):
+    def get_queryset(self):
+        return Persona.objects.filter(id__in = Cliente.objects.all().values_list('id', flat=True)).filter(estado = 'ACTIVO')
 
-        # Aquí se debe llamar al procedimiento de listado de todo
+
+# BUSCAR CLIENTE
+'''
+class ClientRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = CitySerializers
+
+    def get_queryset(self):
+        return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
         
-        if pk is None:
-            # Llamamos al procedimiento almacenado que nos devuelve la data
-            list = listClient(oracle_connection(1))
-            client_list = []
-            
-            for x in list:
-            # Creamos una nueva lista con nuestro modelo Cliente
-                client_list.append(Client(resultado=str(x[0])))
-
-            return client_list
-        return Client(resultado='Mona_xina')
-
-
-    def get_object(self,pk):
-        # Aquí se define la consulta a un objeto
-        return Client(resultado='Mona_xina')
-
-
-    def list(self,request):
-        # Acá los resultados de la consulta los serializamos para ser representados en la web
-        serializer = self.get_serializer(self.get_queryset(),many=True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
-
-    def retrieve(self, request, pk=None):
-        # Acá el resultado se serializa
-        try:
-            client = self.get_object(pk)
-            client_serializer = self.serializer_class(client)
-        except KeyError:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except ValueError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        #serializer = ClientSerializers(instance=client)
-        return Response(client_serializer.data)
+'''
