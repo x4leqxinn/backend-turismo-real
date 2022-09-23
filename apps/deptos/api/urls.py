@@ -7,4 +7,7 @@ urlpatterns = [
     # Métodos listar y buscar
     path('depto/list/',DeptoListAPIView.as_view(),name='depto-list'),
     path('depto/retrieve/<int:pk>',DeptoRetrieveAPIView.as_view(),name='depto-retrieve'),
+    path('depto/interior/list/',InteriorGaleryListAPIView.as_view(),name='interior-list'),
+    path('depto/exterior/list/',ExteriorGaleryListAPIView.as_view(),name='exterior-list'),
+    path('depto/comment/list/',CommentListAPIView.as_view(),name='comment-list'), 
 ]
