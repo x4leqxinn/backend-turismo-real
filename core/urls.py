@@ -50,10 +50,15 @@ urlpatterns = [
     #path('office-api/',include('apps.users.api.routers')),
     path('client-api/',include('apps.users.api.routers')),
     path('client-api/',include('apps.users.api.urls')),
+    
     # Enrutador para Países
     path('location-api/',include('apps.locations.api.urls')),
+    
     # Enrutador para Personas
     path('people-api/',include('apps.people.api.urls')),
+
+    # Enrutador para viviendas
+    path('depto-api/',include('apps.deptos.api.urls')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
