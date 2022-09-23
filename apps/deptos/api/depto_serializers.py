@@ -1,5 +1,6 @@
+from re import I
 from rest_framework import serializers
-from apps.base.models.db_models import Vivienda
+from apps.base.models.db_models import Comentario, GaleriaExterior, GaleriaInterior, Vivienda
 
 
 class DeptoSerializer(serializers.ModelSerializer):
@@ -40,5 +41,45 @@ class DeptoSerializer(serializers.ModelSerializer):
             'tipo_vivienda' : {
                 'id' : instance.id_tip.id,
                 'descripcion' : instance.id_tip.descripcion
+            }
+        }
+
+class InteriorGalerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GaleriaInterior
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'imagen' : instance.imagen
+        }
+
+class ExteriorGalerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GaleriaExterior
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'imagen' : instance.imagen
+        }
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentario
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'cliente': {
+                'id' : instance.id_cli.id_cli.id.id,
+                'nombre' : instance.id_cli.id_cli.id.nombre + ' ' + instance.id_cli.id_cli.id.ap_paterno + ' ' + instance.id_cli.id_cli.id.ap_materno
+            },
+            'vivienda' : {
+                'id' : instance.id_cli.id_viv.id
             }
         }
