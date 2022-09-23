@@ -49,6 +49,7 @@ urlpatterns = [
     #path('admin-api/',include('apps.users.api.routers')), 
     #path('office-api/',include('apps.users.api.routers')),
     path('client-api/',include('apps.users.api.routers')),
+    path('client-api/',include('apps.users.api.urls')),
     # Enrutador para Países
     path('location-api/',include('apps.locations.api.urls')),
     # Enrutador para Personas

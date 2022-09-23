@@ -7,8 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-# TODO: Se deben revisar los modelos y dejar sólo los que se usarán en torno a los Usuarios del sistema.
-
 class Acompaniante(models.Model):
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
 
