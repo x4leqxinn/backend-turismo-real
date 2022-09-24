@@ -976,6 +976,10 @@ class Vehiculo(models.Model):
 
 class Vivienda(models.Model):
     id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=100)
+    slug = models.CharField(max_length=30)
     latitud = models.CharField(max_length=100)
     longitud = models.CharField(max_length=100)
     estrellas = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
