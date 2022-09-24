@@ -75,11 +75,10 @@ class CommentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id' : instance.id,
+            'comentario' : instance.descripcion,
             'cliente': {
                 'id' : instance.id_cli.id_cli.id.id,
                 'nombre' : instance.id_cli.id_cli.id.nombre + ' ' + instance.id_cli.id_cli.id.ap_paterno + ' ' + instance.id_cli.id_cli.id.ap_materno
             },
-            'vivienda' : {
-                'id' : instance.id_cli.id_viv.id
-            }
+            'id_vivienda' : instance.id_cli.id_viv.id
         }
