@@ -60,6 +60,9 @@ urlpatterns = [
     # Enrutador para viviendas
     path('depto-api/',include('apps.deptos.api.urls')),
 
+    # Enrutador para productos
+    path('product-api/',include('apps.products.api.urls')),
+
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
     re_path(r'^.*/$', index, name='unmatched'),
