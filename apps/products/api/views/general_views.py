@@ -34,26 +34,3 @@ class SubCategoryRetrieveAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-
-
-'''
-class CityListAPIView(generics.ListAPIView):
-    #authentication_classes = ()
-    #permission_classes = ()
-    serializer_class = CitySerializers
-    filterset_class  = CityFilter
-    search_fields = ['nombre','id']
-    ordering_fields = ['nombre','id']
-    ordering = ['id']
-
-    def get_queryset(self):
-        return  Ciudad.objects.filter(estado = 'ACTIVO')
-
-class CityRetrieveAPIView(generics.RetrieveAPIView):
-    serializer_class = CitySerializers
-
-    def get_queryset(self):
-        return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-        
-
-'''
