@@ -3,7 +3,6 @@ from apps.deptos.api.depto_serializers import *
 from apps.base.models.db_models import Vivienda
 from rest_framework import generics
 
-
 class DeptoListAPIView(generics.ListAPIView):
     #authentication_classes = ()
     #permission_classes = ()
@@ -49,3 +48,44 @@ class CommentListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         return Comentario.objects.filter(estado = 'ACTIVO')
+
+class RoomListAPIView(generics.ListAPIView):
+    serializer_class = RoomSerializer
+    filterset_class  = RoomFilter
+    search_fields = ['id','descripcion']
+    ordering_fields = ['id', 'descripcion']
+    ordering = ['id']
+
+    def get_queryset(self):
+        return Sala.objects.filter(estado = 'ACTIVO')
+
+class ProductStateListAPIView(generics.ListAPIView):
+    serializer_class = ProductStateSerializer
+    filterset_class  = ProductStateFilter
+    search_fields = ['id','descripcion']
+    ordering_fields = ['id', 'descripcion']
+    ordering = ['id']
+
+    def get_queryset(self):
+        return EstadoProducto.objects.filter(estado = 'ACTIVO')
+
+class ProductDetailListAPIView(generics.ListAPIView):
+    serializer_class = ProductDetailSerializer
+    filterset_class  = ProductDetailFilter
+    search_fields = ['id']
+    ordering_fields = ['id']
+    ordering = ['id']
+
+    def get_queryset(self):
+        return DetalleProducto.objects.filter(estado = 'ACTIVO')
+
+
+class RoomDetailListAPIView(generics.ListAPIView):
+    serializer_class = RoomDetailSerializer
+    filterset_class  = RoomDetailFilter
+    search_fields = ['id']
+    ordering_fields = ['id']
+    ordering = ['id']
+
+    def get_queryset(self):
+        return DetalleSala.objects.filter(estado = 'ACTIVO')
