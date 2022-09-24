@@ -12,6 +12,10 @@ class DeptoSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id' : instance.id,
+            'nombre' : instance.nombre,
+            'descripcion' : instance.descripcion,
+            'direccion' : instance.direccion,
+            'slug' : instance.slug,
             'latitud' : instance.latitud,
             'longitud' : instance.longitud,
             'estrellas' : instance.estrellas,
