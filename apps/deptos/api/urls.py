@@ -10,4 +10,8 @@ urlpatterns = [
     path('depto/interior/list/',InteriorGaleryListAPIView.as_view(),name='interior-list'),
     path('depto/exterior/list/',ExteriorGaleryListAPIView.as_view(),name='exterior-list'),
     path('depto/comment/list/',CommentListAPIView.as_view(),name='comment-list'), 
+    path('depto/room/list/',RoomListAPIView.as_view(),name='room-list'),
+    path('depto/product-state/list/',ProductStateListAPIView.as_view(),name='product-state-list'),
+    path('depto/product-detail/list/',ProductDetailListAPIView.as_view(),name='product-detail-list'),
+    path('depto/room-detail/list/',RoomDetailListAPIView.as_view(),name='room-detail-list'),
 ]
