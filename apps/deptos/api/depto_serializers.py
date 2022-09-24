@@ -1,6 +1,6 @@
 from re import I
 from rest_framework import serializers
-from apps.base.models.db_models import Comentario, GaleriaExterior, GaleriaInterior, Vivienda
+from apps.base.models.db_models import Comentario, DetalleProducto, EstadoProducto, GaleriaExterior, GaleriaInterior, Sala, Vivienda
 
 
 class DeptoSerializer(serializers.ModelSerializer):
@@ -85,4 +85,55 @@ class CommentSerializer(serializers.ModelSerializer):
                 'nombre' : instance.id_cli.id_cli.id.nombre + ' ' + instance.id_cli.id_cli.id.ap_paterno + ' ' + instance.id_cli.id_cli.id.ap_materno
             },
             'id_vivienda' : instance.id_cli.id_viv.id
+        }
+
+class RoomSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Sala
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'sala' : instance.descripcion
+        }
+
+class ProductStateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = EstadoProducto
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'estado' : instance.descripcion
+        }
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = DetalleProducto
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'id_est' : instance.id_est.id,
+            'id_det' : instance.id_det.id,
+            'id_pro' : instance.id_pro.id
+        }
+
+class RoomDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = DetalleProducto
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'id_inv' : instance.id_inv.id,
+            'id_sal' : instance.id_sal.id
         }
