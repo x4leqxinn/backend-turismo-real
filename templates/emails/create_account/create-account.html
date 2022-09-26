@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+.content{
+    width: 100%;
+}
+.content .textBox h2{
+    color: #333;
+    font-size: 2em;
+
+}
+.content .textBox p{
+    color: rgb(0, 0, 0);
+    font-size: 1.2em;
+
+}
+.content .textBox h2 span{
+    color: #013271;
+    font-size: 1em;
+}
+.content .imgBox{
+    width:600px;
+    padding-right: 50px;
+    margin-top: 10px;
+}
+.content .imgBox img{
+    width: 500px;
+    height: 330px;
+}
+</style>
+</head>
+<body>
+    <section>
+        <div class="content">
+            <div class="textBox">
+                <h2>Hola <span>{{ cliente.nombre }}  {{ cliente.ap_paterno }}</span></h2>
+                <p>Bienvenid@ a Turismo Real, desde ahora podrás iniciar sesión con tu cuenta.</p>
+            </div>
+
+            <div class="imgBox">
+                <img src="https://c.tenor.com/6Sz_9iSt7kAAAAAC/idoly-pride-anime-girl-dancing.gif" class="main">
+            </div>
+        </div>
+    </section>
+
+</body>
+</html> 
