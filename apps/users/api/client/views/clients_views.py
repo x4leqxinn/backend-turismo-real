@@ -29,17 +29,7 @@ class ClientListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return Persona.objects.filter(id__in = Cliente.objects.all().values_list('id', flat=True)).filter(estado = 'ACTIVO')
 
-
-# BUSCAR CLIENTE
-'''
-class ClientRetrieveAPIView(generics.RetrieveAPIView):
-    serializer_class = CitySerializers
-
-    def get_queryset(self):
-        return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-        
-'''
-
+# GENERIC VIEWSET (Permite todos los métodos en una url)
 class ClientViewSet(viewsets.GenericViewSet):
     # model = Cliente
     serializer_class = ClientCreateSerializer
@@ -74,7 +64,6 @@ class ClientViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    
     def create(self,request):
         serializer = self.serializer_class(data = request.data) # Aquí enviariamos el resultado de data
         if serializer.is_valid():
@@ -82,4 +71,3 @@ class ClientViewSet(viewsets.GenericViewSet):
                 return Response({'message' : 'Cliente registrado correctamente.'}, status = status.HTTP_201_CREATED)
             return Response({'error' : 'Datos inválidos'})
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
