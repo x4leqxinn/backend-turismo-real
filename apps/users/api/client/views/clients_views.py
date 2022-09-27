@@ -67,7 +67,7 @@ class ClientViewSet(viewsets.GenericViewSet):
     def create(self,request):
         serializer = self.serializer_class(data = request.data) # Aquí enviariamos el resultado de data
         if serializer.is_valid():
-            if serializer.save() == 1: 
+            if serializer.save(): 
                 return Response({'message' : 'Cliente registrado correctamente.'}, status = status.HTTP_201_CREATED)
             return Response({'error' : 'Datos inválidos'})
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
