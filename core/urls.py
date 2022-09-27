@@ -63,6 +63,9 @@ urlpatterns = [
     # Enrutador para productos
     path('product-api/',include('apps.products.api.urls')),
 
+    # Enrutador para empleado
+    path('employee-api/',include('apps.employees.api.routers')),
+
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
     re_path(r'^.*/$', index, name='unmatched'),
