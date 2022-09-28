@@ -15,6 +15,7 @@ class DeptoSerializer(serializers.ModelSerializer):
             'nombre' : instance.nombre,
             'descripcion' : instance.descripcion,
             'direccion' : instance.direccion,
+            'imagen_principal' : instance.imagen_principal,
             'slug' : instance.slug,
             'latitud' : instance.latitud,
             'longitud' : instance.longitud,
@@ -45,7 +46,7 @@ class DeptoSerializer(serializers.ModelSerializer):
             'tipo_vivienda' : {
                 'id' : instance.id_tip.id,
                 'descripcion' : instance.id_tip.descripcion
-            }
+            },
         }
 
 class InteriorGalerySerializer(serializers.ModelSerializer):
