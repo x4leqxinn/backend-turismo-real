@@ -1,10 +1,12 @@
-from ast import If
 from rest_framework import serializers
 from apps.users.api.client.connections.clients_sp import createClient
 from apps.users.api.client.models.db_models import *
 from apps.users.api.client.models.models import Client
 from db_routers.permissions.db_connection import oracle_connection
 from apps.users.models import User, UserRole
+# Subir imagen
+from drf_extra_fields.fields import Base64ImageField
+
 
 # Importamos los grupos
 from django.contrib.auth.models import Group
@@ -71,6 +73,7 @@ class ClientCreateSerializer(serializers.Serializer):
     calle = serializers.CharField(max_length=20)
     correo = serializers.CharField(max_length=100)
     contrasenia = serializers.CharField(max_length=100)
+    imagen = Base64ImageField(required=False)
     id_ciu = serializers.IntegerField()
     id_est = serializers.IntegerField()
     id_pai = serializers.IntegerField()
@@ -99,6 +102,10 @@ class ClientCreateSerializer(serializers.Serializer):
             user = User(person = p, role = role)
             user.email = validated_data['correo']
             user.set_password(validated_data['contrasenia'])
+            
+            # Validamos si se envía una imagen
+            if validated_data['imagen'] != None:
+                user.image = validated_data['imagen']
             user.save()
 
             # TODO: Se debe crear un grupo desde el admin de DJANGO o no funcionará
