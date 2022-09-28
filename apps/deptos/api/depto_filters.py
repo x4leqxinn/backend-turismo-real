@@ -1,5 +1,5 @@
 import django_filters
-from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Sala, Vivienda, Comentario
+from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Sala, Vivienda, Comentario
 class DeptoFilter(django_filters.FilterSet):
 
     class Meta:
@@ -73,7 +73,10 @@ class ProductDetailFilter(django_filters.FilterSet):
     class Meta: 
         model = DetalleProducto
         fields = {
-            'id' : ['gt','lt','contains','exact']
+            'id' : ['gt','lt','contains','exact'],
+            'id_det__id_sal__id' : ['contains','exact'],
+            'id_det__id_sal__descripcion' : ['contains','exact'],
+            'id_det__id_inv__id_viv__id' : ['contains','exact']
         }
 
 class RoomDetailFilter(django_filters.FilterSet):
@@ -82,3 +85,12 @@ class RoomDetailFilter(django_filters.FilterSet):
         fields = {
             'id' : ['gt','lt','contains','exact']
         }
+        
+
+class InventoryFilter(django_filters.FilterSet):
+    class Meta: 
+        model = Inventario
+        fields = {
+            'id' : ['gt','lt','contains','exact']
+        }
+        

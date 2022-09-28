@@ -2,6 +2,8 @@ from apps.deptos.api.depto_filters import *
 from apps.deptos.api.depto_serializers import *
 from apps.base.models.db_models import Vivienda
 from rest_framework import generics
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 class DeptoListAPIView(generics.ListAPIView):
     #authentication_classes = ()
@@ -69,23 +71,33 @@ class ProductStateListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return EstadoProducto.objects.filter(estado = 'ACTIVO')
 
-class ProductDetailListAPIView(generics.ListAPIView):
-    serializer_class = ProductDetailSerializer
-    filterset_class  = ProductDetailFilter
+class InventoryViewSet(viewsets.GenericViewSet):
+    serializer_class = InventoryListSerializer
+    filterset_class  = InventoryFilter
     search_fields = ['id']
     ordering_fields = ['id']
     ordering = ['id']
 
-    def get_queryset(self):
-        return DetalleProducto.objects.filter(estado = 'ACTIVO')
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return None
+        elif self.action in ["list"]:
+            return InventoryListSerializer
+        return self.serializer_class
 
-
-class RoomDetailListAPIView(generics.ListAPIView):
-    serializer_class = RoomDetailSerializer
-    filterset_class  = RoomDetailFilter
-    search_fields = ['id']
-    ordering_fields = ['id']
-    ordering = ['id']
 
     def get_queryset(self):
-        return DetalleSala.objects.filter(estado = 'ACTIVO')
+        return Inventario.objects.filter(estado = 'ACTIVO')
+
+    def list(self, request):
+        # with filter
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # pagination
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
