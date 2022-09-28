@@ -1,6 +1,6 @@
 from re import I
 from rest_framework import serializers
-from apps.base.models.db_models import Comentario, DetalleProducto, EstadoProducto, GaleriaExterior, GaleriaInterior, Sala, Vivienda
+from apps.base.models.db_models import Comentario, DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Producto, Sala, Vivienda
 
 
 class DeptoSerializer(serializers.ModelSerializer):
@@ -88,20 +88,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'id_vivienda' : instance.id_cli.id_viv.id
         }
 
-class RoomSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Sala
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        return {
-            'id' : instance.id,
-            'sala' : instance.descripcion
-        }
-
 class ProductStateSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = EstadoProducto
         fields = '__all__'
@@ -109,32 +96,59 @@ class ProductStateSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id' : instance.id,
-            'estado' : instance.descripcion
+            'descripcion' : instance.descripcion
         }
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    
+class RoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DetalleProducto
+        model = Sala
         fields = '__all__'
 
     def to_representation(self, instance):
         return {
             'id' : instance.id,
-            'id_est' : instance.id_est.id,
-            'id_det' : instance.id_det.id,
-            'id_pro' : instance.id_pro.id
+            'descripcion' : instance.descripcion
         }
 
-class RoomDetailSerializer(serializers.ModelSerializer):
-    
+class InventoryListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DetalleProducto
-        fields = '__all__'
+        model = Inventario
+        fields = 'id'
+    
+    def getProducts(self,p_id_det):
+        p_queryset = DetalleProducto.objects.filter(id_det = p_id_det)
+        products = []
+        for index in range(len(p_queryset)):
+            data = {
+                'nombre' : p_queryset[index].id_pro.nombre,
+                'precio' : p_queryset[index].id_pro.precio
+            }
+
+            products.append(data)
+        return products
+                
+
 
     def to_representation(self, instance):
+        r_queryset = DetalleSala.objects.filter(id_inv = instance.id)
+        rooms = []
+
+        for x in range(len(r_queryset)):
+
+            data = {
+                'id' : r_queryset[x].id,
+                'id_sala' : r_queryset[x].id_sal.id,
+                'nombre' : r_queryset[x].id_sal.descripcion,
+                'imagen' : 'No tiene en la bbd aún',
+                'productos' : self.getProducts(r_queryset[x].id) 
+            }
+            
+            rooms.append(data)
+    
+
         return {
-            'id' : instance.id,
-            'id_inv' : instance.id_inv.id,
-            'id_sal' : instance.id_sal.id
+            'id_vivienda' : instance.id_viv.id,
+            'salas' : rooms
         }
+
+    

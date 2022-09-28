@@ -59,6 +59,7 @@ urlpatterns = [
 
     # Enrutador para viviendas
     path('depto-api/',include('apps.deptos.api.urls')),
+    path('depto-api/',include('apps.deptos.api.routers')),
 
     # Enrutador para productos
     path('product-api/',include('apps.products.api.urls')),
