@@ -1,8 +1,10 @@
 # Auth Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from apps.users.auth.auth_serializers import UserTokenSerializer
+from apps.users.auth.auth_filters import UserFilter
+from apps.users.auth.auth_serializers import PasswordSerializer, UserListSerializer
 from apps.users.auth.authentication_mixins import Authentication
+from django.shortcuts import get_object_or_404
 
 # Manejo de sesiones
 from datetime import datetime
@@ -15,6 +17,12 @@ from rest_framework import status
 
 # APIView
 from rest_framework.views import APIView
+
+from rest_framework import viewsets
+
+from apps.users.models import User
+
+from rest_framework.decorators import action
 
 # from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
@@ -40,7 +48,7 @@ class UserToken(Authentication,APIView):
         try:
             # Recibimos o creamos el token del usuario asociado
             user_token,_ = Token.objects.get_or_create(user = self.user)
-            user = UserTokenSerializer(self.user)
+            user = UserListSerializer(self.user)
             return Response({
                 'token' : user_token.key,
                 'user' : user.data
@@ -64,7 +72,7 @@ class Login(ObtainAuthToken):
         login_serializer = self.serializer_class(data = request.data, context = {'request' : request})
         if login_serializer.is_valid():
             user = login_serializer.validated_data['user']
-            user_serializer = UserTokenSerializer(user)
+            user_serializer = UserListSerializer(user)
 
             # Sólo se puede iniciar sesión si el usuario está activo
             if user.is_active:
@@ -110,3 +118,55 @@ class Logout(APIView):
         
         except:
             return Response({'error' : 'No se ha encontrado token en la petición.'}, status = status.HTTP_409_CONFLICT)
+class AccountUserViewSet(viewsets.GenericViewSet):
+    model = User
+    serializer_class = UserListSerializer
+    filterset_class  = UserFilter
+    search_fields = ['email','id']
+    ordering_fields = ['email','id']
+    ordering = ['id']
+
+
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return None
+        elif self.action in ["list"]:
+            return UserListSerializer
+        return self.serializer_class
+
+    def get_object(self,pk):
+        return get_object_or_404(self.model, pk=pk)
+
+    def get_queryset(self):
+        return User.objects.filter(is_active = True)
+
+    def list(self, request):
+        # with filter
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # pagination
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    # Detail obligatorio, le agrega un campo id
+    @action(detail=True, methods=['POST'], url_path='change-password')
+    def set_password(self,request,pk = None):
+        user = self.get_object(pk)
+        password_serializer = PasswordSerializer(data = request.data)
+        if password_serializer.is_valid():
+            print(password_serializer.validated_data['password'])
+            user.set_password(password_serializer.validated_data['password'])
+            user.save()
+            return Response({
+                'message': 'Contraseña actualizada correctamente.'
+            }, status = status.HTTP_200_OK)
+        return Response({
+            'message': 'Hay errores en la información enviada.',
+            'errors' : password_serializer.errors
+        }, status = status.HTTP_400_BAD_REQUEST)
