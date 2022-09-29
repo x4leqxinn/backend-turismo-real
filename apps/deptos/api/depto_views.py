@@ -74,7 +74,7 @@ class ProductStateListAPIView(generics.ListAPIView):
 class InventoryViewSet(viewsets.GenericViewSet):
     serializer_class = InventoryListSerializer
     filterset_class  = InventoryFilter
-    search_fields = ['id']
+    search_fields = ['id_viv__id']
     ordering_fields = ['id']
     ordering = ['id']
 
