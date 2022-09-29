@@ -52,7 +52,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     role = models.ForeignKey(UserRole, on_delete = models.CASCADE, verbose_name = 'Rol Usuario', null = True)
     person = models.OneToOneField(Persona, on_delete = models.CASCADE, verbose_name = 'Persona', null = True)
 
-    is_staff = models.BooleanField(default=True) # must needed, otherwise
+    is_staff = models.BooleanField(default=False) # must needed, otherwise
     is_active = models.BooleanField(default=True) # must needed, otherwise
     is_superuser = models.BooleanField(default=False) # this field we inherit
 
