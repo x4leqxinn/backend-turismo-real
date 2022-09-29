@@ -91,6 +91,7 @@ class InventoryFilter(django_filters.FilterSet):
     class Meta: 
         model = Inventario
         fields = {
-            'id' : ['gt','lt','contains','exact']
+            'id' : ['gt','lt','contains','exact'],
+            'id_viv__id' : ['gt','lt','contains','exact']
         }
         
