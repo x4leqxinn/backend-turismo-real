@@ -113,7 +113,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class InventoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventario
-        fields = 'id'
+        fields = ('id',)
     
     def getProducts(self,p_id_det):
         p_queryset = DetalleProducto.objects.filter(id_det = p_id_det)
