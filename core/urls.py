@@ -45,6 +45,9 @@ urlpatterns = [
     path('login/',Login.as_view(),name='login'),
     path('refresh-token/',UserToken.as_view(), name = 'refresh_token'),
     
+    # Enrutador de usuarios
+    path('user-api/',include('apps.users.auth.routers')),
+    
     # Enrutador de clientes
     #path('admin-api/',include('apps.users.api.routers')), 
     #path('office-api/',include('apps.users.api.routers')),
