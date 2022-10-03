@@ -10,7 +10,9 @@ class UserListSerializer(serializers.ModelSerializer):
     
     # Se define la data a mostrar al iniciar sesión
     def to_representation(self, instance):
-        data = { 'email' : instance.email,
+        data = {
+                'uid' : instance.id, 
+                'email' : instance.email,
                 'role' : {
                     'id' : instance.role.id,
                     'description' : instance.role.description
