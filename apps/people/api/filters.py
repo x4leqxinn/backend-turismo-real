@@ -1,5 +1,5 @@
 import django_filters
-from apps.people.models import *
+from apps.base.models.db_models import *
 
 class GenderFilter(django_filters.FilterSet):
 

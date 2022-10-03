@@ -1,6 +1,6 @@
 from apps.people.api.filters import GenderFilter
 from apps.people.general_serializers import GenderSerializers
-from apps.people.models import Genero
+from apps.base.models.db_models import *
 from rest_framework import generics
  
 class GenderAPIView(generics.ListAPIView):

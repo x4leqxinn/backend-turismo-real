@@ -1,6 +1,6 @@
 from apps.products.api.filters import *
 from apps.products.api.serializers.general_serializers import *
-from apps.base.models.db_models import Categoria, SubCategoria
+from apps.base.models.db_models import Categoria
 from rest_framework import generics
 
 class CategoryListAPIView(generics.ListAPIView):
@@ -15,22 +15,6 @@ class CategoryListAPIView(generics.ListAPIView):
 
 class CategoryRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = CategorySerializer
-
-    def get_queryset(self):
-        return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-
-class SubCategoryListAPIView(generics.ListAPIView):
-    serializer_class = SubCategorySerializer
-    filterset_class  = SubCategoryFilter
-    search_fields = ['descripcion','id']
-    ordering_fields = ['descripcion','id']
-    ordering = ['id','descripcion']    
-
-    def get_queryset(self):
-        return  SubCategoria.objects.filter(estado = 'ACTIVO')
-
-class SubCategoryRetrieveAPIView(generics.RetrieveAPIView):
-    serializer_class = SubCategorySerializer
 
     def get_queryset(self):
         return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')

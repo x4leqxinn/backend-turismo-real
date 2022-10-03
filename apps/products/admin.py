@@ -1,8 +1,4 @@
 from django.contrib import admin
-from apps.base.models.db_models import Producto, Categoria, SubCategoria
+from apps.base.models.db_models import *
 
 # Register your models here.
-
-admin.site.register(Producto);
-admin.site.register(Categoria);
-admin.site.register(SubCategoria);

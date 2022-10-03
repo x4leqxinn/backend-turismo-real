@@ -19,7 +19,7 @@ class UserListSerializer(serializers.ModelSerializer):
                 'position' : ''
             }
         # TODO: Se debe indicar el id del ROLE ASIGNADO PARA LOS EMPLEADOS
-        if instance.role.id == 21:
+        if instance.role.id != 3:
             empleado = Empleado.objects.get(id = instance.person.id)
             data['position'] = {
                 'id' : empleado.id_car.id,

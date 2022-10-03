@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Categoria, SubCategoria
+from apps.base.models.db_models import Categoria
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -17,16 +17,3 @@ class CategorySerializer(serializers.ModelSerializer):
                 'descripcion' : instance.id_sub.descripcion
             }
         }
-
-class SubCategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = SubCategoria
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        return {
-            'id' : instance.id,
-            'descripcion' : instance.descripcion
-        }
-

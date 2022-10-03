@@ -1,6 +1,6 @@
 from apps.people.api.filters import IdentificationDocumentFilter
 from apps.people.general_serializers import IdentificationDocumentSerializers
-from apps.people.models import DocIdentidad
+from apps.base.models.db_models import *
 from rest_framework import generics
  
 class IdentificationDocumentAPIView(generics.ListAPIView):

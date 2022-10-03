@@ -1,8 +1,8 @@
 from apps.people.api.filters import MaritalStatusFilter
 from apps.people.general_serializers import MaritalStatusSerializers
-from apps.people.models import EstadoCivil
+from apps.base.models.db_models import EstadoCivil
 from rest_framework import generics
- 
+
 class MaritalStatusAPIView(generics.ListAPIView):
     #authentication_classes = ()
     #permission_classes = ()

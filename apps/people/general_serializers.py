@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.people.models import Genero, DocIdentidad, EstadoCivil
+from apps.base.models.db_models import *
 
 
 class GenderSerializers(serializers.ModelSerializer):
