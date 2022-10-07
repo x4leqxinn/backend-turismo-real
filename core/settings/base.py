@@ -37,10 +37,10 @@ BASE_APPS = [
 LOCAL_APPS = [
     'apps.base',
     'apps.users',
-    'apps.locations',
     'apps.people',
     'apps.deptos',
     'apps.products',
+    'apps.locations',
 ]
 
 # Apps de terceros

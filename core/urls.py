@@ -10,7 +10,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi 
 
-from apps.users.auth.auth_views import *
+from apps.users.api.auth.auth_views import *
 
 schema_view = get_schema_view(
   openapi.Info(
@@ -46,17 +46,17 @@ urlpatterns = [
     path('refresh-token/',UserToken.as_view(), name = 'refresh_token'),
     
     # Enrutador de usuarios
-    path('user-api/',include('apps.users.auth.routers')),
+    path('user-api/',include('apps.users.api.routers')),
     
     # Enrutador de clientes
     #path('admin-api/',include('apps.users.api.routers')), 
     #path('office-api/',include('apps.users.api.routers')),
-    path('client-api/',include('apps.users.api.routers')),
-    path('client-api/',include('apps.users.api.urls')),
+    #path('client-api/',include('apps.users.api.routers')),
+    #path('client-api/',include('apps.users.api.urls')),
     
     # Enrutador para Países
-    path('location-api/',include('apps.locations.api.urls')),
-    
+    path('location-api/',include('apps.locations.api.routers')),
+
     # Enrutador para Personas
     path('people-api/',include('apps.people.api.urls')),
 

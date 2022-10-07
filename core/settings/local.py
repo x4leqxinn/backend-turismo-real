@@ -21,11 +21,24 @@ DATABASES = {
             'TBLSPACE' : env.str('DATABASE_TBLSPACE_1'),
             'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
         }
+    },
+    'country_api' : {
+        'ENGINE': 'django.db.backends.mysql',  
+        'NAME': 'paises',  
+        'USER': 'root',  
+        'PASSWORD': '',  
+        'HOST': '127.0.0.1',  
+        'PORT': '3306',  
+        'OPTIONS': {  
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+        }  
     }
+    
 }
 
 # Se definen los enrutadores para el acceso a las bases de datos
 DATABASE_ROUTERS = [
+    'db_routers.country_api_router.CountryApiRouter',
     'db_routers.turismo_real_router.TurismoRealRouter',
 ]
 
