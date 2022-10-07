@@ -228,7 +228,7 @@ class DetalleProducto(BaseModel):
 class DetalleSala(BaseModel):
     id_inv = models.ForeignKey('Inventario', models.DO_NOTHING, db_column='id_inv')
     id_sal = models.ForeignKey('Sala', models.DO_NOTHING, db_column='id_sal')
-    imagen_sala = models.TextField()
+    imagen_sala = models.ImageField(upload_to='rooms/')
 
     class Meta:
         managed = False
@@ -711,7 +711,7 @@ class Vivienda(BaseModel):
     descripcion = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
     slug = models.CharField(max_length=30)
-    imagen_principal = models.TextField()
+    imagen_principal = models.ImageField(upload_to='viviendas/')
     valor_noche = models.IntegerField()
     abono_base = models.IntegerField()
     id_pai = models.IntegerField()
