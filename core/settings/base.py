@@ -38,8 +38,7 @@ LOCAL_APPS = [
     'apps.base',
     'apps.users',
     'apps.people',
-    'apps.deptos',
-    'apps.products',
+    'apps.business',
     'apps.locations',
 ]
 

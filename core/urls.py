@@ -48,27 +48,14 @@ urlpatterns = [
     # Enrutador de usuarios
     path('user-api/',include('apps.users.api.routers')),
     
-    # Enrutador de clientes
-    #path('admin-api/',include('apps.users.api.routers')), 
-    #path('office-api/',include('apps.users.api.routers')),
-    #path('client-api/',include('apps.users.api.routers')),
-    #path('client-api/',include('apps.users.api.urls')),
-    
     # Enrutador para Países
     path('location-api/',include('apps.locations.api.routers')),
 
     # Enrutador para Personas
-    path('people-api/',include('apps.people.api.urls')),
+    path('people-api/',include('apps.people.api.routers')),
 
     # Enrutador para viviendas
-    path('depto-api/',include('apps.deptos.api.urls')),
-    path('depto-api/',include('apps.deptos.api.routers')),
-
-    # Enrutador para productos
-    path('product-api/',include('apps.products.api.urls')),
-
-    # Enrutador para empleado
-    path('employee-api/',include('apps.employees.api.routers')),
+    path('business-api/',include('apps.business.api.routers')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
