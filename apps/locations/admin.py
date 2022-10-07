@@ -3,8 +3,8 @@ from apps.locations.models import *
 
 # Register your models here.
 
-'''
-admin.site.register(Pais)
-admin.site.register(EstadoPais)
-admin.site.register(Ciudad)
-'''
+
+admin.site.register(Countries)
+admin.site.register(States)
+admin.site.register(Cities)
+

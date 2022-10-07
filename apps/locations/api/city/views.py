@@ -1,23 +1,45 @@
 from apps.locations.api.filters import CityFilter
-from apps.locations.general_serializers import CitySerializers
-from apps.locations.models import Ciudad
-from rest_framework import generics
- 
-class CityListAPIView(generics.ListAPIView):
-    #authentication_classes = ()
-    #permission_classes = ()
+from apps.locations.api.general_serializers import CitySerializers
+from apps.locations.models import Cities
+from rest_framework import viewsets
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+
+class CityViewSet(viewsets.GenericViewSet):
     serializer_class = CitySerializers
     filterset_class  = CityFilter
-    search_fields = ['nombre','id']
-    ordering_fields = ['nombre','id']
+    search_fields = ['id']
+    ordering_fields = ['id']
     ordering = ['id']
 
-    def get_queryset(self):
-        return  Ciudad.objects.filter(estado = 'ACTIVO')
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return None
+        elif self.action in ["list"]:
+            return CitySerializers
+        return self.serializer_class
 
-class CityRetrieveAPIView(generics.RetrieveAPIView):
-    serializer_class = CitySerializers
 
     def get_queryset(self):
-        return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-        
+        return Cities.objects.all()
+
+    def list(self, request):
+        # with filter
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # pagination
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Cities.objects.all()
+        country = get_object_or_404(queryset, pk=pk)
+        serializer = CitySerializers(country)
+        return Response(serializer.data)
+
+
