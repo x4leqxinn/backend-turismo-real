@@ -12,10 +12,15 @@ from apps.base.models.base_model import BaseModel
 
 class Acompaniante(models.Model):
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
-
     class Meta:
         managed = False
         db_table = 'acompaniante'
+        verbose_name = "Acompañante"
+        verbose_name_plural = "Acompañantes"
+        ordering = ['id']
+
+    def __str__(self):
+        return 'ID : ' + str(self.id)
 
 
 class Cargo(BaseModel):
@@ -25,14 +30,23 @@ class Cargo(BaseModel):
     class Meta:
         managed = False
         db_table = 'cargo'
+        verbose_name = "Cargo"
+        verbose_name_plural = "Cargos"
+        ordering = ['id']
 
-
+    def __str__(self) -> str:
+        return self.descripcion
 class Categoria(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
         managed = False
         db_table = 'categoria'
+        verbose_name = "Categoría"
+        verbose_name_plural = "Categorías"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 
 class CheckIn(BaseModel):
     fecha_llegada = models.DateField()
@@ -44,8 +58,12 @@ class CheckIn(BaseModel):
     class Meta:
         managed = False
         db_table = 'check_in'
+        verbose_name = "Check In"
+        verbose_name_plural = "Check In"
+        ordering = ['id']
 
-
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 class CheckOut(BaseModel):
     fecha_salida = models.DateField()
     hora_salida = models.CharField(max_length=5, blank=True, null=True)
@@ -56,22 +74,12 @@ class CheckOut(BaseModel):
     class Meta:
         managed = False
         db_table = 'check_out'
+        verbose_name = "Check Out"
+        verbose_name_plural = "Check Out"
+        ordering = ['id']
 
-
-# No se puede heredar debido a que no usa secuencia autoincrementable
-class Ciudad(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    id_est = models.ForeignKey('EstadoPais', models.DO_NOTHING, db_column='id_est')
-    estado = models.CharField(max_length=15)
-    creacion = models.DateTimeField()
-    actualizacion = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'ciudad'
-
-
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 class CliAcom(BaseModel):
     id_res = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_res')
     id_aco = models.ForeignKey(Acompaniante, models.DO_NOTHING, db_column='id_aco')
@@ -95,7 +103,12 @@ class Cliente(models.Model):
     class Meta:
         managed = False
         db_table = 'cliente'
+        verbose_name = "Cliente"
+        verbose_name_plural = "Clientes"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Color(BaseModel):
     nombre = models.CharField(max_length=50)
@@ -103,6 +116,12 @@ class Color(BaseModel):
     class Meta:
         managed = False
         db_table = 'color'
+        verbose_name = "Color"
+        verbose_name_plural = "Colores"
+        ordering = ['id']
+
+    def __str__(self) -> str:
+        return self.nombre
 
 class Comentario(BaseModel):
     descripcion = models.CharField(max_length=200)
@@ -111,7 +130,12 @@ class Comentario(BaseModel):
     class Meta:
         managed = False
         db_table = 'comentario'
+        verbose_name = "Comentario"
+        verbose_name_plural = "Comentarios"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id) + 'ID_CLIENTE : ' + str(self.id_cli)  
 
 class Conductor(models.Model):
     id = models.OneToOneField('Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -119,7 +143,12 @@ class Conductor(models.Model):
     class Meta:
         managed = False
         db_table = 'conductor'
+        verbose_name = "Conductor"
+        verbose_name_plural = "Conductores"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class DCheck(models.Model):
     id = models.OneToOneField('Documento', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -230,21 +259,36 @@ class Disponibilidad(BaseModel):
     class Meta:
         managed = False
         db_table = 'disponibilidad'
+        verbose_name = "Disponibilidad"
+        verbose_name_plural = "Disponibilidades"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 
 class DocIdentidad(BaseModel):
     descripcion = models.CharField(max_length=80)
     class Meta:
         managed = False
         db_table = 'doc_identidad'
+        verbose_name = "Documento de Identidad"
+        verbose_name_plural = "Documentos de Identidad"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 class Documento(BaseModel):
     id_tip = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='id_tip')
 
     class Meta:
         managed = False
         db_table = 'documento'
+        verbose_name = "Documento"
+        verbose_name_plural = "Documentos"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Empleado(models.Model):
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -255,7 +299,12 @@ class Empleado(models.Model):
     class Meta:
         managed = False
         db_table = 'empleado'
+        verbose_name = "Empleado"
+        verbose_name_plural = "Empleados"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class ErrorProceso(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -274,20 +323,12 @@ class EstadoCivil(BaseModel):
     class Meta:
         managed = False
         db_table = 'estado_civil'
+        verbose_name = "Estado Civil"
+        verbose_name_plural = "Estados Civiles"
+        ordering = ['id']
 
-
-class EstadoPais(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    id_pai = models.ForeignKey('Pais', models.DO_NOTHING, db_column='id_pai')
-    estado = models.CharField(max_length=15)
-    creacion = models.DateTimeField()
-    actualizacion = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'estado_pais'
-
+    def __str__(self) -> str:
+        return self.descripcion
 
 class EstadoProducto(BaseModel):
     descripcion = models.CharField(max_length=20)
@@ -303,7 +344,12 @@ class GaleriaExterior(BaseModel):
     class Meta:
         managed = False
         db_table = 'galeria_exterior'
+        verbose_name = "Galeria De Exterior"
+        verbose_name_plural = "Galerías De Exteriores"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID_VIVIENDA : ' + str(self.id_viv)
 
 class GaleriaInterior(BaseModel):
     imagen = models.TextField()
@@ -312,7 +358,12 @@ class GaleriaInterior(BaseModel):
     class Meta:
         managed = False
         db_table = 'galeria_interior'
+        verbose_name = "Galeria De Interior"
+        verbose_name_plural = "Galerías De Interiores"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID_VIVIENDA : ' + str(self.id_viv)
 
 class Genero(BaseModel):
     descripcion = models.CharField(max_length=20)
@@ -320,7 +371,12 @@ class Genero(BaseModel):
     class Meta:
         managed = False
         db_table = 'genero'
+        verbose_name = "Genero"
+        verbose_name_plural = "Generos"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 
 class Inventario(BaseModel):
     id_viv = models.OneToOneField('Vivienda', models.DO_NOTHING, db_column='id_viv')
@@ -334,14 +390,24 @@ class Marca(BaseModel):
     class Meta:
         managed = False
         db_table = 'marca'
+        verbose_name = "Marca"
+        verbose_name_plural = "Marcas"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Modelo(BaseModel):
     nombre = models.CharField(max_length=100)
     class Meta:
         managed = False
         db_table = 'modelo'
+        verbose_name = "Modelo"
+        verbose_name_plural = "Modelos"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.nombre
 
 class Movilizacion(models.Model):
     id = models.OneToOneField('Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -359,21 +425,12 @@ class Multa(BaseModel):
     class Meta:
         managed = False
         db_table = 'multa'
+        verbose_name = "Multa"
+        verbose_name_plural = "Multas"
+        ordering = ['id']
 
-
-class Pais(models.Model):
-    id = models.IntegerField(primary_key=True)
-    cod_pais = models.CharField(max_length=10)
-    nombre = models.CharField(max_length=100)
-    cod_tel = models.CharField(max_length=10)
-    bandera = models.CharField(max_length=200, blank=True, null=True)
-    estado = models.CharField(max_length=15)
-    creacion = models.DateTimeField()
-    actualizacion = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'pais'
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 
 class Persona(BaseModel):
@@ -388,9 +445,9 @@ class Persona(BaseModel):
     telefono = models.CharField(max_length=10)
     num_calle = models.CharField(max_length=10)
     calle = models.CharField(max_length=30)
-    id_ciu = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciu')
-    id_est = models.ForeignKey(EstadoPais, models.DO_NOTHING, db_column='id_est')
-    id_pai = models.ForeignKey(Pais, models.DO_NOTHING, db_column='id_pai')
+    id_ciu = models.IntegerField()
+    id_est = models.IntegerField()
+    id_pai = models.IntegerField()
     id_doc = models.ForeignKey(DocIdentidad, models.DO_NOTHING, db_column='id_doc')
     id_est1 = models.ForeignKey(EstadoCivil, models.DO_NOTHING, db_column='id_est1')
     id_gen = models.ForeignKey(Genero, models.DO_NOTHING, db_column='id_gen')
@@ -398,7 +455,12 @@ class Persona(BaseModel):
     class Meta:
         managed = False
         db_table = 'persona'
+        verbose_name = "Persona"
+        verbose_name_plural = "Personas"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id) + ' ' + self.nombre + ' ' + self.ap_paterno
 
 class Producto(BaseModel):
     id_cat = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_cat')
@@ -407,7 +469,12 @@ class Producto(BaseModel):
     class Meta:
         managed = False
         db_table = 'producto'
+        verbose_name = "Producto"
+        verbose_name_plural = "Productos"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 
 class Puntuacion(BaseModel):
     estrellas = models.CharField(max_length=1)
@@ -417,7 +484,12 @@ class Puntuacion(BaseModel):
     class Meta:
         managed = False
         db_table = 'puntuacion'
+        verbose_name = "Puntuación"
+        verbose_name_plural = "Puntuaciones"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Recepcionista(models.Model):
     id = models.OneToOneField(Empleado, models.DO_NOTHING, db_column='id', primary_key=True)
@@ -425,8 +497,13 @@ class Recepcionista(models.Model):
     class Meta:
         managed = False
         db_table = 'recepcionista'
+        verbose_name = "Recepcionista"
+        verbose_name_plural = "Recepcionistas"
+        ordering = ['id']
 
-
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
+    
 class Registro(models.Model):
     id = models.OneToOneField(DCheck, models.DO_NOTHING, db_column='id', primary_key=True)
     id_che = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='id_che')
@@ -478,7 +555,12 @@ class Sala(BaseModel):
     class Meta:
         managed = False
         db_table = 'sala'
+        verbose_name = "Sala"
+        verbose_name_plural = "Salas"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.descripcion
 
 class Salida(models.Model):
     id = models.OneToOneField(DCheck, models.DO_NOTHING, db_column='id', primary_key=True)
@@ -504,7 +586,9 @@ class Sucursal(BaseModel):
     calle = models.CharField(max_length=20)
     num_calle = models.CharField(max_length=10)
     telefono = models.CharField(max_length=10)
-    id_ciu = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciu')
+    id_pai = models.IntegerField()
+    id_est = models.IntegerField()
+    id_ciu = models.IntegerField()
     class Meta:
         managed = False
         db_table = 'sucursal'
@@ -515,13 +599,21 @@ class TipoDocumento(BaseModel):
         managed = False
         db_table = 'tipo_documento'
 
+    def __str__(self):
+        return 'Tipo Documento ' + self.descripcion
+
 
 class TipoMulta(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
         managed = False
         db_table = 'tipo_multa'
+        verbose_name = "Tipo de Multa"
+        verbose_name_plural = "Tipos de Multa"
+        ordering = ['id']
 
+    def __str__(self):
+        return 'Tipo Multa ' + self.descripcion
 
 class TipoServicio(BaseModel):
     descripcion = models.CharField(max_length=100)
@@ -535,7 +627,12 @@ class TipoVivienda(BaseModel):
     class Meta:
         managed = False
         db_table = 'tipo_vivienda'
+        verbose_name = "Tipo Vivienda"
+        verbose_name_plural = "Tipos de Vivienda"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Tour(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
@@ -597,7 +694,12 @@ class Vehiculo(BaseModel):
     class Meta:
         managed = False
         db_table = 'vehiculo'
+        verbose_name = "Vehículo"
+        verbose_name_plural = "Vehículos"
+        ordering = ['id']
 
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
 
 class Vivienda(BaseModel):
     latitud = models.CharField(max_length=100)
@@ -612,7 +714,9 @@ class Vivienda(BaseModel):
     imagen_principal = models.TextField()
     valor_noche = models.IntegerField()
     abono_base = models.IntegerField()
-    id_ciu = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciu')
+    id_pai = models.IntegerField()
+    id_est = models.IntegerField()
+    id_ciu = models.IntegerField()
     capacidad = models.IntegerField()
     internet = models.CharField(max_length=1)
     agua = models.CharField(max_length=1)
@@ -623,3 +727,11 @@ class Vivienda(BaseModel):
     class Meta:
         managed = False
         db_table = 'vivienda'
+        verbose_name = "Vivienda"
+        verbose_name_plural = "Viviendas"
+        ordering = ['id']
+
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
+
+
