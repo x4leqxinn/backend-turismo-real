@@ -1,12 +1,7 @@
 from datetime import timedelta
 from django.utils import timezone
-
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.authentication import get_authorization_header
-
 from django.conf import settings
-
 
 class ExpiringTokenAuthentication(TokenAuthentication):
 

@@ -1,9 +1,9 @@
 # Auth Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from apps.users.auth.auth_filters import UserFilter
-from apps.users.auth.auth_serializers import PasswordSerializer, UserListSerializer
-from apps.users.auth.authentication_mixins import Authentication
+from apps.users.api.auth.auth_filters import UserFilter
+from apps.users.api.auth.auth_serializers import PasswordSerializer, UserListSerializer
+from apps.users.api.auth.authentication_mixins import Authentication
 from django.shortcuts import get_object_or_404
 
 # Manejo de sesiones

@@ -1,6 +1,6 @@
 from rest_framework.authentication import get_authorization_header
-from apps.users.auth.authentication import ExpiringTokenAuthentication
-from rest_framework import status, exceptions
+from apps.users.api.auth.authentication import ExpiringTokenAuthentication
+from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 

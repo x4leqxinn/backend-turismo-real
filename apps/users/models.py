@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from apps.users.api.client.models.db_models import Persona
+from apps.base.models.db_models import Persona
 
 class UserRole(models.Model):    
     description = models.CharField('Descripción',max_length=50, blank=False, null=False,unique=True)
