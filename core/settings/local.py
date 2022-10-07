@@ -11,6 +11,7 @@ ALLOWED_HOSTS = ['*']
 # Se definen las credenciales de las bases de datos
 DATABASES = {
     'default' : {},
+    # ORACLE Turismo Real API
     'turismo_real': {
         'ENGINE': env.str('DATABASE_ENGINE_1'),
         'NAME': env.str('DATABASE_NAME_1'),
@@ -22,18 +23,18 @@ DATABASES = {
             'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
         }
     },
+    # MYSQL API 
     'country_api' : {
-        'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'paises',  
-        'USER': 'root',  
-        'PASSWORD': '',  
-        'HOST': '127.0.0.1',  
-        'PORT': '3306',  
+        'ENGINE': env.str('DATABASE_ENGINE_2'),  
+        'NAME': env.str('DATABASE_NAME_2'),  
+        'USER': env.str('DATABASE_USER_2'),  
+        'PASSWORD': env.str('DATABASE_PASSWORD_2'),  
+        'HOST': env.str('DATABASE_HOST_2'),  
+        'PORT': env.str('DATABASE_PORT_2'),  
         'OPTIONS': {  
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+            'init_command': env.str('DATABASE_INIT_2')  
         }  
-    }
-    
+    }    
 }
 
 # Se definen los enrutadores para el acceso a las bases de datos
