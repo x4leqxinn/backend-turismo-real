@@ -6,7 +6,6 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
 from apps.base.models.base_model import BaseModel
 
 
@@ -109,6 +108,7 @@ class Cliente(models.Model):
 
     def __str__(self) -> str:
         return 'ID : ' + str(self.id)
+
 
 class Color(BaseModel):
     nombre = models.CharField(max_length=50)
@@ -339,12 +339,12 @@ class EstadoProducto(BaseModel):
 
 
 class GaleriaExterior(BaseModel):
-    imagen = models.TextField()
+    imagen = models.ImageField(upload_to='exterior_gallery/')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
     class Meta:
         managed = False
         db_table = 'galeria_exterior'
-        verbose_name = "Galeria De Exterior"
+        verbose_name = "Galería De Exterior"
         verbose_name_plural = "Galerías De Exteriores"
         ordering = ['id']
 
@@ -352,13 +352,13 @@ class GaleriaExterior(BaseModel):
         return 'ID_VIVIENDA : ' + str(self.id_viv)
 
 class GaleriaInterior(BaseModel):
-    imagen = models.TextField()
+    imagen = models.ImageField(upload_to='interior_gallery/')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
 
     class Meta:
         managed = False
         db_table = 'galeria_interior'
-        verbose_name = "Galeria De Interior"
+        verbose_name = "Galería De Interior"
         verbose_name_plural = "Galerías De Interiores"
         ordering = ['id']
 
@@ -461,6 +461,8 @@ class Persona(BaseModel):
 
     def __str__(self) -> str:
         return 'ID : ' + str(self.id) + ' ' + self.nombre + ' ' + self.ap_paterno
+
+
 
 class Producto(BaseModel):
     id_cat = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_cat')
