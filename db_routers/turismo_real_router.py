@@ -1,14 +1,25 @@
 class TurismoRealRouter:
+    router_app_labels = {'location'}
 
     def db_for_read(self, model, **hints):
-        return 'turismo_real'
+        if model._meta.app_label not in self.router_app_labels:
+            return 'turismo_real'
+        return None
 
     def db_for_write(self, model, **hints):
-        return 'turismo_real'
-    
+        if model._meta.app_label not in self.router_app_labels:
+            return 'turismo_real'
+        return None
+
     def allow_relation(self, obj1, obj2, **hints):
-        return True
+        if(
+            obj1._meta.app_label not in self.router_app_labels or
+            obj2._meta.app_label not in self.router_app_labels
+        ):
+            return True
+        return None
     
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        return db == 'turismo_real'
-
+        if app_label not in self.router_app_labels:
+            return db == 'turismo_real'
+        return None
