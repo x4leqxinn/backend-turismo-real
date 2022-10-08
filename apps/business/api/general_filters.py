@@ -14,17 +14,14 @@ class DwellingFilter(django_filters.FilterSet):
             'longitud' : ['exact' ,'contains'],
             'estrellas' : ['exact' ,'contains'],
             'id_dis__descripcion' : ['exact' ,'contains'],
+            'id_ciu' : ['exact'],
             'valor_noche' : ['exact' ,'contains'],
-            'id_ciu__nombre' : ['exact' ,'contains'],
-            'id_ciu__id_est__nombre' : ['exact' ,'contains'],
-            'id_ciu__id_est__id_pai__nombre' : ['exact' ,'contains'],
             'capacidad' : ['exact' ,'contains'],
             'internet' : ['exact' ,'contains'],
             'luz' : ['exact' ,'contains'],
             'agua' : ['exact' ,'contains'],
             'gas' : ['exact' ,'contains']
         }
-            
 
 class InteriorFilter(django_filters.FilterSet):
     class Meta:
