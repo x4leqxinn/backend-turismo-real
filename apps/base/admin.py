@@ -216,8 +216,92 @@ class ColorAdmin(admin.ModelAdmin):
 
 admin.site.register(Color,ColorAdmin)
 
-admin.site.register(Modelo)
-admin.site.register(Disponibilidad)
+# Modelo Admin
+class ModeloAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Modelo
+        fields = ('nombre','estado',)
+
+class ModeloAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','nombre','estado')
+    ordering = ('id', 'nombre')
+    search_fields = ('nombre', 'id','estado')
+    list_editable = ('nombre',)
+    list_display_links = ('id',)
+    list_filter= ('nombre','estado') 
+    list_per_page = 5
+    form = ModeloAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for Modelo in queryset:
+            Modelo.estado = 'ACTIVO'
+            Modelo.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for Modelo in queryset:
+            Modelo.estado = 'INACTIVO'
+            Modelo.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Modelo,ModeloAdmin)
+
+# Disponibilidad Admin
+class DisponibilidadAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Disponibilidad
+        fields = ('estado',)
+
+class DisponibilidadAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado') 
+    list_per_page = 5
+    form = DisponibilidadAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for disponibilidad in queryset:
+            disponibilidad.estado = 'ACTIVO'
+            disponibilidad.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for disponibilidad in queryset:
+            disponibilidad.estado = 'INACTIVO'
+            disponibilidad.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Disponibilidad,DisponibilidadAdmin)
+
 admin.site.register(EstadoCivil)
 admin.site.register(DocIdentidad)
 admin.site.register(TipoDocumento)
