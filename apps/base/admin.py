@@ -428,7 +428,48 @@ class TipoDocumentoAdmin(admin.ModelAdmin):
 
 admin.site.register(TipoDocumento,TipoDocumentoAdmin)
 
-admin.site.register(TipoVivienda)
+# TipoVivienda Admin
+class TipoViviendaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = TipoVivienda
+        fields = ('descripcion','estado',)
+
+class TipoViviendaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado') 
+    list_per_page = 5
+    form = TipoViviendaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for tipoVivienda in queryset:
+            tipoVivienda.estado = 'ACTIVO'
+            tipoVivienda.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for tipoVivienda in queryset:
+            tipoVivienda.estado = 'INACTIVO'
+            tipoVivienda.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(TipoVivienda,TipoViviendaAdmin)
+
 admin.site.register(TipoServicio)
 admin.site.register(EstadoProducto)
 admin.site.register(Producto)
