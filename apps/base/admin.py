@@ -512,7 +512,49 @@ class TipoServicioAdmin(admin.ModelAdmin):
 
 admin.site.register(TipoServicio,TipoServicioAdmin)
 
-admin.site.register(EstadoProducto)
+# EstadoProducto Admin
+class EstadoProductoAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = EstadoProducto
+        fields = ('descripcion','estado',)
+
+class EstadoProductoAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado') 
+    list_per_page = 5
+    form = EstadoProductoAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'ACTIVO'
+            estadoProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'INACTIVO'
+            estadoProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(EstadoProducto,EstadoProductoAdmin)
+
+
 admin.site.register(Producto)
 admin.site.register(Categoria)
 admin.site.register(Vivienda)
