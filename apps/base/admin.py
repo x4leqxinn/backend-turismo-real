@@ -174,7 +174,48 @@ class CargoAdmin(admin.ModelAdmin):
 
 admin.site.register(Cargo,CargoAdmin)
 
-admin.site.register(Color)
+# Color Admin
+class ColorAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Color
+        fields = ('nombre','estado',)
+
+class ColorAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','nombre','estado')
+    ordering = ('id', 'nombre')
+    search_fields = ('nombre', 'id','estado')
+    list_editable = ('nombre',)
+    list_display_links = ('id',)
+    list_filter= ('nombre','estado') 
+    list_per_page = 5
+    form = ColorAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for color in queryset:
+            color.estado = 'ACTIVO'
+            color.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for color in queryset:
+            color.estado = 'INACTIVO'
+            color.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Color,ColorAdmin)
+
 admin.site.register(Modelo)
 admin.site.register(Disponibilidad)
 admin.site.register(EstadoCivil)
