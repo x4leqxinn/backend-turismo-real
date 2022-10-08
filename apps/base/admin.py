@@ -689,14 +689,95 @@ class ViviendaAdmin(admin.ModelAdmin):
 
 admin.site.register(Vivienda,ViviendaAdmin)
 
+# Empleado Admin
+class EmpleadoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Empleado
+        fields = ('__all__')
+
+class EmpleadoAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','sueldo','fecha_contrato','id_car')
+    ordering = ('id','sueldo')
+    search_fields = ('id','fecha_contrato','sueldo')
+    list_editable = ('sueldo',)
+    list_display_links = ('id',)
+    list_filter= ('sueldo','id','fecha_contrato') 
+    list_per_page = 5
+    form = EmpleadoAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Empleado,EmpleadoAdmin)
+
+# Recepcionista Admin
+class RecepcionistaAdminForm(forms.ModelForm):
+    class Meta:
+        model = Recepcionista
+        fields = ('__all__')
+
+class RecepcionistaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('sueldo',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = RecepcionistaAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Recepcionista,RecepcionistaAdmin)
+
+# Conductor Admin
+class ConductorAdminForm(forms.ModelForm):
+    class Meta:
+        model = Conductor
+        fields = ('__all__')
+
+class ConductorAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('sueldo',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = ConductorAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Conductor,ConductorAdmin)
+
 admin.site.register(Inventario)
 admin.site.register(DetalleSala)
 admin.site.register(DetalleProducto)
 admin.site.register(Persona)
-admin.site.register(Empleado)
 admin.site.register(Cliente)
-admin.site.register(Recepcionista)
-admin.site.register(Conductor)
 admin.site.register(GaleriaInterior)
 admin.site.register(GaleriaExterior)
 admin.site.register(CliCom)
