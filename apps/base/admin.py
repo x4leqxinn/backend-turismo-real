@@ -8,6 +8,11 @@ STATE_CHOICES = (
     ("INACTIVO", "INACTIVO"),
 )
 
+DWELLING_CHOICES = (
+    (0, "No"),
+    (1, "Sí"),
+)
+
 # Marca Admin
 class MarcaAdminForm(forms.ModelForm):
     estado = ChoiceField(choices=STATE_CHOICES)
@@ -642,7 +647,10 @@ admin.site.register(Categoria,CategoriaAdmin)
 # Vivienda Admin
 class ViviendaAdminForm(forms.ModelForm):
     estado = ChoiceField(choices=STATE_CHOICES)
-    
+    internet = ChoiceField(choices=DWELLING_CHOICES)
+    luz = ChoiceField(choices=DWELLING_CHOICES)
+    gas = ChoiceField(choices=DWELLING_CHOICES)
+    agua = ChoiceField(choices=DWELLING_CHOICES)
     class Meta:
         model = Vivienda
         exclude = ('creacion','actualizacion','id', 'estrellas','abono_base')
