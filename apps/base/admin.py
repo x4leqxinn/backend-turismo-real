@@ -555,7 +555,48 @@ class EstadoProductoAdmin(admin.ModelAdmin):
 admin.site.register(EstadoProducto,EstadoProductoAdmin)
 
 
-admin.site.register(Producto)
+# Producto Admin
+class ProductoAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Producto
+        fields = ('descripcion','precio','id_cat','estado')
+
+class ProductoAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','precio','id_cat','estado')
+    ordering = ('id', 'descripcion','precio')
+    search_fields = ('precio','descripcion','id_cat__descripcion', 'id','estado')
+    list_editable = ('descripcion','precio','id_cat')
+    list_display_links = ('id',)
+    list_filter= ('descripcion','precio','id_cat','estado') 
+    list_per_page = 5
+    form = ProductoAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for producto in queryset:
+            producto.estado = 'ACTIVO'
+            producto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for producto in queryset:
+            producto.estado = 'INACTIVO'
+            producto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Producto,ProductoAdmin)
+
 admin.site.register(Categoria)
 admin.site.register(Vivienda)
 admin.site.register(Inventario)
