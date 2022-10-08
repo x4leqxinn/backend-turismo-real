@@ -773,12 +773,371 @@ class ConductorAdmin(admin.ModelAdmin):
 
 admin.site.register(Conductor,ConductorAdmin)
 
-admin.site.register(Inventario)
-admin.site.register(DetalleSala)
-admin.site.register(DetalleProducto)
-admin.site.register(Persona)
-admin.site.register(Cliente)
-admin.site.register(GaleriaInterior)
-admin.site.register(GaleriaExterior)
-admin.site.register(CliCom)
-admin.site.register(Comentario)
+# Persona Admin
+class PersonaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Persona
+        fields = ('__all__')
+
+class PersonaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','nombre','ap_paterno','ap_materno','fecha_nacimiento','estado')
+    ordering = ('id', 'nombre')
+    search_fields = ('nombre', 'id','estado')
+    list_display_links = ('id',)
+    list_filter= ('nombre','ap_paterno','ap_materno','estado','id_ciu','id_pai','id_est') 
+    list_per_page = 5
+    form = PersonaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for persona in queryset:
+            persona.estado = 'ACTIVO'
+            persona.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for persona in queryset:
+            persona.estado = 'INACTIVO'
+            persona.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Persona,PersonaAdmin)
+
+# Cliente Admin
+class ClienteAdminForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ('__all__')
+
+class ClienteAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('sueldo',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = ClienteAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Cliente,ClienteAdmin)
+
+# Inventario Admin
+class InventarioAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Inventario
+        fields = ('id_viv','estado',)
+
+class InventarioAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','id_viv','estado')
+    ordering = ('id', 'id_viv')
+    search_fields = ('id_viv', 'id','estado')
+    list_display_links = ('id',)
+    list_filter= ('id_viv','estado') 
+    list_per_page = 5
+    form = InventarioAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for inventario in queryset:
+            inventario.estado = 'ACTIVO'
+            inventario.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for inventario in queryset:
+            inventario.estado = 'INACTIVO'
+            inventario.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Inventario,InventarioAdmin)
+
+class GaleriaInteriorAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = GaleriaInterior
+        fields = ('__all__')
+class GaleriaInteriorAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','imagen','id_viv','estado')
+    ordering = ('id', 'imagen','id_viv')
+    search_fields = ('imagen', 'id','estado')
+    list_editable = ('imagen',)
+    list_display_links = ('id','id_viv')
+    list_filter= ('estado','id_viv','id') 
+    list_per_page = 5
+    form = GaleriaInteriorAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for galeriaInterior in queryset:
+            galeriaInterior.estado = 'ACTIVO'
+            galeriaInterior.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for galeriaInterior in queryset:
+            galeriaInterior.estado = 'INACTIVO'
+            galeriaInterior.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(GaleriaInterior,GaleriaInteriorAdmin)
+
+
+# GaleriaExterior Admin
+class GaleriaExteriorAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = GaleriaExterior
+        fields = ('__all__')
+
+class GaleriaExteriorAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','imagen','id_viv','estado')
+    ordering = ('id', 'imagen','id_viv')
+    search_fields = ('imagen', 'id','estado')
+    list_editable = ('imagen',)
+    list_display_links = ('id','id_viv')
+    list_filter= ('estado','id_viv','id') 
+    list_per_page = 5
+    form = GaleriaExteriorAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for galeriaExterior in queryset:
+            galeriaExterior.estado = 'ACTIVO'
+            galeriaExterior.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for galeriaExterior in queryset:
+            galeriaExterior.estado = 'INACTIVO'
+            galeriaExterior.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(GaleriaExterior,GaleriaExteriorAdmin)
+
+
+# CliCom Admin
+class CliComAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = CliCom
+        fields = ('estado',)
+
+class CliComAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','id_cli','id_viv','estado')
+    ordering = ('id', 'id_cli','id_viv')
+    search_fields = ('id_cli','id_viv', 'id','estado')
+    list_display_links = ('id','id_cli','id_viv')
+    list_filter= ('id_cli','id_viv','estado') 
+    list_per_page = 5
+    form = CliComAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for cliCom in queryset:
+            cliCom.estado = 'ACTIVO'
+            cliCom.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for cliCom in queryset:
+            cliCom.estado = 'INACTIVO'
+            cliCom.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request, obj=None):
+        return False
+
+admin.site.register(CliCom,CliComAdmin)
+
+
+# Comentario Admin
+class ComentarioAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Comentario
+        fields = ('estado',)
+
+class ComentarioAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','id_cli','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_display_links = ('id','descripcion')
+    list_filter= ('descripcion','estado','id') 
+    list_per_page = 5
+    form = ComentarioAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for comentario in queryset:
+            comentario.estado = 'ACTIVO'
+            comentario.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for comentario in queryset:
+            comentario.estado = 'INACTIVO'
+            comentario.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Comentario,ComentarioAdmin)
+
+# DetalleSala Admin
+
+class DetalleSalaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = DetalleSala
+        fields = ('__all__')
+
+class DetalleSalaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','imagen_sala','id_sal','id_inv','estado')
+    ordering = ('id', )
+    search_fields = ('id','estado')
+    list_display_links = ('id',)
+    list_editable = ('imagen_sala',)
+    list_filter= ('estado','id','id_sal') 
+    list_per_page = 5
+    form = DetalleSalaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for detalleSala in queryset:
+            detalleSala.estado = 'ACTIVO'
+            detalleSala.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for detalleSala in queryset:
+            detalleSala.estado = 'INACTIVO'
+            detalleSala.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(DetalleSala,DetalleSalaAdmin)
+
+
+# DetalleProducto Admin
+
+class DetalleProductoAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = DetalleProducto
+        fields = ('__all__')
+
+class DetalleProductoAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','id_pro','id_det','id_est','estado')
+    ordering = ('id', )
+    search_fields = ('id','estado')
+    list_display_links = ('id','id_est','id_pro','id_det')
+    list_filter= ('estado','id','id_est','id_pro','id_det') 
+    list_per_page = 5
+    form = DetalleProductoAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'ACTIVO'
+            detalleProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'INACTIVO'
+            detalleProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+        
+admin.site.register(DetalleProducto,DetalleProductoAdmin)
