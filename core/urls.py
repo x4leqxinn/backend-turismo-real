@@ -10,7 +10,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi 
 
-from apps.users.auth.auth_views import *
+from apps.users.api.auth.auth_views import *
 
 schema_view = get_schema_view(
   openapi.Info(
@@ -46,29 +46,16 @@ urlpatterns = [
     path('refresh-token/',UserToken.as_view(), name = 'refresh_token'),
     
     # Enrutador de usuarios
-    path('user-api/',include('apps.users.auth.routers')),
-    
-    # Enrutador de clientes
-    #path('admin-api/',include('apps.users.api.routers')), 
-    #path('office-api/',include('apps.users.api.routers')),
-    path('client-api/',include('apps.users.api.routers')),
-    path('client-api/',include('apps.users.api.urls')),
+    path('user-api/',include('apps.users.api.routers')),
     
     # Enrutador para Países
-    path('location-api/',include('apps.locations.api.urls')),
-    
+    path('location-api/',include('apps.locations.api.routers')),
+
     # Enrutador para Personas
-    path('people-api/',include('apps.people.api.urls')),
+    path('people-api/',include('apps.people.api.routers')),
 
     # Enrutador para viviendas
-    path('depto-api/',include('apps.deptos.api.urls')),
-    path('depto-api/',include('apps.deptos.api.routers')),
-
-    # Enrutador para productos
-    path('product-api/',include('apps.products.api.urls')),
-
-    # Enrutador para empleado
-    path('employee-api/',include('apps.employees.api.routers')),
+    path('business-api/',include('apps.business.api.routers')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails

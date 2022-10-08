@@ -11,6 +11,7 @@ ALLOWED_HOSTS = ['*']
 # Se definen las credenciales de las bases de datos
 DATABASES = {
     'default' : {},
+    # ORACLE Turismo Real API
     'turismo_real': {
         'ENGINE': env.str('DATABASE_ENGINE_1'),
         'NAME': env.str('DATABASE_NAME_1'),
@@ -21,11 +22,24 @@ DATABASES = {
             'TBLSPACE' : env.str('DATABASE_TBLSPACE_1'),
             'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
         }
-    }
+    },
+    # MYSQL API 
+    'country_api' : {
+        'ENGINE': env.str('DATABASE_ENGINE_2'),  
+        'NAME': env.str('DATABASE_NAME_2'),  
+        'USER': env.str('DATABASE_USER_2'),  
+        'PASSWORD': env.str('DATABASE_PASSWORD_2'),  
+        'HOST': env.str('DATABASE_HOST_2'),  
+        'PORT': env.str('DATABASE_PORT_2'),  
+        'OPTIONS': {  
+            'init_command': env.str('DATABASE_INIT_2')  
+        }  
+    }    
 }
 
 # Se definen los enrutadores para el acceso a las bases de datos
 DATABASE_ROUTERS = [
+    'db_routers.country_api_router.CountryApiRouter',
     'db_routers.turismo_real_router.TurismoRealRouter',
 ]
 

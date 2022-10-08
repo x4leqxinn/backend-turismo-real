@@ -1,38 +1,33 @@
 import django_filters
-from apps.locations.models import *
+from apps.locations.models import Countries, States, Cities
 
 class CountryFilter(django_filters.FilterSet):
 
     class Meta:
-        model = Pais
+        model = Countries
         #fields = ('description',)
         
         fields = {
             'id' : ['gt','lt','contains','exact'],
-            'cod_pais' : ['exact' ,'contains'],
-            'nombre' : ['exact' ,'contains'],
-            'cod_tel' : ['exact' ,'contains'],
-            'bandera' : ['exact' ,'contains']
+            'name' : ['exact' ,'contains']
         }
             
 class CountryStateFilter(django_filters.FilterSet):
 
     class Meta:
-        model = EstadoPais
+        model = States
         #fields = ('description',)
         
         fields = {
-            'id' : ['gt','lt','contains','exact'],
-            'nombre' : ['exact' ,'contains']
+            'id' : ['gt','lt','contains','exact']
         }
 
 class CityFilter(django_filters.FilterSet):
 
     class Meta:
-        model = Ciudad
+        model = Cities
         #fields = ('description',)
         
         fields = {
-            'id' : ['gt','lt','contains','exact'],
-            'nombre' : ['exact' ,'contains']
+            'id' : ['gt','lt','contains','exact']
         }

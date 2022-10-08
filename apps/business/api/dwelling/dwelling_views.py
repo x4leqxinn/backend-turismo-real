@@ -1,27 +1,27 @@
-from apps.locations.api.filters import CityFilter
-from apps.locations.api.general_serializers import CitySerializers
-from apps.locations.models import Cities
+from apps.business.api.general_filters import DwellingFilter
+from apps.business.api.dwelling.dwelling_serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
-class CityViewSet(viewsets.GenericViewSet):
-    serializer_class = CitySerializers
-    filterset_class  = CityFilter
-    search_fields = ['id']
-    ordering_fields = ['id']
+class DwellingViewSet(viewsets.GenericViewSet):
+    #authentication_classes = ()
+    #permission_classes = ()
+    serializer_class = DwellingSerializer
+    filterset_class  = DwellingFilter
+    search_fields = ['id','id_dis__descripcion','id_ciu__nombre','id_ciu__id_est__nombre','id_ciu__id_est__id_pai__nombre']
+    ordering_fields = ['gas','luz','agua','internet','capacidad','abono_base','valor_noche','estrellas','id']
     ordering = ['id']
 
     def get_serializer_class(self):
         if self.action in ["create"]:
             return None
         elif self.action in ["list"]:
-            return CitySerializers
+            return DwellingSerializer
         return self.serializer_class
 
-
     def get_queryset(self):
-        return Cities.objects.all()
+        return Vivienda.objects.filter(estado = 'ACTIVO')
 
     def list(self, request):
         # with filter
@@ -37,9 +37,7 @@ class CityViewSet(viewsets.GenericViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = Cities.objects.all()
-        country = get_object_or_404(queryset, pk=pk)
-        serializer = CitySerializers(country)
+        queryset = Vivienda.objects.filter(estado = 'ACTIVO')
+        dwelling = get_object_or_404(queryset, pk=pk)
+        serializer = DwellingSerializer(dwelling)
         return Response(serializer.data)
-
-
