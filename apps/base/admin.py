@@ -344,7 +344,48 @@ class EstadoCivilAdmin(admin.ModelAdmin):
 
 admin.site.register(EstadoCivil,EstadoCivilAdmin)
 
-admin.site.register(DocIdentidad)
+# DocIdentidad Admin
+class DocIdentidadAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = DocIdentidad
+        fields = ('descripcion','estado',)
+
+class DocIdentidadAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado') 
+    list_per_page = 5
+    form = DocIdentidadAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for docIdentidad in queryset:
+            docIdentidad.estado = 'ACTIVO'
+            docIdentidad.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for docIdentidad in queryset:
+            docIdentidad.estado = 'INACTIVO'
+            docIdentidad.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(DocIdentidad,DocIdentidadAdmin)
+
 admin.site.register(TipoDocumento)
 admin.site.register(TipoVivienda)
 admin.site.register(TipoServicio)
