@@ -597,8 +597,90 @@ class ProductoAdmin(admin.ModelAdmin):
 
 admin.site.register(Producto,ProductoAdmin)
 
-admin.site.register(Categoria)
-admin.site.register(Vivienda)
+# Categoria Admin
+class CategoriaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Categoria
+        fields = ('descripcion','estado',)
+
+class CategoriaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','descripcion','estado')
+    ordering = ('id', 'descripcion')
+    search_fields = ('descripcion', 'id','estado')
+    list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado') 
+    list_per_page = 5
+    form = CategoriaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for categoria in queryset:
+            categoria.estado = 'ACTIVO'
+            categoria.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for categoria in queryset:
+            categoria.estado = 'INACTIVO'
+            categoria.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Categoria,CategoriaAdmin)
+
+# Vivienda Admin
+class ViviendaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Vivienda
+        exclude = ('creacion','actualizacion','id', 'estrellas','abono_base')
+
+class ViviendaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','nombre','descripcion','estado')
+    ordering = ('id', 'descripcion','direccion','nombre')
+    search_fields = ('descripcion', 'id','direccion','estado','nombre')
+    list_editable = ('descripcion','nombre')
+    list_display_links = ('id',)
+    list_filter= ('descripcion','estado','nombre','id_pai','id_ciu','id_est') 
+    list_per_page = 5
+    form = ViviendaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for vivienda in queryset:
+            vivienda.estado = 'ACTIVO'
+            vivienda.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for vivienda in queryset:
+            vivienda.estado = 'INACTIVO'
+            vivienda.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Vivienda,ViviendaAdmin)
+
 admin.site.register(Inventario)
 admin.site.register(DetalleSala)
 admin.site.register(DetalleProducto)
