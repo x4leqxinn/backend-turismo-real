@@ -1141,3 +1141,5 @@ class DetalleProductoAdmin(admin.ModelAdmin):
         return False
         
 admin.site.register(DetalleProducto,DetalleProductoAdmin)
+
+admin.site.register(Reserva)
