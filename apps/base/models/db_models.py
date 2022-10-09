@@ -523,8 +523,8 @@ class Reserva(BaseModel):
     abono = models.IntegerField()
     monto_pagado = models.IntegerField()
     total_pago = models.BigIntegerField()
-    cant_adultos = models.BooleanField()
-    cant_ninios = models.BooleanField(blank=True, null=True)
+    cant_adultos = models.IntegerField()
+    cant_ninios = models.IntegerField()
     cant_total = models.IntegerField()
 
     class Meta:
