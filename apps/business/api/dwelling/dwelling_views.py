@@ -23,8 +23,10 @@ class DwellingViewSet(viewsets.GenericViewSet):
             return DwellingSerializer
         return self.serializer_class
 
-    def get_queryset(self):
-        return Vivienda.objects.filter(estado = 'ACTIVO')
+    def get_queryset(self, pk = None):
+        if pk is None:
+            return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
+        return self.get_serializer().Meta.model.objects.filter(id = pk, estado = 'ACTIVO').first()
 
     def list(self, request):
         # with filter
@@ -39,11 +41,19 @@ class DwellingViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk = None):
         queryset = Vivienda.objects.filter(estado = 'ACTIVO')
         dwelling = get_object_or_404(queryset, pk=pk)
         serializer = DwellingSerializer(dwelling)
         return Response(serializer.data)
+
+    def update(self, request, pk = None):
+        if self.get_queryset(pk):
+            dwelling_serializer = self.serializer_class(self.get_queryset(pk),data = request.data)
+            if dwelling_serializer.is_valid():
+                dwelling_serializer.save()
+                return Response({'message' : '¡Vivienda Modificada con éxito!'}, status = status.HTTP_200_OK)
+            return Response(dwelling_serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk = None):
         dwelling = self.get_queryset().filter(id = pk).first()
