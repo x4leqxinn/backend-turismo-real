@@ -1142,4 +1142,32 @@ class DetalleProductoAdmin(admin.ModelAdmin):
         
 admin.site.register(DetalleProducto,DetalleProductoAdmin)
 
+
+# TODO: Falta personalizar estos modelos
 admin.site.register(Reserva)
+
+admin.site.register(DetalleServicio)
+
+admin.site.register(Servicio)
+
+admin.site.register(Movilizacion)
+admin.site.register(Transporte)
+admin.site.register(Tour)
+admin.site.register(DetalleTour)
+admin.site.register(Destino)
+admin.site.register(Vehiculo)
+admin.site.register(DetVehMov)
+admin.site.register(DetServMov)
+admin.site.register(CheckIn)
+admin.site.register(CheckOut)
+admin.site.register(DetalleMulta)
+admin.site.register(Multa)
+admin.site.register(TipoMulta)
+admin.site.register(Documento)
+admin.site.register(DCheck)
+admin.site.register(Registro)
+admin.site.register(Salida)
+admin.site.register(DCoordinacion)
+
+
+# TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
