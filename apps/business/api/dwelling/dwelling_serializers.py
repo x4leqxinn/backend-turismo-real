@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda
 from apps.locations.models import Cities
+from drf_extra_fields.fields import Base64ImageField
 
 class DwellingSerializer(serializers.ModelSerializer):
     # Se definen los atributos
+    imagen_principal = Base64ImageField(required=False)
     class Meta:
         model = Vivienda
         fields = '__all__'
