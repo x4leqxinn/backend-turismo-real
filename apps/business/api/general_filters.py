@@ -1,5 +1,6 @@
+from pyexpat import model
 import django_filters
-from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Sala, Vivienda, Comentario
+from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Reserva, Sala, Vivienda, Comentario
 
 
 class DwellingFilter(django_filters.FilterSet):
@@ -91,3 +92,12 @@ class InventoryFilter(django_filters.FilterSet):
             'id' : ['gt','lt','contains','exact'],
             'id_viv__id' : ['gt','lt','contains','exact']
         }
+
+
+class BookingFilter(django_filters.FilterSet):
+    class Meta:
+        model = Reserva
+        fields = {
+            'id' : ['gt','lt','contains','exact']
+        }
+
