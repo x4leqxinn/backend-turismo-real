@@ -3,6 +3,9 @@ from apps.business.api.dwelling.dwelling_serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework import status
+from apps.base.stored_procedures import genericDelete
+from db_routers.permissions.db_connection import oracle_connection
 
 class DwellingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -41,3 +44,9 @@ class DwellingViewSet(viewsets.GenericViewSet):
         dwelling = get_object_or_404(queryset, pk=pk)
         serializer = DwellingSerializer(dwelling)
         return Response(serializer.data)
+
+    def destroy(self, request, pk = None):
+        dwelling = self.get_queryset().filter(id = pk).first()
+        if dwelling and genericDelete(oracle_connection(1),pk,'VIVIENDA') == 1: 
+            return Response({'message':'Vivienda eliminada correctamente.'}, status = status.HTTP_200_OK)
+        return Response({'Error' :  '¡No existe una vivienda con estos datos!'}, status = status.HTTP_400_BAD_REQUEST)
