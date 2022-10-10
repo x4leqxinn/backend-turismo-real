@@ -5,7 +5,10 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from apps.base.stored_procedures import genericDelete
+from apps.locations.models import Countries
 from db_routers.permissions.db_connection import oracle_connection
+from rest_framework.decorators import action
+from apps.locations.api.general_serializers import *
 
 class DwellingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -46,6 +49,58 @@ class DwellingViewSet(viewsets.GenericViewSet):
         dwelling = get_object_or_404(queryset, pk=pk)
         serializer = DwellingSerializer(dwelling)
         return Response(serializer.data)
+
+    # TODO: Optimizar consultas
+    @action(methods=['GET'],detail=False, url_path = 'search-country')
+    def search_country(self,request):
+        # Recibimos el query param de la petición GET
+        country_name = request.query_params.get('country_name','')
+        country = Countries.objects.filter(name__icontains = country_name).first()
+        if country:
+            queryset = Vivienda.objects.filter(estado = 'ACTIVO', id_pai = country.id)
+            serializer = DwellingSerializer(queryset, many = True)
+            return Response(serializer.data,status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'No se han encontrado coincidencias con el término '  + country_name + '.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['GET'],detail=False, url_path = 'search-state')
+    def search_state(self,request):
+        # Recibimos el query param de la petición GET
+        state_name = request.query_params.get('state_name','')
+        state = States.objects.filter(name__icontains = state_name).first()
+        if state:
+            queryset = Vivienda.objects.filter(estado = 'ACTIVO', id_est = state.id)
+            serializer = DwellingSerializer(queryset, many = True)
+            return Response(serializer.data,status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'No se han encontrado coincidencias con el término '  + state_name + '.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['GET'],detail=False, url_path = 'search-city')
+    def search_city(self,request):
+        # Recibimos el query param de la petición GET
+        city_name = request.query_params.get('city_name','')
+        queryset = Cities.objects.filter(name__icontains = city_name)
+        cities = []
+        for city in queryset:
+            print(city.id)
+            cities.append(city.id)
+
+    
+        if len(cities) > 0:
+            queryset = Vivienda.objects.filter(estado = 'ACTIVO', id_ciu__in = cities)
+            serializer = DwellingSerializer(queryset, many = True)
+            return Response(serializer.data,status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'No se han encontrado coincidencias con el término '  + city_name + '.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk = None):
         if self.get_queryset(pk):
