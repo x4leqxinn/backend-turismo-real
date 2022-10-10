@@ -1,12 +1,13 @@
 from apps.base.models.db_models import Reserva
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingSerializers
+from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingSerializers
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from apps.base.stored_procedures import genericDelete
 from db_routers.permissions.db_connection import oracle_connection
+from rest_framework.decorators import action
 
 
 class BookingViewSet(viewsets.GenericViewSet):
@@ -48,3 +49,17 @@ class BookingViewSet(viewsets.GenericViewSet):
         booking = get_object_or_404(queryset, pk=pk)
         serializer = BookingSerializers(booking)
         return Response(serializer.data)
+
+    @action(methods=['GET'],detail=False, url_path = 'search-dates')
+    def search_dates(self,request):
+        # Recibimos el query param de la petición GET
+        pk = request.query_params.get('pk','')
+        booking = Reserva.objects.filter(id_viv__id__iexact = pk, estado = 'ACTIVO')
+        if booking:
+            serializer = BookingDatesSerializer(booking, many = True)
+            return Response(serializer.data,status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'No hay fechas.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
