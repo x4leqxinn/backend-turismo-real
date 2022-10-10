@@ -1169,5 +1169,7 @@ admin.site.register(Registro)
 admin.site.register(Salida)
 admin.site.register(DCoordinacion)
 
+admin.site.register(Acompaniante)
+admin.site.register(CliAcom)
 
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
