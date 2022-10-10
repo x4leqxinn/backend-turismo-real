@@ -31,3 +31,11 @@ class EmployeeFilter(django_filters.FilterSet):
             'id_car':['gt','lt','exact']
         }
 
+class ClientFilter(django_filters.FilterSet):
+    class Meta:
+        model = Cliente
+
+        fields = {
+            'id__id' : ['gt','lt','exact'],
+        }
+
