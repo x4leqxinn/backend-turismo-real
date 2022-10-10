@@ -1,9 +1,10 @@
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from apps.users.api.client.models.models import Client
 
-def sendEmailClient(email : str ,asunto : str,cliente : Client, page : str):
+from apps.base.models.db_models import Persona
+
+def sendEmailClient(email : str ,asunto : str,cliente : Persona, page : str):
     context = {'cliente': cliente }
     template = get_template('emails/create_account/create-account.html') #emails/verify/verify-account.html
     content = template.render(context)
