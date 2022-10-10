@@ -38,7 +38,7 @@ class EmployeeSerializers(serializers.ModelSerializer):
             },
             'sueldo':instance.sueldo,
             'fecha_contrato' :instance.fecha_contrato,
-            'id_car' :{
+            'cargo' :{
                 'id':instance.id_car.id,
                 'descripcion':instance.id_car.descripcion
             },
