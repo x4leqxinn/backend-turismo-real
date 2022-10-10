@@ -57,6 +57,8 @@ class BookingDatesSerializer(serializers.ModelSerializer):
 
 class BookingCreateSerializer(serializers.ModelSerializer):
 
+    # TODO: Se debe añadir a futuro.
+    #  agregar servicios iniciales al momento de hacer la reserva 
     acompaniantes = serializers.ListField()
 
     class Meta:
