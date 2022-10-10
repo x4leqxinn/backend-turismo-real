@@ -41,3 +41,14 @@ class BookingSerializers(serializers.ModelSerializer):
                 },
             }
         }
+
+class BookingDatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reserva
+        fields = ('fecha_inicio','fecha_termino')
+
+    def to_representation(self, instance):
+        return {
+            'start' : instance.fecha_inicio,
+            'end' : instance.fecha_termino,
+        }
