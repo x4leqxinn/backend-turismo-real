@@ -518,8 +518,8 @@ class Registro(models.Model):
 class Reserva(BaseModel):
     id_cli = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cli')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
-    fecha_reservada = models.DateField()
-    estadia = models.IntegerField()
+    fecha_inicio = models.DateField()
+    fecha_termino = models.DateField()
     abono = models.IntegerField()
     monto_pagado = models.IntegerField()
     total_pago = models.BigIntegerField()
