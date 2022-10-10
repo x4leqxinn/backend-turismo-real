@@ -1,6 +1,6 @@
 from pyexpat import model
 from rest_framework import serializers
-from apps.base.models.db_models import Reserva
+from apps.base.models.db_models import Persona, Reserva
 from apps.locations.models import Cities
 
 
@@ -43,6 +43,7 @@ class BookingSerializers(serializers.ModelSerializer):
         }
 
 class BookingDatesSerializer(serializers.ModelSerializer):
+    acompaniantes = serializers.ListField()
     class Meta:
         model = Reserva
         fields = ('fecha_inicio','fecha_termino')
@@ -52,3 +53,45 @@ class BookingDatesSerializer(serializers.ModelSerializer):
             'start' : instance.fecha_inicio,
             'end' : instance.fecha_termino,
         }
+
+
+class BookingCreateSerializer(serializers.ModelSerializer):
+
+    acompaniantes = serializers.ListField()
+    class Meta:
+        model = Reserva
+        exclude = ('estado','creacion','actualizacion')
+
+    def validate_acompaniantes(self, values):
+        if len(values) > 0:
+            # Verificamos que tenga el formato correcto
+            try:
+                for index in range(len(values)):
+                    values[index]["run"]
+                    values[index]["dv"]
+                    values[index]["pasaporte"]
+                    values[index]["nombre"]
+                    values[index]["snombre"]
+                    values[index]["ap_paterno"]
+                    values[index]["ap_materno"]
+                    values[index]["fecha_nacimiento"]
+                    values[index]["telefono"]
+                    values[index]["num_calle"]
+                    values[index]["calle"]
+                    values[index]["id_ciu"]
+                    values[index]["id_est"]
+                    values[index]["id_pai"]
+                    values[index]["id_doc"]
+                    values[index]["id_est1"]
+                    values[index]["id_gen"]
+            except:
+                raise serializers.ValidationError('¡Acompañante en mal formato!')
+
+        return values
+
+    def create(self,validated_data):
+
+        print('OLA', validated_data['acompaniantes'])
+        
+        
+        return True
