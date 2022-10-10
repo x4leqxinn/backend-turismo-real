@@ -57,7 +57,7 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         value = value.upper().strip()
         return value
 
-    def validate_(self, value):
+    def validate_ap_paterno(self, value):
         value = value.upper().strip()
         return value
 
