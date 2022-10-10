@@ -43,7 +43,7 @@ class BookingSerializers(serializers.ModelSerializer):
         }
 
 class BookingDatesSerializer(serializers.ModelSerializer):
-    acompaniantes = serializers.ListField()
+    
     class Meta:
         model = Reserva
         fields = ('fecha_inicio','fecha_termino')
