@@ -50,7 +50,8 @@ class Categoria(BaseModel):
 class CheckIn(BaseModel):
     fecha_llegada = models.DateField()
     hora_llegada = models.CharField(max_length=5)
-    firma = models.CharField(max_length=1)
+    firma = models.CharField(max_length=1, null= True)
+    estado_checkin = models.CharField(max_length=30)
     id_res = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_res')
     id_rec = models.ForeignKey('Recepcionista', models.DO_NOTHING, db_column='id_rec')
 
@@ -66,6 +67,7 @@ class CheckIn(BaseModel):
 class CheckOut(BaseModel):
     fecha_salida = models.DateField()
     hora_salida = models.CharField(max_length=5, blank=True, null=True)
+    estado_checkout = models.CharField(max_length=30)
     total_multa = models.IntegerField(blank=True, null=True)
     id_rec = models.ForeignKey('Recepcionista', models.DO_NOTHING, db_column='id_rec')
     id_res = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_res')
@@ -523,8 +525,7 @@ class Reserva(BaseModel):
     abono = models.IntegerField()
     monto_pagado = models.IntegerField()
     total_pago = models.BigIntegerField()
-    cant_adultos = models.IntegerField()
-    cant_ninios = models.IntegerField()
+    cant_acompaniante = models.IntegerField()
     cant_total = models.IntegerField()
 
     class Meta:
