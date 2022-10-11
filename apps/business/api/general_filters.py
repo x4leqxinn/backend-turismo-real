@@ -1,6 +1,6 @@
 from pyexpat import model
 import django_filters
-from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Reserva, Sala, Vivienda, Comentario
+from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Reserva, Sala, Servicio, Vivienda, Comentario
 
 
 class DwellingFilter(django_filters.FilterSet):
@@ -101,3 +101,10 @@ class BookingFilter(django_filters.FilterSet):
             'id' : ['gt','lt','contains','exact']
         }
 
+
+class ServiceFilter(django_filters.FilterSet):
+    class Meta:
+        model = Servicio
+        fields = {
+            'id' : ['gt','lt','contains','exact']
+        }
