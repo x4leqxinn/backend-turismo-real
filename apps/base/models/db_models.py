@@ -184,6 +184,9 @@ class DatabaseDdl(models.Model):
 
 class Destino(BaseModel):
     descripcion = models.CharField(max_length=100)
+    id_ciu = models.IntegerField()
+    id_est = models.IntegerField()
+    id_pai = models.IntegerField()
 
     class Meta:
         managed = False
@@ -197,17 +200,6 @@ class DetServMov(BaseModel):
     class Meta:
         managed = False
         db_table = 'det_serv_mov'
-
-
-class DetVehMov(BaseModel):
-    id_veh = models.ForeignKey('Vehiculo', models.DO_NOTHING, db_column='id_veh')
-    id_mov = models.ForeignKey('Movilizacion', models.DO_NOTHING, db_column='id_mov')
-
-    class Meta:
-        managed = False
-        db_table = 'det_veh_mov'
-
-
 class DetalleMulta(BaseModel):
     id_mul = models.ForeignKey('Multa', models.DO_NOTHING, db_column='id_mul')
     id_che = models.ForeignKey(CheckOut, models.DO_NOTHING, db_column='id_che')
@@ -413,7 +405,14 @@ class Modelo(BaseModel):
 
 class Movilizacion(models.Model):
     id = models.OneToOneField('Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
-
+    id_veh = models.ForeignKey('Vehiculo', models.DO_NOTHING, db_column='id_veh') 
+    fecha_inicio = models.DateField()
+    hora_inicio = models.CharField(max_length=5)
+    fecha_termino = models.DateField()
+    hora_termino = models.CharField(max_length=5)
+    d_origen = models.CharField(max_length=200)
+    d_destino = models.CharField(max_length=200)
+    asientos_disp = models.IntegerField(default = None)
     class Meta:
         managed = False
         db_table = 'movilizacion'
@@ -573,18 +572,6 @@ class Salida(models.Model):
         managed = False
         db_table = 'salida'
 
-
-class Servicio(BaseModel):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=200)
-    precio = models.IntegerField()
-    id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
-    id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis')
-    class Meta:
-        managed = False
-        db_table = 'servicio'
-
-
 class Sucursal(BaseModel):
     calle = models.CharField(max_length=20)
     num_calle = models.CharField(max_length=10)
@@ -639,12 +626,6 @@ class TipoVivienda(BaseModel):
 
 class Tour(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
-    fecha_inicio = models.DateField()
-    hora_inicio = models.CharField(max_length=5)
-    fecha_termino = models.DateField()
-    hora_termino = models.CharField(max_length=5)
-    duracion = models.CharField(max_length=100)
-
     class Meta:
         managed = False
         db_table = 'tour'
@@ -679,11 +660,8 @@ class TramoMulta(models.Model):
 
 class Transporte(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
-    fecha_inicio = models.DateField()
-    hora_inicio = models.CharField(max_length=5)
-    fecha_termino = models.DateField()
-    hora_termino = models.CharField(max_length=5)
-    duracion = models.CharField(max_length=100)
+    id_region_origen = models.IntegerField()
+    id_region_destino = models.IntegerField()
 
     class Meta:
         managed = False
@@ -694,6 +672,7 @@ class Vehiculo(BaseModel):
     id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
     id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
     id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
+    capacidad = models.IntegerField()
     class Meta:
         managed = False
         db_table = 'vehiculo'
@@ -737,4 +716,14 @@ class Vivienda(BaseModel):
     def __str__(self) -> str:
         return 'ID : ' + str(self.id)
 
+class Servicio(BaseModel):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=200)
+    precio = models.IntegerField()
+    id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
+    id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis')
+    id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
+    class Meta:
+        managed = False
+        db_table = 'servicio'
 
