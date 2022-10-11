@@ -1150,13 +1150,39 @@ admin.site.register(DetalleServicio)
 
 admin.site.register(Servicio)
 
-admin.site.register(Movilizacion)
+# Movilizacion Admin
+class MovilizacionAdminForm(forms.ModelForm):    
+    class Meta:
+        model = Movilizacion
+        exclude = ('asientos_disp','creacion','actualizacion')
+
+class MovilizacionAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
+    ordering = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
+    search_fields = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
+    #list_editable = ('descripcion',)
+    list_display_links = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
+    list_filter= ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp') 
+    list_per_page = 5
+    form = MovilizacionAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Movilizacion,MovilizacionAdmin)
+
 admin.site.register(Transporte)
 admin.site.register(Tour)
 admin.site.register(DetalleTour)
 admin.site.register(Destino)
 admin.site.register(Vehiculo)
-admin.site.register(DetVehMov)
 admin.site.register(DetServMov)
 admin.site.register(CheckIn)
 admin.site.register(CheckOut)
