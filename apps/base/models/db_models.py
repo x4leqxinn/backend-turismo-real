@@ -184,6 +184,7 @@ class DatabaseDdl(models.Model):
 
 class Destino(BaseModel):
     descripcion = models.CharField(max_length=100)
+    imagen = models.ImageField(upload_to='travels/')
     id_ciu = models.IntegerField()
     id_est = models.IntegerField()
     id_pai = models.IntegerField()
@@ -672,6 +673,7 @@ class Vehiculo(BaseModel):
     id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
     id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
     id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
+    imagen = models.ImageField(upload_to='vehicle/')
     capacidad = models.IntegerField()
     class Meta:
         managed = False
