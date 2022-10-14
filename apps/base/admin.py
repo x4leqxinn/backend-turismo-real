@@ -1197,5 +1197,6 @@ admin.site.register(DCoordinacion)
 
 admin.site.register(Acompaniante)
 admin.site.register(CliAcom)
+admin.site.register(UbicacionTrans)
 
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente

@@ -661,13 +661,21 @@ class TramoMulta(models.Model):
 
 class Transporte(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
-    id_region_origen = models.IntegerField()
-    id_region_destino = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'transporte'
 
+class UbicacionTrans(BaseModel):
+    id_serv = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='id_serv')
+    nombre = models.CharField(max_length = 100)
+    precio = models.IntegerField()
+    latitud = models.CharField(max_length = 100)
+    longitud = models.CharField(max_length = 100)
+
+    class Meta:
+        managed = False
+        db_table = 'ubicacion_trans'
 
 class Vehiculo(BaseModel):
     id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
