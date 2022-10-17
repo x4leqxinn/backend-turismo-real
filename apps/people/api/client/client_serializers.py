@@ -104,7 +104,7 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         cliente.save()
 
         # Encriptamos la contraseña
-        role = UserRole.objects.get(id = 1) 
+        role = UserRole.objects.get(id = 3) 
         user = User(person = persona, role = role)
         user.email = email
         user.set_password(contrasenia)
