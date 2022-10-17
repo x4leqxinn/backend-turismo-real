@@ -49,10 +49,15 @@ class StateViewSet(viewsets.GenericViewSet):
     def find_by_country(self,request):
         # Recibimos el query param de la petición GET
         country_pk = request.query_params.get('pk','')
-        if country_pk != '':
-            queryset = States.objects.filter(country_id = country_pk)
+        if country_pk == '':
+            return Response({'message':'Se deber enviar un id.'},status = status.HTTP_400_BAD_REQUEST)
+
+        queryset = States.objects.filter(country_id = country_pk)
+        
+        if queryset:
             serializer = CountryStateSerializers(queryset, many = True)
             return Response(serializer.data,status = status.HTTP_200_OK)
+        
         return Response(
             {
                 'message':'No se han encontrado estados para el país con id '  + country_pk + '.'
