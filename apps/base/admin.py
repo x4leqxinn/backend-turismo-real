@@ -1158,12 +1158,12 @@ class MovilizacionAdminForm(forms.ModelForm):
 
 class MovilizacionAdmin(admin.ModelAdmin):
     actions = ['active_state','inactive_state']
-    list_display = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
-    ordering = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
-    search_fields = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
+    list_display = ('id','asientos_disp','id_veh')
+    ordering = ('id','asientos_disp','id_veh')
+    search_fields = ('id','asientos_disp','id_veh')
     #list_editable = ('descripcion',)
-    list_display_links = ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp')
-    list_filter= ('id','fecha_inicio','hora_inicio','fecha_termino','hora_termino','asientos_disp') 
+    list_display_links = ('id','asientos_disp','id_veh')
+    list_filter= ('id','asientos_disp','id_veh') 
     list_per_page = 5
     form = MovilizacionAdminForm
 
@@ -1198,5 +1198,8 @@ admin.site.register(DCoordinacion)
 admin.site.register(Acompaniante)
 admin.site.register(CliAcom)
 admin.site.register(UbicacionTrans)
+admin.site.register(TipoUbicacion)
+admin.site.register(TransporteIda)
+admin.site.register(TransporteVuelta)
 
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
