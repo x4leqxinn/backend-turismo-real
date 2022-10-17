@@ -197,7 +197,10 @@ class Destino(BaseModel):
 class DetServMov(BaseModel):
     id_con = models.ForeignKey(Conductor, models.DO_NOTHING, db_column='id_con')
     id_mov = models.ForeignKey('Movilizacion', models.DO_NOTHING, db_column='id_mov')
-
+    fecha_inicio = models.DateField()
+    hora_inicio = models.CharField(max_length=5)
+    fecha_termino = models.DateField()
+    hora_termino = models.CharField(max_length=5)
     class Meta:
         managed = False
         db_table = 'det_serv_mov'
