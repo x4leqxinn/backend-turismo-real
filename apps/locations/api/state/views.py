@@ -4,6 +4,8 @@ from apps.locations.models import States
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
+from rest_framework import status
 
 class StateViewSet(viewsets.GenericViewSet):
     serializer_class = CountryStateSerializers
@@ -41,3 +43,18 @@ class StateViewSet(viewsets.GenericViewSet):
         state = get_object_or_404(queryset, pk=pk)
         serializer = CountryStateSerializers(state)
         return Response(serializer.data)
+
+
+    @action(methods=['GET'],detail=False, url_path = 'find-by-country')
+    def find_by_country(self,request):
+        # Recibimos el query param de la petición GET
+        country_pk = request.query_params.get('pk','')
+        if country_pk != '':
+            queryset = States.objects.filter(country_id = country_pk)
+            serializer = CountryStateSerializers(queryset, many = True)
+            return Response(serializer.data,status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'No se han encontrado estados para el país con id '  + country_pk + '.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
