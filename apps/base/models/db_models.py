@@ -407,12 +407,6 @@ class Modelo(BaseModel):
 class Movilizacion(models.Model):
     id = models.OneToOneField('Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
     id_veh = models.ForeignKey('Vehiculo', models.DO_NOTHING, db_column='id_veh') 
-    fecha_inicio = models.DateField()
-    hora_inicio = models.CharField(max_length=5)
-    fecha_termino = models.DateField()
-    hora_termino = models.CharField(max_length=5)
-    d_origen = models.CharField(max_length=200)
-    d_destino = models.CharField(max_length=200)
     asientos_disp = models.IntegerField(default = None)
     class Meta:
         managed = False
@@ -657,17 +651,37 @@ class TramoMulta(models.Model):
     class Meta:
         managed = False
         db_table = 'tramo_multa'
-
-
 class Transporte(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
-
     class Meta:
         managed = False
         db_table = 'transporte'
 
+class TransporteIda(BaseModel):
+    id_trans = models.OneToOneField(Transporte, models.DO_NOTHING, db_column='id_trans')
+    id_ub_trans = models.ForeignKey('UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
+
+    class Meta:
+        managed = False
+        db_table = 'transporte_ida'
+
+class TransporteVuelta(BaseModel):
+    id_trans = models.OneToOneField(Transporte, models.DO_NOTHING, db_column='id_trans')
+    id_ub_trans = models.ForeignKey('UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
+
+    class Meta:
+        managed = False
+        db_table = 'transporte_vuelta'
+
+class TipoUbicacion(BaseModel):
+    descripcion = models.CharField(max_length = 200)
+    class Meta:
+        managed = False
+        db_table = 'tipo_ubicacion'
+
 class UbicacionTrans(BaseModel):
-    id_serv = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='id_serv')
+    id_tip = models.ForeignKey(TipoUbicacion, models.DO_NOTHING, db_column='id_tip')
+    id_ciu = models.IntegerField()
     nombre = models.CharField(max_length = 100)
     precio = models.IntegerField()
     latitud = models.CharField(max_length = 100)
