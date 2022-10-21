@@ -1,6 +1,6 @@
 from apps.base.models.db_models import Reserva
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingCreateSerializer, BookingDatesSerializer, BookingSerializers
+from apps.business.api.bookings.bookings_serializers import BookingCreateSerializer, BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -13,17 +13,17 @@ from rest_framework.decorators import action
 class BookingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
     #permission_classes = ()
-    serializer_class = BookingSerializers
+    serializer_class = BookingListSerializer
     filterset_class  = BookingFilter
-    search_fields = ['id']
-    ordering_fields = ['id']
+    search_fields = ['id_cli__id__id']
+    ordering_fields = ['id', 'id_cli__id__id']
     ordering = ['id']
 
     def get_serializer_class(self):
         if self.action in ["create"]:
             return BookingCreateSerializer
         elif self.action in ["list"]:
-            return BookingSerializers
+            return BookingListSerializer
         return self.serializer_class
 
     def get_queryset(self, pk = None):
@@ -47,7 +47,7 @@ class BookingViewSet(viewsets.GenericViewSet):
     def retrieve(self, request, pk = None):
         queryset = Reserva.objects.filter(estado = 'ACTIVO')
         booking = get_object_or_404(queryset, pk=pk)
-        serializer = BookingSerializers(booking)
+        serializer = BookingDetailSerializer(booking)
         return Response(serializer.data)
 
     @action(methods=['GET'],detail=False, url_path = 'search-dates')
