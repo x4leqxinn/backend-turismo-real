@@ -98,7 +98,8 @@ class BookingFilter(django_filters.FilterSet):
     class Meta:
         model = Reserva
         fields = {
-            'id' : ['gt','lt','contains','exact']
+            'id' : ['gt','lt','contains','exact'],
+            'id_cli__id__id' : ['exact']
         }
 
 
