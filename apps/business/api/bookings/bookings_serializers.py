@@ -1,10 +1,9 @@
-from pyexpat import model
 from rest_framework import serializers
-from apps.base.models.db_models import Acompaniante, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda
+from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda
 from apps.locations.models import Cities
 
 
-class BookingSerializers(serializers.ModelSerializer):
+class BookingDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
         fields = ('__all__')
@@ -13,10 +12,6 @@ class BookingSerializers(serializers.ModelSerializer):
         city = Cities.objects.get(id = instance.id_viv.id_ciu)
         return {
             'id' : instance.id,
-            # TODO: Hay que serializar el modelo persona
-            'cliente' : {
-                #'id' : instance.id_cli.id
-            },
             'vivienda' : {
                 'id' : instance.id_viv.id,
                 'tipo_vivienda' : {
@@ -41,6 +36,37 @@ class BookingSerializers(serializers.ModelSerializer):
                 },
             }
         }
+
+class BookingListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Reserva
+        fields = ('id','creacion','id_viv')
+
+    def to_representation(self, instance):
+        data = {
+            'id' : instance.id,
+            'fecha_creacion' : instance.creacion,
+            'departamento' : instance.id_viv.nombre,
+        }
+
+        try:
+            checkin = CheckIn.objects.get(id_res = instance.id)
+            data['check_in'] = checkin.fecha_llegada
+            data['estado_checkin'] = checkin.estado_checkin
+        except Exception as e:
+            data['check_in'] = 'N/A'
+            data['estado_checkin'] = 'N/A'
+
+        try:
+            checkout = CheckOut.objects.get(id_res = instance.id)
+            data['check_out'] = checkout.fecha_salida
+            data['check_out'] = checkout.estado_checkout
+        except Exception as e:
+            data['check_out'] = 'N/A'
+            data['estado_checkout'] = 'N/A'
+        
+        return data
 
 class BookingDatesSerializer(serializers.ModelSerializer):
     
