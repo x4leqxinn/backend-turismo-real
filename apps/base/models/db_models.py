@@ -754,3 +754,12 @@ class Servicio(BaseModel):
         managed = False
         db_table = 'servicio'
 
+class DetProyecto(BaseModel):
+    id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_emp = models.ForeignKey('Empleado', models.DO_NOTHING, db_column='id_emp')
+    class Meta:
+        managed = False
+        db_table = 'det_proyecto'
+        verbose_name = "Detalle del proyecto"
+        verbose_name_plural = "Detalles del proyecto"
+        ordering = ['id']
