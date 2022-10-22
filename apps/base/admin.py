@@ -1202,4 +1202,6 @@ admin.site.register(TipoUbicacion)
 admin.site.register(TransporteIda)
 admin.site.register(TransporteVuelta)
 
+admin.site.register(DetProyecto)
+
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
