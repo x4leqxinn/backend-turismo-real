@@ -1,3 +1,4 @@
+from apps.base.models.db_models import Conductor, DetProyecto, Empleado, Reserva
 from apps.business.api.general_filters import ServiceFilter
 from apps.business.api.services.services_serializers import *
 from rest_framework import viewsets
@@ -5,6 +6,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from apps.locations.api.general_serializers import *
+from rest_framework.decorators import action
 
 class ServiceViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -39,3 +41,42 @@ class ServiceViewSet(viewsets.GenericViewSet):
         serializer = ServiceSerializer(service)
         return Response(serializer.data)
 
+    @action(methods=['GET'],detail=False, url_path = 'search-dates')
+    def search_dates(self,request):
+        # Recibimos el query param de la petición GET
+        booking_pk = request.query_params.get('pk','')
+        if booking_pk == '':
+            return Response({'message':'Se deber enviar un id.'},status = status.HTTP_400_BAD_REQUEST)
+
+        try:        
+            booking = Reserva.objects.get(id = booking_pk)
+        except:
+            return Response(
+            {
+                'message':'La reserva enviada no existe.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
+
+        queryset = DetProyecto.objects.filter(id_viv = booking.id_viv)
+        
+        drivers = []
+        for index in range(len(queryset)):
+            if queryset[index].id_emp.id_car.id == 4:
+                # Obtenemos la instancia de empleado y luego de conductor
+                employee = Empleado.objects.get(id = queryset[index].id_emp.id)
+                drivers.append(Conductor.objects.get(id = employee))
+        
+        # Verificamos las fechas disponibles
+        dates = DetServMov.objects.filter(id_con__in = drivers)
+
+        if dates:
+            serializer = VerifyDatesSerializer(dates, many = True)
+            return Response(
+                serializer.data,
+                status = status.HTTP_200_OK)
+        
+        return Response(
+            {
+                'message':'No se han encontrado fechas registradas para el empleado a cargo del servicio.'
+            },
+            status = status.HTTP_400_BAD_REQUEST)
