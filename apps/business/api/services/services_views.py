@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from apps.locations.api.general_serializers import *
 from rest_framework.decorators import action
+from django.db.models import Q
 
 class ServiceViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -67,7 +68,11 @@ class ServiceViewSet(viewsets.GenericViewSet):
                 drivers.append(Conductor.objects.get(id = employee))
         
         # Verificamos las fechas disponibles
-        dates = DetServMov.objects.filter(id_con__in = drivers)
+        from datetime import datetime
+        now = datetime.now()
+        dates = DetServMov.objects.filter(
+            Q(id_con__in = drivers) & Q(fecha_inicio__gte = now)  
+        )
 
         if dates:
             serializer = VerifyDatesSerializer(dates, many = True)
