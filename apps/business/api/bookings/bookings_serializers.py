@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda
 from apps.locations.models import Cities
-
+from django.db.models import Q
 
 class BookingDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -91,6 +91,24 @@ class BookingCreateSerializer(serializers.ModelSerializer):
         model = Reserva
         exclude = ('estado','creacion','actualizacion')
 
+    def find_acompaniante(self,data):
+        flag = False
+        persona = None
+        print(data)
+        if data["id_doc"] == 1: 
+            try:
+                persona = Persona.objects.get(run = data["run"])
+                flag = True
+            except:
+                pass
+        else:
+            try:
+                persona = Persona.objects.get(pasaporte = data["pasaporte"])
+                flag = True
+            except:
+                pass
+        return flag, persona
+
     def validate_acompaniantes(self, values):
         if len(values) > 0:
             # Verificamos que tenga el formato correcto
@@ -121,7 +139,6 @@ class BookingCreateSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         acompaniantes = validated_data['acompaniantes'] 
 
-        print('ojo' , validated_data['id_viv'])
 
         vivienda = Vivienda.objects.get(id = validated_data['id_viv'].id)
         cliente = Cliente.objects.get(id = validated_data['id_cli'].id)
@@ -139,28 +156,33 @@ class BookingCreateSerializer(serializers.ModelSerializer):
             # Agregamos los acompañantes al sistema
             for index in range(len(acompaniantes)):  
 
+                flag, persona = self.find_acompaniante(acompaniantes[index])
+
                 docIdentidad = DocIdentidad.objects.get(id = acompaniantes[index]["id_doc"] )
                 estadoCivil = EstadoCivil.objects.get(id = acompaniantes[index]["id_est1"])
                 genero = Genero.objects.get(id = acompaniantes[index]["id_gen"])
-                persona = Persona(
-                    run = acompaniantes[index]["run"],
-                    dv = acompaniantes[index]["dv"],
-                    pasaporte = acompaniantes[index]["pasaporte"],
-                    nombre = acompaniantes[index]["nombre"],
-                    snombre = acompaniantes[index]["snombre"],
-                    ap_paterno = acompaniantes[index]["ap_paterno"],
-                    ap_materno = acompaniantes[index]["ap_materno"],
-                    fecha_nacimiento = acompaniantes[index]["fecha_nacimiento"],
-                    telefono = acompaniantes[index]["telefono"],
-                    num_calle = acompaniantes[index]["num_calle"],
-                    calle = acompaniantes[index]["calle"],
-                    id_ciu = acompaniantes[index]["id_ciu"],
-                    id_est = acompaniantes[index]["id_est"],
-                    id_pai = acompaniantes[index]["id_pai"],
-                    id_doc = docIdentidad,
-                    id_est1 = estadoCivil,
-                    id_gen = genero
-                )
+
+                if(flag == False):
+                    print('Validar')
+                    persona = Persona()
+
+                persona.run = acompaniantes[index]["run"]
+                persona.dv = acompaniantes[index]["dv"]
+                persona.pasaporte = acompaniantes[index]["pasaporte"]
+                persona.nombre = acompaniantes[index]["nombre"]
+                persona.snombre = acompaniantes[index]["snombre"]
+                persona.ap_paterno = acompaniantes[index]["ap_paterno"]
+                persona.ap_materno = acompaniantes[index]["ap_materno"]
+                persona.fecha_nacimiento = acompaniantes[index]["fecha_nacimiento"]
+                persona.telefono = acompaniantes[index]["telefono"]
+                persona.num_calle = acompaniantes[index]["num_calle"]
+                persona.calle = acompaniantes[index]["calle"]
+                persona.id_ciu = acompaniantes[index]["id_ciu"]
+                persona.id_est = acompaniantes[index]["id_est"]
+                persona.id_pai = acompaniantes[index]["id_pai"]
+                persona.id_doc = docIdentidad
+                persona.id_est1 = estadoCivil
+                persona.id_gen = genero                
                 persona.save()
                 
                 acompaniante = Acompaniante(id = persona)
@@ -171,3 +193,9 @@ class BookingCreateSerializer(serializers.ModelSerializer):
                 detalle.save()
 
         return True
+
+
+
+
+
+
