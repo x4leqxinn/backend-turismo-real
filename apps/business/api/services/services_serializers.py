@@ -24,6 +24,5 @@ class VerifyDatesSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         return {
-            'start' : instance.fecha_inicio,
-            'end' : instance.fecha_termino
+            'date_taken' : instance.fecha_inicio
         }
