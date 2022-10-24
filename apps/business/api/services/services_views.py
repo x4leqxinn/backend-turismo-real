@@ -1,4 +1,4 @@
-from apps.base.models.db_models import Conductor, DetProyecto, Empleado, Reserva
+from apps.base.models.db_models import Conductor, DetProyecto, Empleado, Reserva, Vivienda
 from apps.business.api.general_filters import ServiceFilter
 from apps.business.api.services.services_serializers import *
 from rest_framework import viewsets
@@ -45,20 +45,20 @@ class ServiceViewSet(viewsets.GenericViewSet):
     @action(methods=['GET'],detail=False, url_path = 'search-dates')
     def search_dates(self,request):
         # Recibimos el query param de la petición GET
-        booking_pk = request.query_params.get('pk','')
-        if booking_pk == '':
+        dwelling_pk = request.query_params.get('pk','')
+        if dwelling_pk == '':
             return Response({'message':'Se deber enviar un id.'},status = status.HTTP_400_BAD_REQUEST)
 
         try:        
-            booking = Reserva.objects.get(id = booking_pk)
+            dwelling = Vivienda.objects.get(id = dwelling_pk)
         except:
             return Response(
             {
-                'message':'La reserva enviada no existe.'
+                'message':'La vivienda enviada no existe.'
             },
             status = status.HTTP_400_BAD_REQUEST)
 
-        queryset = DetProyecto.objects.filter(id_viv = booking.id_viv)
+        queryset = DetProyecto.objects.filter(id_viv = dwelling.id)
         
         drivers = []
         for index in range(len(queryset)):
