@@ -10,7 +10,17 @@ ALLOWED_HOSTS = ['*']
 
 # Se definen las credenciales de las bases de datos
 DATABASES = {
-    'default' : {},
+    'default' : {
+        'ENGINE': env.str('DATABASE_ENGINE_1'),
+        'NAME': env.str('DATABASE_NAME_1'),
+        'USER': env.str('DATABASE_USER_1'),
+        'PASSWORD' : env.str('DATABASE_PASSWORD_1'),
+        'TEST' : {
+            'USER' : env.str('DATABASE_TEST_USER_1'),
+            'TBLSPACE' : env.str('DATABASE_TBLSPACE_1'),
+            'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
+        }
+    },
     # ORACLE Turismo Real API
     'turismo_real': {
         'ENGINE': env.str('DATABASE_ENGINE_1'),
