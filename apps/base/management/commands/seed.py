@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from apps.base.models.db_models import *
-from apps.base.utils.seed import *
+from apps.base.utils.seed_script import *
 
 class Command(BaseCommand):
     help = 'Comando que ejecuta un script para cargar la base de datos'
