@@ -3,7 +3,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from apps.base.models.base_model import BaseModel
@@ -12,7 +12,7 @@ from apps.base.models.base_model import BaseModel
 class Acompaniante(models.Model):
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'acompaniante'
         verbose_name = "Acompañante"
         verbose_name_plural = "Acompañantes"
@@ -27,7 +27,7 @@ class Cargo(BaseModel):
 
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cargo'
         verbose_name = "Cargo"
         verbose_name_plural = "Cargos"
@@ -38,7 +38,7 @@ class Cargo(BaseModel):
 class Categoria(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'categoria'
         verbose_name = "Categoría"
         verbose_name_plural = "Categorías"
@@ -56,7 +56,7 @@ class CheckIn(BaseModel):
     id_rec = models.ForeignKey('Recepcionista', models.DO_NOTHING, db_column='id_rec')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'check_in'
         verbose_name = "Check In"
         verbose_name_plural = "Check In"
@@ -73,7 +73,7 @@ class CheckOut(BaseModel):
     id_res = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_res')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'check_out'
         verbose_name = "Check Out"
         verbose_name_plural = "Check Out"
@@ -86,7 +86,7 @@ class CliAcom(BaseModel):
     id_aco = models.ForeignKey(Acompaniante, models.DO_NOTHING, db_column='id_aco')
     id_cli = models.ForeignKey('Cliente', models.DO_NOTHING, db_column='id_cli')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cli_acom'
 
 
@@ -94,7 +94,7 @@ class CliCom(BaseModel):
     id_cli = models.ForeignKey('Cliente', models.DO_NOTHING, db_column='id_cli')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cli_com'
 
 
@@ -102,7 +102,7 @@ class Cliente(models.Model):
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cliente'
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
@@ -116,7 +116,7 @@ class Color(BaseModel):
     nombre = models.CharField(max_length=50)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'color'
         verbose_name = "Color"
         verbose_name_plural = "Colores"
@@ -130,7 +130,7 @@ class Comentario(BaseModel):
     id_cli = models.OneToOneField(CliCom, models.DO_NOTHING, db_column='id_cli')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'comentario'
         verbose_name = "Comentario"
         verbose_name_plural = "Comentarios"
@@ -143,7 +143,7 @@ class Conductor(models.Model):
     id = models.OneToOneField('Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'conductor'
         verbose_name = "Conductor"
         verbose_name_plural = "Conductores"
@@ -156,7 +156,7 @@ class DCheck(models.Model):
     id = models.OneToOneField('Documento', models.DO_NOTHING, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'd_check'
 
 
@@ -165,7 +165,7 @@ class DCoordinacion(models.Model):
     id_mov = models.OneToOneField('Movilizacion', models.DO_NOTHING, db_column='id_mov')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'd_coordinacion'
 
 
@@ -178,7 +178,7 @@ class DatabaseDdl(models.Model):
     creacion = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'database_ddl'
 
 
@@ -190,7 +190,7 @@ class Destino(BaseModel):
     id_pai = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'destino'
 
 
@@ -202,14 +202,14 @@ class DetServMov(BaseModel):
     fecha_termino = models.DateField()
     hora_termino = models.CharField(max_length=5)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'det_serv_mov'
 class DetalleMulta(BaseModel):
     id_mul = models.ForeignKey('Multa', models.DO_NOTHING, db_column='id_mul')
     id_che = models.ForeignKey(CheckOut, models.DO_NOTHING, db_column='id_che')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'detalle_multa'
 
 
@@ -219,7 +219,7 @@ class DetalleProducto(BaseModel):
     id_pro = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_pro')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'detalle_producto'
 
 
@@ -229,7 +229,7 @@ class DetalleSala(BaseModel):
     imagen_sala = models.ImageField(upload_to='rooms/')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'detalle_sala'
 
 
@@ -238,7 +238,7 @@ class DetalleServicio(BaseModel):
     id_ser = models.ForeignKey('Servicio', models.DO_NOTHING, db_column='id_ser')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'detalle_servicio'
 
 
@@ -247,7 +247,7 @@ class DetalleTour(BaseModel):
     id_des = models.ForeignKey(Destino, models.DO_NOTHING, db_column='id_des')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'detalle_tour'
 
 
@@ -255,7 +255,7 @@ class Disponibilidad(BaseModel):
     descripcion = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'disponibilidad'
         verbose_name = "Disponibilidad"
         verbose_name_plural = "Disponibilidades"
@@ -267,7 +267,7 @@ class Disponibilidad(BaseModel):
 class DocIdentidad(BaseModel):
     descripcion = models.CharField(max_length=80)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'doc_identidad'
         verbose_name = "Documento de Identidad"
         verbose_name_plural = "Documentos de Identidad"
@@ -279,7 +279,7 @@ class Documento(BaseModel):
     id_tip = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='id_tip')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'documento'
         verbose_name = "Documento"
         verbose_name_plural = "Documentos"
@@ -295,7 +295,7 @@ class Empleado(models.Model):
     id_car = models.ForeignKey(Cargo, models.DO_NOTHING, db_column='id_car')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'empleado'
         verbose_name = "Empleado"
         verbose_name_plural = "Empleados"
@@ -312,14 +312,14 @@ class ErrorProceso(models.Model):
     creacion = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'error_proceso'
 
 
 class EstadoCivil(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'estado_civil'
         verbose_name = "Estado Civil"
         verbose_name_plural = "Estados Civiles"
@@ -332,7 +332,7 @@ class EstadoProducto(BaseModel):
     descripcion = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'estado_producto'
 
 
@@ -340,7 +340,7 @@ class GaleriaExterior(BaseModel):
     imagen = models.ImageField(upload_to='exterior_gallery/')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'galeria_exterior'
         verbose_name = "Galería De Exterior"
         verbose_name_plural = "Galerías De Exteriores"
@@ -354,7 +354,7 @@ class GaleriaInterior(BaseModel):
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'galeria_interior'
         verbose_name = "Galería De Interior"
         verbose_name_plural = "Galerías De Interiores"
@@ -367,7 +367,7 @@ class Genero(BaseModel):
     descripcion = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'genero'
         verbose_name = "Genero"
         verbose_name_plural = "Generos"
@@ -379,14 +379,14 @@ class Genero(BaseModel):
 class Inventario(BaseModel):
     id_viv = models.OneToOneField('Vivienda', models.DO_NOTHING, db_column='id_viv')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'inventario'
 
 
 class Marca(BaseModel):
     nombre = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'marca'
         verbose_name = "Marca"
         verbose_name_plural = "Marcas"
@@ -398,7 +398,7 @@ class Marca(BaseModel):
 class Modelo(BaseModel):
     nombre = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'modelo'
         verbose_name = "Modelo"
         verbose_name_plural = "Modelos"
@@ -412,7 +412,7 @@ class Movilizacion(models.Model):
     id_veh = models.ForeignKey('Vehiculo', models.DO_NOTHING, db_column='id_veh') 
     asientos_disp = models.IntegerField(default = None)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'movilizacion'
 
 
@@ -422,7 +422,7 @@ class Multa(BaseModel):
     id_tip = models.ForeignKey('TipoMulta', models.DO_NOTHING, db_column='id_tip')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'multa'
         verbose_name = "Multa"
         verbose_name_plural = "Multas"
@@ -452,7 +452,7 @@ class Persona(BaseModel):
     id_gen = models.ForeignKey(Genero, models.DO_NOTHING, db_column='id_gen')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'persona'
         verbose_name = "Persona"
         verbose_name_plural = "Personas"
@@ -468,7 +468,7 @@ class Producto(BaseModel):
     descripcion = models.CharField(max_length=100)
     precio = models.IntegerField()
     class Meta:
-        managed = False
+        managed = True
         db_table = 'producto'
         verbose_name = "Producto"
         verbose_name_plural = "Productos"
@@ -483,7 +483,7 @@ class Puntuacion(BaseModel):
     id_cli = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cli')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'puntuacion'
         verbose_name = "Puntuación"
         verbose_name_plural = "Puntuaciones"
@@ -496,7 +496,7 @@ class Recepcionista(models.Model):
     id = models.OneToOneField(Empleado, models.DO_NOTHING, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'recepcionista'
         verbose_name = "Recepcionista"
         verbose_name_plural = "Recepcionistas"
@@ -510,7 +510,7 @@ class Registro(models.Model):
     id_che = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='id_che')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'registro'
 
 
@@ -526,7 +526,7 @@ class Reserva(BaseModel):
     cant_total = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reserva'
 
 
@@ -546,14 +546,14 @@ class ResumenDepto(models.Model):
     creacion = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'resumen_depto'
 
 
 class Sala(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'sala'
         verbose_name = "Sala"
         verbose_name_plural = "Salas"
@@ -567,7 +567,7 @@ class Salida(models.Model):
     id_che = models.OneToOneField(CheckOut, models.DO_NOTHING, db_column='id_che')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'salida'
 
 class Sucursal(BaseModel):
@@ -578,13 +578,13 @@ class Sucursal(BaseModel):
     id_est = models.IntegerField()
     id_ciu = models.IntegerField()
     class Meta:
-        managed = False
+        managed = True
         db_table = 'sucursal'
 
 class TipoDocumento(BaseModel):
     descripcion = models.CharField(max_length=50)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_documento'
 
     def __str__(self):
@@ -594,7 +594,7 @@ class TipoDocumento(BaseModel):
 class TipoMulta(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_multa'
         verbose_name = "Tipo de Multa"
         verbose_name_plural = "Tipos de Multa"
@@ -606,14 +606,14 @@ class TipoMulta(BaseModel):
 class TipoServicio(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_servicio'
 
 
 class TipoVivienda(BaseModel):
     descripcion = models.CharField(max_length=100)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_vivienda'
         verbose_name = "Tipo Vivienda"
         verbose_name_plural = "Tipos de Vivienda"
@@ -625,7 +625,7 @@ class TipoVivienda(BaseModel):
 class Tour(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tour'
 
 
@@ -639,7 +639,7 @@ class TramoAbono(models.Model):
     actualizacion = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tramo_abono'
 
 
@@ -652,12 +652,12 @@ class TramoMulta(models.Model):
     actualizacion = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tramo_multa'
 class Transporte(models.Model):
     id = models.OneToOneField(Movilizacion, models.DO_NOTHING, db_column='id', primary_key=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'transporte'
 
 class TransporteIda(BaseModel):
@@ -665,7 +665,7 @@ class TransporteIda(BaseModel):
     id_ub_trans = models.ForeignKey('UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'transporte_ida'
 
 class TransporteVuelta(BaseModel):
@@ -673,13 +673,13 @@ class TransporteVuelta(BaseModel):
     id_ub_trans = models.ForeignKey('UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'transporte_vuelta'
 
 class TipoUbicacion(BaseModel):
     descripcion = models.CharField(max_length = 200)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_ubicacion'
 
 class UbicacionTrans(BaseModel):
@@ -691,7 +691,7 @@ class UbicacionTrans(BaseModel):
     longitud = models.CharField(max_length = 100)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ubicacion_trans'
 
 class Vehiculo(BaseModel):
@@ -701,7 +701,7 @@ class Vehiculo(BaseModel):
     imagen = models.ImageField(upload_to='vehicle/')
     capacidad = models.IntegerField()
     class Meta:
-        managed = False
+        managed = True
         db_table = 'vehiculo'
         verbose_name = "Vehículo"
         verbose_name_plural = "Vehículos"
@@ -734,7 +734,7 @@ class Vivienda(BaseModel):
     id_tip = models.ForeignKey(TipoVivienda, models.DO_NOTHING, db_column='id_tip')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'vivienda'
         verbose_name = "Vivienda"
         verbose_name_plural = "Viviendas"
@@ -751,14 +751,14 @@ class Servicio(BaseModel):
     id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis')
     id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'servicio'
 
 class DetProyecto(BaseModel):
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
     id_emp = models.ForeignKey('Empleado', models.DO_NOTHING, db_column='id_emp')
     class Meta:
-        managed = False
+        managed = True
         db_table = 'det_proyecto'
         verbose_name = "Detalle del proyecto"
         verbose_name_plural = "Detalles del proyecto"
