@@ -357,7 +357,6 @@ class Migration(migrations.Migration):
                 ('nombre', models.CharField(max_length=100)),
                 ('descripcion', models.CharField(max_length=200)),
                 ('precio', models.IntegerField()),
-                ('id_dis', models.ForeignKey(db_column='id_dis', on_delete=django.db.models.deletion.DO_NOTHING, to='base.disponibilidad')),
             ],
             options={
                 'db_table': 'servicio',
