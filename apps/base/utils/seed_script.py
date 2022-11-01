@@ -147,7 +147,15 @@ TIPOS_SERVICIOS : list[TipoServicio] = [
     TipoServicio(descripcion = 'TOUR')
 ]
 
-# Vivienda
+TIPOS_UBICACIONES : list[TipoUbicacion] = [
+    TipoUbicacion(descripcion = 'Terminal de buses'),
+    TipoUbicacion(descripcion = 'Aeropuerto'),
+]
+
+UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
+    UbicacionTrans(nombre = 'Terminal de buses san bernardo', precio = 9999, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 1),
+    UbicacionTrans(nombre = 'Terminal de buses mona xina crew', precio = 9999, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 1),
+]
 
 VIVIENDAS : list[Vivienda] = [
     Vivienda(latitud = '-33.5342',longitud = '-70.59299',m2 = '53.45',estrellas = None,id_dis = DISPONIBILIDADES[0], nombre = 'Gran Avenida', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Calle Prueba #123',slug = 'gran-avenida',imagen_principal = None,valor_noche = '50000',abono_base = 0,id_ciu = '19111', id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
@@ -173,7 +181,9 @@ ENTITY = {
     'PERSONA' : PERSONAS,
     'EMPLEADO' : EMPLEADOS,
     'USUARIO' : USUARIOS,
-    'VIVIENDA' : VIVIENDAS
+    'VIVIENDA' : VIVIENDAS,
+    'TIPO_UBICACION' : TIPOS_UBICACIONES,
+    'UBICACION_TRANSPORTE' : UBICACIONES_TRANSPORTES,
 }
 
 def save_entity(model_name : str):
