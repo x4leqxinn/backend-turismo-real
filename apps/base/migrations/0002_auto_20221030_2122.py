@@ -4,7 +4,7 @@ from django.db import migrations
 from django.db import connections
 
 def database_call(directory_name : str):
-    path = str(BASE_UTILS_DIR) + '\\utils\\db\\' + directory_name
+    path = str(BASE_UTILS_DIR) + '/utils/db/' + directory_name
     files = file_list(path)
     for index in range(len(files)):
         with connections['turismo_real'].cursor() as c:
