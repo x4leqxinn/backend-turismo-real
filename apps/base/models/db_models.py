@@ -409,8 +409,6 @@ class Modelo(BaseModel):
 
 class Movilizacion(models.Model):
     id = models.OneToOneField('Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
-    id_veh = models.ForeignKey('Vehiculo', models.DO_NOTHING, db_column='id_veh') 
-    asientos_disp = models.IntegerField(default = None)
     class Meta:
         managed = True
         db_table = 'movilizacion'
@@ -698,6 +696,7 @@ class Vehiculo(BaseModel):
     id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
     id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
     id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
+    id_con = models.ForeignKey(Conductor, models.DO_NOTHING, db_column='id_con')
     imagen = models.ImageField(upload_to='vehicle/')
     capacidad = models.IntegerField()
     class Meta:

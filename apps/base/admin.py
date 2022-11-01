@@ -1154,16 +1154,16 @@ admin.site.register(Servicio)
 class MovilizacionAdminForm(forms.ModelForm):    
     class Meta:
         model = Movilizacion
-        exclude = ('asientos_disp','creacion','actualizacion')
+        exclude = ('creacion','actualizacion')
 
 class MovilizacionAdmin(admin.ModelAdmin):
     actions = ['active_state','inactive_state']
-    list_display = ('id','asientos_disp','id_veh')
-    ordering = ('id','asientos_disp','id_veh')
-    search_fields = ('id','asientos_disp','id_veh')
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
     #list_editable = ('descripcion',)
-    list_display_links = ('id','asientos_disp','id_veh')
-    list_filter= ('id','asientos_disp','id_veh') 
+    list_display_links = ('id',)
+    list_filter= ('id',) 
     list_per_page = 5
     form = MovilizacionAdminForm
 

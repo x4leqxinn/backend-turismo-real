@@ -32,12 +32,17 @@ COLORES : list[Color] = [
     Color(nombre = 'Rojo'),
     Color(nombre = 'Verde'),
     Color(nombre = 'Naranja'),
-    Color(nombre = 'Azul')
+    Color(nombre = 'Azul'),
 ]
 
 MODELOS : list[Modelo] = [
     Modelo(nombre = 'ÑUÑUKI'),
-    Modelo(nombre = 'AUDI')
+    Modelo(nombre = 'AUDI'),
+]
+
+MARCAS : list[Marca] = [
+    Marca(nombre = 'Marca de prueba 1'),
+    Marca(nombre = 'Marca de prueba 2'),
 ]
 
 GENEROS : list[Genero] = [
@@ -77,17 +82,50 @@ SALAS : list[Sala] = [
 ]
 
 PERSONAS : list[Persona] = [
+    ## ADMINISTRADORES
     Persona(run = '20281676',dv = '2', nombre = 'Jorge' , snombre = 'Alejandro' , ap_paterno = 'Quintui', ap_materno = 'Vergara', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     Persona(run = '372893',dv = '2', nombre = 'Lucas' , snombre = 'nn' , ap_paterno = 'Menares', ap_materno = 'fds', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'fsdfs', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     Persona(run = '423',dv = '2', nombre = 'Paula' , snombre = 'd' , ap_paterno = 'Soto', ap_materno = 'Retamal', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'fdsf', id_gen = GENEROS[1], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     Persona(run = '439482',dv = '2', nombre = 'Joaquín' , snombre = 'Antonio' , ap_paterno = 'Reyes', ap_materno = 'Montero', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'mona xina', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     Persona(run = '4893284',dv = '2', nombre = 'Paula' , snombre = 'a' , ap_paterno = 'Piña', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[1], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    
+    ## CONDUCTORES
+    Persona(run = '11111111',dv = '1', nombre = 'Matias' , snombre = 'a' , ap_paterno = 'Menares', ap_materno = 'ijd', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+
+    ## RECEPCIONISTAS
+    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    
+    ## CLIENTES PARA TEST
+    Persona(run = '87843',dv = '1', nombre = 'Exclavo' , snombre = 'a' , ap_paterno = 'Sexual', ap_materno = 'uwu', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 ]
 
 EMPLEADOS : list[Empleado] = [
     Empleado(id = PERSONAS[0], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[1], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[2], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[3], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[4], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    ## Conductores
+    Empleado(id = PERSONAS[5], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[6], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
 ]
 
+CONDUCTORES : list[Conductor] = [
+    Conductor(id = EMPLEADOS[5]),
+    Conductor(id = EMPLEADOS[6]),
+]
+
+VEHICULOS : list[Vehiculo] = [
+    Vehiculo(id_mod = MODELOS[0], id_con = CONDUCTORES[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
+]
+
+
+CLIENTES : list[Cliente] = [
+    Cliente(id = PERSONAS[7]),
+]
 
 def get_user(email : str, role : UserRole, person : Persona, password : str) -> User:
     user = User(email = email, role = role, person = person, is_staff = True, is_superuser = True)
@@ -100,8 +138,9 @@ USUARIOS : list[User] = [
     get_user('paulasotoretamal@gmail.com',ROLES[0],PERSONAS[2],'Admin123!'),
     get_user('joaking.twitch001@gmail.com',ROLES[0],PERSONAS[3],'Admin123!'),
     get_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
+    get_user('mats@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
+    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[6],'Admin123!'),
 ]
-
 
 PRODUCTOS : list[Producto] = [
     Producto(id_cat = CATEGORIAS[1],descripcion ='Televisor', precio = 999),
@@ -128,7 +167,6 @@ PRODUCTOS : list[Producto] = [
     Producto(id_cat = CATEGORIAS[2],descripcion = 'Afeitadora',precio = 99999),
     Producto(id_cat = CATEGORIAS[1],descripcion = 'Lavadora',precio = 99999)
 ]
-
 
 TIPOS_DOCUMENTOS : list[TipoDocumento] = [
     TipoDocumento(descripcion = 'CHECK IN'),
@@ -162,11 +200,18 @@ VIVIENDAS : list[Vivienda] = [
     Vivienda(latitud = '-33.5342',longitud = '-70.59299',m2 = '23.45',estrellas = None,id_dis = DISPONIBILIDADES[0], nombre = 'Hiper Florida', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Calle Prueba #321',slug = 'hiper-florida',imagen_principal = None,valor_noche = '30000',abono_base = 0,id_ciu = '19111',id_est = '2824',id_pai = '44',capacidad = '4', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
 ]
 
+DETALLES_PROYECTOS : list[DetProyecto] = [
+    DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[5]),
+    DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[6]),
+]
+
 # Diccionario con los modelos de la base de datos
 ENTITY = {
     'GENERO' : GENEROS,
     'MODELO' : MODELOS,
     'CARGOS' : CARGOS,
+    'COLOR' : COLORES,
+    'MARCA' : MARCAS,
     'ROL_USUARIO' : ROLES,
     'CATEGORIA' : CATEGORIAS,
     'TIPO_VIVIENDA' : TIPOS_VIVIENDAS,
@@ -180,10 +225,14 @@ ENTITY = {
     'PRODUCTO' : PRODUCTOS,
     'PERSONA' : PERSONAS,
     'EMPLEADO' : EMPLEADOS,
+    'CONDUCTOR' : CONDUCTORES,
+    'VEHICULO' : VEHICULOS,
     'USUARIO' : USUARIOS,
     'VIVIENDA' : VIVIENDAS,
     'TIPO_UBICACION' : TIPOS_UBICACIONES,
     'UBICACION_TRANSPORTE' : UBICACIONES_TRANSPORTES,
+    'DETALLE_PROYECTO' : DETALLES_PROYECTOS,
+    'CLIENTE' : CLIENTES,
 }
 
 def save_entity(model_name : str):
@@ -202,3 +251,4 @@ def run_seed():
         print(key)
         save_entity(key)
 
+## TODO: ELIMINAR CLIENTES DE PRUEBA, RESERVAS DE PRUEBA
