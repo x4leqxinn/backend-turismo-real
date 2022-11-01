@@ -748,7 +748,6 @@ class Servicio(BaseModel):
     descripcion = models.CharField(max_length=200)
     precio = models.IntegerField()
     id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
-    id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis')
     id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
     class Meta:
         managed = True
