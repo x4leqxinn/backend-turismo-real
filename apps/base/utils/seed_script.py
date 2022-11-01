@@ -113,15 +113,15 @@ EMPLEADOS : list[Empleado] = [
     Empleado(id = PERSONAS[6], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
 ]
 
-CONDUCTORES : list[Conductor] = [
-    Conductor(id = EMPLEADOS[5]),
-    Conductor(id = EMPLEADOS[6]),
-]
-
 VEHICULOS : list[Vehiculo] = [
-    Vehiculo(id_mod = MODELOS[0], id_con = CONDUCTORES[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
+    Vehiculo(id_mod = MODELOS[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
+    Vehiculo(id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
 ]
 
+CONDUCTORES : list[Conductor] = [
+    Conductor(id = EMPLEADOS[5], id_veh = VEHICULOS[0]),
+    Conductor(id = EMPLEADOS[6], id_veh = VEHICULOS[1]),
+]
 
 CLIENTES : list[Cliente] = [
     Cliente(id = PERSONAS[7]),
@@ -225,8 +225,8 @@ ENTITY = {
     'PRODUCTO' : PRODUCTOS,
     'PERSONA' : PERSONAS,
     'EMPLEADO' : EMPLEADOS,
-    'CONDUCTOR' : CONDUCTORES,
     'VEHICULO' : VEHICULOS,
+    'CONDUCTOR' : CONDUCTORES,
     'USUARIO' : USUARIOS,
     'VIVIENDA' : VIVIENDAS,
     'TIPO_UBICACION' : TIPOS_UBICACIONES,

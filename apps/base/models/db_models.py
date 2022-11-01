@@ -139,8 +139,50 @@ class Comentario(BaseModel):
     def __str__(self) -> str:
         return 'ID : ' + str(self.id) + 'ID_CLIENTE : ' + str(self.id_cli)  
 
+
+class Marca(BaseModel):
+    nombre = models.CharField(max_length=100)
+    class Meta:
+        managed = True
+        db_table = 'marca'
+        verbose_name = "Marca"
+        verbose_name_plural = "Marcas"
+        ordering = ['id']
+
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
+
+class Modelo(BaseModel):
+    nombre = models.CharField(max_length=100)
+    class Meta:
+        managed = True
+        db_table = 'modelo'
+        verbose_name = "Modelo"
+        verbose_name_plural = "Modelos"
+        ordering = ['id']
+
+    def __str__(self) -> str:
+        return self.nombre
+
+class Vehiculo(BaseModel):
+    id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
+    id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
+    id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
+    imagen = models.ImageField(upload_to='vehicle/')
+    capacidad = models.IntegerField()
+    class Meta:
+        managed = True
+        db_table = 'vehiculo'
+        verbose_name = "Vehículo"
+        verbose_name_plural = "Vehículos"
+        ordering = ['id']
+
+    def __str__(self) -> str:
+        return 'ID : ' + str(self.id)
+
 class Conductor(models.Model):
     id = models.OneToOneField('Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
+    id_veh = models.OneToOneField('Vehiculo', models.DO_NOTHING, db_column='id_veh')
 
     class Meta:
         managed = True
@@ -382,30 +424,6 @@ class Inventario(BaseModel):
         managed = True
         db_table = 'inventario'
 
-
-class Marca(BaseModel):
-    nombre = models.CharField(max_length=100)
-    class Meta:
-        managed = True
-        db_table = 'marca'
-        verbose_name = "Marca"
-        verbose_name_plural = "Marcas"
-        ordering = ['id']
-
-    def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
-
-class Modelo(BaseModel):
-    nombre = models.CharField(max_length=100)
-    class Meta:
-        managed = True
-        db_table = 'modelo'
-        verbose_name = "Modelo"
-        verbose_name_plural = "Modelos"
-        ordering = ['id']
-
-    def __str__(self) -> str:
-        return self.nombre
 
 class Movilizacion(models.Model):
     id = models.OneToOneField('Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -691,23 +709,6 @@ class UbicacionTrans(BaseModel):
     class Meta:
         managed = True
         db_table = 'ubicacion_trans'
-
-class Vehiculo(BaseModel):
-    id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
-    id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
-    id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
-    id_con = models.ForeignKey(Conductor, models.DO_NOTHING, db_column='id_con')
-    imagen = models.ImageField(upload_to='vehicle/')
-    capacidad = models.IntegerField()
-    class Meta:
-        managed = True
-        db_table = 'vehiculo'
-        verbose_name = "Vehículo"
-        verbose_name_plural = "Vehículos"
-        ordering = ['id']
-
-    def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
 
 class Vivienda(BaseModel):
     latitud = models.CharField(max_length=100)
