@@ -77,11 +77,11 @@ SALAS : list[Sala] = [
 ]
 
 PERSONAS : list[Persona] = [
-    Persona(run = '20281676',dv = '2', nombre = 'Jorge' , snombre = 'Alejandro' ,
-    ap_paterno = 'Quintui', ap_materno = 'Vergara', fecha_nacimiento = '2000-10-02',
-    telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal',
-    id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0],
-    id_ciu = '1', id_est = '1', id_pai = '1')
+    Persona(run = '20281676',dv = '2', nombre = 'Jorge' , snombre = 'Alejandro' , ap_paterno = 'Quintui', ap_materno = 'Vergara', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '372893',dv = '2', nombre = 'Lucas' , snombre = 'nn' , ap_paterno = 'Menares', ap_materno = 'fds', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'fsdfs', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '423',dv = '2', nombre = 'Paula' , snombre = 'd' , ap_paterno = 'Soto', ap_materno = 'Retamal', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'fdsf', id_gen = GENEROS[1], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '439482',dv = '2', nombre = 'Joaquín' , snombre = 'Antonio' , ap_paterno = 'Reyes', ap_materno = 'Montero', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'mona xina', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '4893284',dv = '2', nombre = 'Paula' , snombre = 'a' , ap_paterno = 'Piña', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[1], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 ]
 
 EMPLEADOS : list[Empleado] = [
@@ -96,7 +96,12 @@ def get_user(email : str, role : UserRole, person : Persona, password : str) -> 
 
 USUARIOS : list[User] = [
     get_user('jorgealequinn@gmail.com',ROLES[0],PERSONAS[0],'Admin123!'),
+    get_user('lucasmenaresaguirre@gmail.com',ROLES[0],PERSONAS[1],'Admin123!'),
+    get_user('paulasotoretamal@gmail.com',ROLES[0],PERSONAS[2],'Admin123!'),
+    get_user('joaking.twitch001@gmail.com',ROLES[0],PERSONAS[3],'Admin123!'),
+    get_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
 ]
+
 
 PRODUCTOS : list[Producto] = [
     Producto(id_cat = CATEGORIAS[1],descripcion ='Televisor', precio = 999),
