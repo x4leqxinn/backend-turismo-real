@@ -63,7 +63,7 @@ class DwellingSerializer(serializers.ModelSerializer):
             'nombre' : instance.nombre,
             'descripcion' : instance.descripcion,
             'direccion' : instance.direccion,
-            'imagen_principal' : instance.imagen_principal.url,
+            'imagen_principal' : instance.imagen_principal.url if instance.imagen_principal != '' else '',
             'slug' : instance.slug,
             'latitud' : instance.latitud,
             'longitud' : instance.longitud,
