@@ -1,3 +1,7 @@
+
+
+
+
 CREATE OR REPLACE PACKAGE BODY PKG_UTILS IS
     -- CONTROL DE ERRORES
     PROCEDURE SP_ERROR_CONTROL(p_cod_error ERROR_PROCESO.COD_ERROR%TYPE, p_subprogram ERROR_PROCESO.SUBPROGRAMA%TYPE, p_message ERROR_PROCESO.MENSAJE_ERROR%TYPE) IS
@@ -67,10 +71,22 @@ CREATE OR REPLACE PACKAGE BODY PKG_UTILS IS
         END IF;
     EXCEPTION
         WHEN OTHERS THEN
-        v_error_code := SQLCODE;
-        v_subprogram_name := 'PKG_UTILS.SP_UPDATE_FIELD';
-        v_error_message := sqlerrm;
-        sp_error_control(v_error_code,v_subprogram_name,v_error_message);
+            v_error_code := SQLCODE;
+            v_subprogram_name := 'PKG_UTILS.SP_UPDATE_FIELD';
+            v_error_message := sqlerrm;
+            sp_error_control(v_error_code,v_subprogram_name,v_error_message);
     END SP_UPDATE_FIELD;
-
+    
+    -- TRUNCA TABLAS
+    PROCEDURE SP_TRUNCATE_TABLE(p_table_name IN VARCHAR2) IS
+    BEGIN
+        EXECUTE IMMEDIATE 'TRUNCATE TABLE ' || p_table_name || ' CASCADE';
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_error_code := SQLCODE;
+            v_subprogram_name := 'PKG_UTILS.SP_TRUNCATE_TABLE';
+            v_error_message := sqlerrm;
+            sp_error_control(v_error_code,v_subprogram_name,v_error_message);
+    END SP_TRUNCATE_TABLE;
+    
 END PKG_UTILS;
