@@ -1,5 +1,6 @@
 from apps.base.models.db_models import *
 from apps.users.models import User, UserRole
+from django.db import connections
 
 ROLES : list[UserRole] = [
     UserRole(description = 'Administrador'),
@@ -174,9 +175,15 @@ def save_entity(model_name : str):
     for generic in ENTITY[model_name]:
         generic.save()
 
+def delete_objects(table_name):
+    with connections['turismo_real'].cursor() as cursor:
+        cursor.callproc("PKG_UTILS.SP_TRUNCATE_TABLE",[table_name])       
+
 def run_seed():
+    for key in reversed(ENTITY.keys()):
+        delete_objects(ENTITY[key][0]._meta.db_table)
+
     for key in ENTITY.keys():
         print(key)
         save_entity(key)
-    
 
