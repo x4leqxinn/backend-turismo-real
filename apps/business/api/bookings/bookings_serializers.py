@@ -46,7 +46,7 @@ class BookingListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = {
             'id' : instance.id,
-            'fecha_creacion' : instance.creacion,
+            'fecha_creacion' : instance.creacion.now().date(),
             'departamento' : instance.id_viv.nombre,
         }
 
