@@ -5,6 +5,6 @@ class Command(BaseCommand):
     help = 'Comando que ejecuta un script para cargar la base de datos'
 
     def handle(self, *args, **options):
-        print('--------- Realizando migraciones ---------')
+        self.stdout.write(self.style.SUCCESS('--------- Realizando migraciones ---------'))
         run_seed()
-        print('--------- OK ---------')
+        self.stdout.write(self.style.SUCCESS('--------- OK ---------'))

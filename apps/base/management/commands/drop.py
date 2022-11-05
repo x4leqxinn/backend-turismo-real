@@ -15,5 +15,5 @@ class Command(BaseCommand):
         flag, message = run_drop_tables(database)
         messages = {1 : '¡Nombre de schema incorrecto!', 2 : '¡Primero debe hacer las migraciones para cargar el script!'}
         if(flag):
-            return print('--------- Tablas Eliminadas ---------')
-        return print(messages[message])
+            return self.stdout.write(self.style.SUCCESS('---- TABLAS ELIMINADAS :D ----'))
+        return self.stdout.write(self.style.WARNING(messages[message]))
