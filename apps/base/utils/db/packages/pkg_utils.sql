@@ -89,13 +89,14 @@ CREATE OR REPLACE PACKAGE BODY PKG_UTILS IS
             sp_error_control(v_error_code,v_subprogram_name,v_error_message);
     END SP_TRUNCATE_TABLE;
     
-    -- ELIMINA TABLAS
+    -- ELIMINAR TABLAS 
     PROCEDURE SP_DROP_TABLES IS 
         TYPE TYPE_NAME IS TABLE OF VARCHAR2(100) INDEX BY PLS_INTEGER;
+        Z PLS_INTEGER:=1;
         v_table_name TYPE_NAME;
     BEGIN
         SELECT table_name  BULK COLLECT INTO v_table_name
-        FROM dba_tables WHERE OWNER = 'TURISMO_REAL';
+        FROM user_tables ORDER BY table_name;
 
         FOR I IN v_table_name.first()..v_table_name.last() 
         LOOP
@@ -106,7 +107,7 @@ CREATE OR REPLACE PACKAGE BODY PKG_UTILS IS
     EXCEPTION
         WHEN OTHERS THEN
             v_error_code := SQLCODE;
-            v_subprogram_name := 'PKG_UTILS.SP_DROP_TABLES';
+            v_subprogram_name := 'PKG_UTILS.SP_TRUNCATE_TABLE';
             v_error_message := sqlerrm;
             sp_error_control(v_error_code,v_subprogram_name,v_error_message);
     END SP_DROP_TABLES;
