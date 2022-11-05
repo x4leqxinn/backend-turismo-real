@@ -34,7 +34,13 @@ class BookingDetailSerializer(serializers.ModelSerializer):
                     'id' : city.id,
                     'nombre' : city.name
                 },
-            }
+            },
+            'fecha_inicio' : instance.fecha_inicio,
+            'fecha_termino' : instance.fecha_termino,
+            'abono' : instance.abono,
+            'monto_pagado' : instance.monto_pagado,
+            'total_pago' : instance.total_pago,
+            'cant_personas' : instance.cant_total
         }
 
 class BookingListSerializer(serializers.ModelSerializer):
