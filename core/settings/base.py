@@ -43,6 +43,7 @@ LOCAL_APPS = [
     'apps.people',
     'apps.business',
     'apps.locations',
+    'apps.website',
 ]
 
 # Apps de terceros
