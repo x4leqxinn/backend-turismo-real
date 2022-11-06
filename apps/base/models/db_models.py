@@ -747,6 +747,7 @@ class Vivienda(BaseModel):
 
 class Compra(BaseModel):
     id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
+    monto_final = models.IntegerField()
     class Meta:
         managed = True
         db_table = 'compra'

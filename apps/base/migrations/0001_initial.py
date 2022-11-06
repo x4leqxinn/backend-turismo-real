@@ -101,6 +101,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('estado', models.CharField(default='ACTIVO', max_length=15)),
+                ('monto_final', models.IntegerField()),
                 ('creacion', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Creación')),
                 ('actualizacion', models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')),
             ],
