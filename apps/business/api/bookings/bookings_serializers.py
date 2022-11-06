@@ -8,8 +8,23 @@ class BookingDetailSerializer(serializers.ModelSerializer):
         model = Reserva
         fields = ('__all__')
 
+
     def to_representation(self, instance):
         city = Cities.objects.get(id = instance.id_viv.id_ciu)
+        detail_partners = CliAcom.objects.filter(id_res = instance.id)
+        partner_list = []
+        for x in range(len(detail_partners)):
+            data = {
+                'id' : detail_partners[x].id_aco.id.id,
+                'nombre' : detail_partners[x].id_aco.id.nombre + ' ' + detail_partners[x].id_aco.id.ap_paterno
+            }
+            if detail_partners[x].id_aco.id.id_doc.id == 1:
+                data['run'] = detail_partners[x].id_aco.id.run
+            else:
+                data['pasaporte'] = detail_partners[x].id_aco.id.pasaporte
+
+            partner_list.append(data)
+
         return {
             'id' : instance.id,
             'vivienda' : {
@@ -40,7 +55,8 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             'abono' : instance.abono,
             'monto_pagado' : instance.monto_pagado,
             'total_pago' : instance.total_pago,
-            'cant_personas' : instance.cant_total
+            'cant_personas' : instance.cant_total,
+            'acompaniantes' : partner_list
         }
 
 class BookingListSerializer(serializers.ModelSerializer):
