@@ -5,6 +5,8 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
 
     # TODO: Se debe añadir a futuro
     # El conductor asociado ****
+    # Añadir servicios de tour
+    
     acompaniantes = serializers.ListField()
     servicios = serializers.ListField()
 
