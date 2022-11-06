@@ -1,6 +1,6 @@
 from apps.base.models.db_models import Reserva
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingCreateSerializer, BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
+from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -20,8 +20,8 @@ class BookingViewSet(viewsets.GenericViewSet):
     ordering = ['id']
 
     def get_serializer_class(self):
-        if self.action in ["create"]:
-            return BookingCreateSerializer
+        if self.action in ["retrieve"]:
+            return BookingDetailSerializer
         elif self.action in ["list"]:
             return BookingListSerializer
         return self.serializer_class
@@ -63,18 +63,3 @@ class BookingViewSet(viewsets.GenericViewSet):
                 'message':'No hay fechas.'
             },
             status = status.HTTP_400_BAD_REQUEST)
-
-    def create(self,request):
-        serializer = BookingCreateSerializer(data = request.data, context = request.data) # Aquí enviariamos el resultado de data
-        if serializer.is_valid():
-            if serializer.save(): 
-                return Response(
-                    {
-                        'message' : '¡Reserva realizada con éxito!'
-                    }, status = status.HTTP_201_CREATED)
-        return Response(
-            {
-                'message' : 'Hay errores en la creación.',
-                'errors' : serializer.errors
-            }
-            , status = status.HTTP_400_BAD_REQUEST)

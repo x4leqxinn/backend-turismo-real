@@ -148,7 +148,6 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                     transporte.save()
                     # es de ida o de vuelta?
                     # Transporte ida Tranporte Vuelta
-
                     tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion) if servicios[index]["id_transporte"] == 1 else TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
                     tipo_transporte.save()
                     
