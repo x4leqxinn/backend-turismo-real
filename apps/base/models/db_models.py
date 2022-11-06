@@ -243,6 +243,7 @@ class DetServMov(BaseModel):
     hora_inicio = models.CharField(max_length=5)
     fecha_termino = models.DateField()
     hora_termino = models.CharField(max_length=5)
+    cant_pasajeros = models.IntegerField()
     class Meta:
         managed = True
         db_table = 'det_serv_mov'
@@ -744,8 +745,6 @@ class Vivienda(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Servicio(BaseModel):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=200)
     precio = models.IntegerField()
     id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
     id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')

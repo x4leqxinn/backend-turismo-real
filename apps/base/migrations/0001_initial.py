@@ -354,8 +354,6 @@ class Migration(migrations.Migration):
                 ('estado', models.CharField(default='ACTIVO', max_length=15)),
                 ('creacion', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Creación')),
                 ('actualizacion', models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')),
-                ('nombre', models.CharField(max_length=100)),
-                ('descripcion', models.CharField(max_length=200)),
                 ('precio', models.IntegerField()),
             ],
             options={
@@ -1043,6 +1041,7 @@ class Migration(migrations.Migration):
                 ('hora_inicio', models.CharField(max_length=5)),
                 ('fecha_termino', models.DateField()),
                 ('hora_termino', models.CharField(max_length=5)),
+                ('cant_pasajeros', models.IntegerField()),
                 ('id_mov', models.ForeignKey(db_column='id_mov', on_delete=django.db.models.deletion.DO_NOTHING, to='base.movilizacion')),
                 ('id_con', models.ForeignKey(db_column='id_con', on_delete=django.db.models.deletion.DO_NOTHING, to='base.conductor')),
             ],

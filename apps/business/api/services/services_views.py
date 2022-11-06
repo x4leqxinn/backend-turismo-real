@@ -44,12 +44,17 @@ class ServiceViewSet(viewsets.GenericViewSet):
 
     @action(methods=['GET'],detail=False, url_path = 'search-dates')
     def search_dates(self,request):
+        # TODO: pensar bien esta lógica.
+        # puede ser mejor enviar la fecha y consultarla directamente si está o no ocupada
+        
+
         # Recibimos el query param de la petición GET
         dwelling_pk = request.query_params.get('pk','')
-        if dwelling_pk == '':
-            return Response({'message':'Se deber enviar un id.'},status = status.HTTP_400_BAD_REQUEST)
+        passengers = request.query_params.get('passengers','')
+        if dwelling_pk == '' or passengers == '':
+            return Response({'message':'Se debe enviar pk y passengers.'},status = status.HTTP_400_BAD_REQUEST)
 
-        try:        
+        try:       
             dwelling = Vivienda.objects.get(id = dwelling_pk)
         except:
             return Response(
@@ -61,17 +66,30 @@ class ServiceViewSet(viewsets.GenericViewSet):
         queryset = DetProyecto.objects.filter(id_viv = dwelling.id)
         
         drivers = []
+
         for index in range(len(queryset)):
             if queryset[index].id_emp.id_car.id == 4:
                 # Obtenemos la instancia de empleado y luego de conductor
                 employee = Empleado.objects.get(id = queryset[index].id_emp.id)
-                drivers.append(Conductor.objects.get(id = employee))
+                driver = Conductor.objects.get(id = employee)
+                if driver.id_veh.capacidad >= int(passengers):
+                    drivers.append(driver)
         
+        if len(drivers) == 0:
+            return Response(
+                {
+                    'message':'No hay capacidad en el vehículo.'
+                },
+                status = status.HTTP_400_BAD_REQUEST)
+
+
         # Verificamos las fechas disponibles
         from datetime import datetime
         now = datetime.now()
+        
+        # Verificamos si tiene capacidad
         dates = DetServMov.objects.filter(
-            Q(id_con__in = drivers) & Q(fecha_inicio__gte = now)  
+            Q(id_con__in = drivers) & Q(fecha_inicio__gte = now)
         )
 
         if dates:
@@ -84,4 +102,4 @@ class ServiceViewSet(viewsets.GenericViewSet):
             {
                 'message':'No se han encontrado fechas registradas para el empleado a cargo del servicio.'
             },
-            status = status.HTTP_400_BAD_REQUEST)
+            status = status.HTTP_200_OK)
