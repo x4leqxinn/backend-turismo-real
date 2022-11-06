@@ -18,13 +18,14 @@ class ShoppingViewSet(viewsets.GenericViewSet):
     ordering = ['id']
 
     def get_serializer_class(self):
-        if self.action in ["create"]:
+        if self.action in ["booking_pay"]:
             return CreateShoppingSerializer
         elif self.action in ["list"]:
             return CreateShoppingSerializer
         return self.serializer_class
 
-    def create(self,request):
+    @action(methods=['post'],detail=False, url_path = 'booking-pay')
+    def booking_pay(self,request):
         serializer = CreateShoppingSerializer(data = request.data, context = request.data) # Aquí enviariamos el resultado de data
         if serializer.is_valid():
             if serializer.save(): 
