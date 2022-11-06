@@ -1,4 +1,3 @@
-from pyexpat import model
 from rest_framework import serializers
 from apps.base.models.db_models import DetServMov, Servicio
 
@@ -11,8 +10,6 @@ class ServiceSerializer(serializers.ModelSerializer):
         # Mostrar datos según tipo de servicio
         return {
             'id' : instance.id,
-            'nombre' : instance.nombre,
-            'descripcion' : instance.descripcion,
             'tipo_servicio' : instance.id
         }
 

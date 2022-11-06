@@ -746,7 +746,8 @@ class Vivienda(BaseModel):
 
 
 class Compra(BaseModel):
-    id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
+    id_reserva = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_reserva')
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
     monto_final = models.IntegerField()
     class Meta:
         managed = True
@@ -755,7 +756,7 @@ class Compra(BaseModel):
 class Servicio(BaseModel):
     precio = models.IntegerField()
     id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
-    id_compra = models.ForeignKey('Compra', models.DO_NOTHING, db_column='id_compra')
+    id_reserva = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_reserva')
     class Meta:
         managed = True
         db_table = 'servicio'
