@@ -276,13 +276,13 @@ class DetalleSala(BaseModel):
         db_table = 'detalle_sala'
 
 
-class DetalleServicio(BaseModel):
-    id_res = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_res')
-    id_ser = models.ForeignKey('Servicio', models.DO_NOTHING, db_column='id_ser')
+#class DetalleServicio(BaseModel):
+#    id_res = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_res')
+#    id_ser = models.ForeignKey('Servicio', models.DO_NOTHING, db_column='id_ser')
 
-    class Meta:
-        managed = True
-        db_table = 'detalle_servicio'
+#    class Meta:
+#        managed = True
+#        db_table = 'detalle_servicio'
 
 
 class DetalleTour(BaseModel):
@@ -744,10 +744,17 @@ class Vivienda(BaseModel):
     def __str__(self) -> str:
         return 'ID : ' + str(self.id)
 
+
+class Compra(BaseModel):
+    id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
+    class Meta:
+        managed = True
+        db_table = 'compra'
+
 class Servicio(BaseModel):
     precio = models.IntegerField()
     id_tip = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tip')
-    id_viv = models.ForeignKey(Vivienda, models.DO_NOTHING, db_column='id_viv')
+    id_compra = models.ForeignKey('Compra', models.DO_NOTHING, db_column='id_compra')
     class Meta:
         managed = True
         db_table = 'servicio'

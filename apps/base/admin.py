@@ -1146,7 +1146,8 @@ admin.site.register(DetalleProducto,DetalleProductoAdmin)
 # TODO: Falta personalizar estos modelos
 admin.site.register(Reserva)
 
-admin.site.register(DetalleServicio)
+admin.site.register(Compra)
+#admin.site.register(DetalleServicio)
 
 admin.site.register(Servicio)
 
