@@ -18,20 +18,38 @@ class ShoppingViewSet(viewsets.GenericViewSet):
     ordering = ['id']
 
     def get_serializer_class(self):
-        if self.action in ["booking_pay"]:
+        if self.action in ["booking_payment"]:
             return CreateShoppingSerializer
         elif self.action in ["list"]:
             return CreateShoppingSerializer
+        elif self.action in ["service_payment"]:
+            return ServicePaymentSerializer
         return self.serializer_class
 
-    @action(methods=['post'],detail=False, url_path = 'booking-pay')
-    def booking_pay(self,request):
+    @action(methods=['post'],detail=False, url_path = 'booking-payment')
+    def booking_payment(self,request):
         serializer = CreateShoppingSerializer(data = request.data, context = request.data) # Aquí enviariamos el resultado de data
         if serializer.is_valid():
             if serializer.save(): 
                 return Response(
                     {
                         'message' : '¡Reserva realizada con éxito!'
+                    }, status = status.HTTP_201_CREATED)
+        return Response(
+            {
+                'message' : 'Hay errores en la creación.',
+                'errors' : serializer.errors
+            }
+            , status = status.HTTP_400_BAD_REQUEST)
+    
+    @action(methods=['post'],detail=False, url_path = 'service-payment')
+    def service_payment(self,request):
+        serializer = ServicePaymentSerializer(data = request.data, context = request.data) # Aquí enviariamos el resultado de data
+        if serializer.is_valid():
+            if serializer.save(): 
+                return Response(
+                    {
+                        'message' : '¡Servicios comprados!'
                     }, status = status.HTTP_201_CREATED)
         return Response(
             {

@@ -157,3 +157,20 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
         return True
 
 
+# Le especifico el formato como quiero que se envien los datos
+# TODO: Falta implementar lógica para tours
+class ValidateServiceSerializer(serializers.Serializer):
+    id_tipo = serializers.IntegerField()
+    id_ubicacion = serializers.IntegerField(required=False)
+    id_transporte = serializers.IntegerField(required=False)
+class ServicePaymentSerializer(serializers.Serializer):
+    # Defino que puede recibir muchos servicios
+    services = ValidateServiceSerializer(many=True,  read_only=True)
+
+
+    def validate_services(self, values):
+        print(values)
+        return values
+
+    def create(self, validated_data):
+        return True
