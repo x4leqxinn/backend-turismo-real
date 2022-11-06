@@ -116,7 +116,8 @@ class ClientCreateSerializer(serializers.ModelSerializer):
 
         # TODO: Se debe crear un grupo desde el admin de DJANGO o no funcionará
         # Integrar IMAGEN
-        group = Group.objects.get(id=1) 
+        group = Group.objects.get(id=3)
+        print(group.name) 
         user.groups.add(group)
         
         from templates.emails.utils import sendEmailClient

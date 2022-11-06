@@ -1,6 +1,13 @@
 from apps.base.models.db_models import *
 from apps.users.models import User, UserRole
+from django.contrib.auth.models import Group
 from django.db import connections
+
+GRUPOS : list[Group] = [
+    Group(name = 'Administrador'),
+    Group(name = 'Empleado'),
+    Group(name = 'Cliente'),
+]
 
 ROLES : list[UserRole] = [
     UserRole(description = 'Administrador'),
@@ -207,6 +214,7 @@ DETALLES_PROYECTOS : list[DetProyecto] = [
 
 # Diccionario con los modelos de la base de datos
 ENTITY = {
+    'GRUPO' : GRUPOS,
     'GENERO' : GENEROS,
     'MODELO' : MODELOS,
     'CARGOS' : CARGOS,
