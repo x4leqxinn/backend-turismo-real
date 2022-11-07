@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta
+from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov
+from django.db.models import Q
 
 class CreateShoppingSerializer(serializers.ModelSerializer):
 
     # TODO: Se debe añadir a futuro
-    # El conductor asociado ****
     # Añadir servicios de tour
     
     acompaniantes = serializers.ListField()
@@ -13,6 +13,36 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
         exclude = ('estado','creacion','actualizacion')
+
+    def search_driver(self,dwelling_id, date):
+        # Asignamos un conductor al servicio
+        queryset = DetProyecto.objects.filter(id_viv = dwelling_id)
+        response = None
+        drivers = []
+
+        for index in range(len(queryset)):
+            if queryset[index].id_emp.id_car.id == 4:
+                # Obtenemos la instancia de empleado y luego de conductor
+                employee = Empleado.objects.get(id = queryset[index].id_emp.id)
+                driver = Conductor.objects.get(id = employee)
+                drivers.append(driver)
+        
+        # Verificamos las fechas disponibles
+        
+        details = DetServMov.objects.filter(
+            Q(id_con__in = drivers) & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
+        )
+
+        if len(drivers) > len(details):
+            available = drivers
+            if len(details) != 0:
+            # Elimino los conductores
+                for detail in details:
+                    available.remove(detail.id_con)
+            import random
+            index = random.randint(0, len(available))
+            response = available[index]
+        return response
 
     def find_acompaniante(self,data):
         flag = False
@@ -148,12 +178,26 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                     transporte.save()
                     # es de ida o de vuelta?
                     # Transporte ida Tranporte Vuelta
-                    tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion) if servicios[index]["id_transporte"] == 1 else TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
+                    if servicios[index]["id_transporte"] == 1:
+                        tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion)  
+                        driver = self.search_driver(vivienda.id, reserva.fecha_inicio)    
+                        date = reserva.fecha_inicio
+                    else:
+                        tipo_transporte = TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
+                        driver = self.search_driver(vivienda.id, reserva.fecha_termino)
+                        date = reserva.fecha_termino
                     tipo_transporte.save()
-                    
+
+                    if driver:
+                        print('Existe el conductor')
+                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, fecha_inicio = date, fecha_termino = date, 
+                        hora_inicio = '10:00', hora_termino = '11:00', cant_pasajeros = 0)
+                        detail_driver.save()   
+                    else:
+                        print('No existe conductor')
                 if servicios[index]["id_tipo"] == 2:
                     pass
-                print('GUARDO SERVICIO')
+                
         return True
 
 
