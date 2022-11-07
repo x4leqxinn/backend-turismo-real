@@ -44,15 +44,12 @@ class ServiceViewSet(viewsets.GenericViewSet):
 
     @action(methods=['GET'],detail=False, url_path = 'search-dates')
     def search_dates(self,request):
-        # TODO: pensar bien esta lógica.
-        # puede ser mejor enviar la fecha y consultarla directamente si está o no ocupada
-        
 
         # Recibimos el query param de la petición GET
         dwelling_pk = request.query_params.get('pk','')
-        passengers = request.query_params.get('passengers','')
-        if dwelling_pk == '' or passengers == '':
-            return Response({'message':'Se debe enviar pk y passengers.'},status = status.HTTP_400_BAD_REQUEST)
+        date = request.query_params.get('date','')
+        if dwelling_pk == '' or date == '':
+            return Response({'message':'Se debe enviar pk y date.'},status = status.HTTP_400_BAD_REQUEST)
 
         try:       
             dwelling = Vivienda.objects.get(id = dwelling_pk)
@@ -72,37 +69,28 @@ class ServiceViewSet(viewsets.GenericViewSet):
                 # Obtenemos la instancia de empleado y luego de conductor
                 employee = Empleado.objects.get(id = queryset[index].id_emp.id)
                 driver = Conductor.objects.get(id = employee)
-                if driver.id_veh.capacidad >= int(passengers):
-                    drivers.append(driver)
+                drivers.append(driver)
+            
         
-        if len(drivers) == 0:
-            return Response(
-                {
-                    'message':'No hay capacidad en el vehículo.'
-                },
-                status = status.HTTP_400_BAD_REQUEST)
-
-
+        
         # Verificamos las fechas disponibles
         from datetime import datetime
-        now = datetime.now()
+        date = datetime.strptime(date,'%d-%m-%Y')
         
-        # Verificamos si tiene capacidad
-        dates = DetServMov.objects.filter(
-            Q(id_con__in = drivers) & Q(fecha_inicio__gte = now)
+        details = DetServMov.objects.filter(
+            Q(id_con__in = drivers) & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
         )
 
-        if dates:
-            serializer = VerifyDatesSerializer(dates, many = True)
-            return Response(
-                serializer.data,
-                status = status.HTTP_200_OK)
-        
-        return Response(
-            {
-                'message':'No se han encontrado fechas registradas para el empleado a cargo del servicio.'
-            },
-            status = status.HTTP_200_OK)
+        response = {
+            'message' : 'No hay conductores disponibles.',
+            'status' : status.HTTP_400_BAD_REQUEST
+        }
+
+        if len(drivers) > len(details):
+            response['message'] = 'Hay conductores disponibles.';
+            response['status'] = status.HTTP_200_OK;
+
+        return Response({'message' : response['message']}, status = response['status']) 
 
     @action(methods=['GET'],detail=False, url_path = 'locations')
     def location_service(self,request):
