@@ -1,7 +1,44 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda
+from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta
 from apps.locations.models import Cities
 from django.db.models import Q
+
+
+#
+class ServiceBookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Servicio
+        exclude = ('creacion','actualizacion','estado')
+
+    def to_representation(self, instance):
+        data = {
+            'id' : instance.id,
+            'tipo_servicio' : instance.id_tip.descripcion,
+            'precio' : instance.precio
+        }
+
+        if instance.id_tip.id == 1:
+            transporte = None
+            try:
+                transporte = TransporteIda.objects.get(id_trans = instance.id)
+                data['tipo_tranporte'] = 'TRANPORTE DE IDA'
+            except:
+                pass
+
+            try: 
+                transporte = TransporteVuelta.objects.get(id_trans = instance.id)
+                data['tipo_tranporte'] = 'TRANPORTE DE VUELTA'
+            except:
+                pass
+
+            data['nombre'] = transporte.id_ub_trans.nombre 
+            data['descripcion'] = transporte.id_ub_trans.id_tip.descripcion
+            data['precio'] = transporte.id_ub_trans.precio 
+
+
+        elif instance.id_tip.id == 2:
+            print('SERVICIO DE TOUR')
+        return data
 
 class BookingDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +62,13 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 
             partner_list.append(data)
 
-        return {
+        detail_services = Servicio.objects.filter(id_reserva = instance.id)
+        services_list = []
+        for i in range(len(detail_services)):
+            serializer = ServiceBookingSerializer(detail_services[i])
+            services_list.append(serializer.data)
+
+        data = {
             'id' : instance.id,
             'vivienda' : {
                 'id' : instance.id_viv.id,
@@ -56,8 +99,27 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             'monto_pagado' : instance.monto_pagado,
             'total_pago' : instance.total_pago,
             'cant_personas' : instance.cant_total,
-            'acompaniantes' : partner_list
+            'acompaniantes' : partner_list,
+            'servicios' : services_list
         }
+
+        try:
+            checkin = CheckIn.objects.get(id_res = instance.id)
+            data['check_in'] = checkin.fecha_llegada
+            data['estado_checkin'] = checkin.estado_checkin
+        except Exception as e:
+            data['check_in'] = 'N/A'
+            data['estado_checkin'] = 'N/A'
+        try:
+            checkout = CheckOut.objects.get(id_res = instance.id)
+            data['check_out'] = checkout.fecha_salida
+            data['check_out'] = checkout.estado_checkout
+        except Exception as e:
+            data['check_out'] = 'N/A'
+            data['estado_checkout'] = 'N/A'
+        
+
+        return data
 
 class BookingListSerializer(serializers.ModelSerializer):
 

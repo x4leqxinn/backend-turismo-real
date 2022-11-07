@@ -760,6 +760,14 @@ class Servicio(BaseModel):
     class Meta:
         managed = True
         db_table = 'servicio'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'precio': self.precio,
+            'id_reserva': self.id_reserva.id,
+            'id_tip' : self.id_tip.id
+        }
 
 class DetProyecto(BaseModel):
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
