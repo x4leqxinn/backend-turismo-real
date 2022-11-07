@@ -12,20 +12,6 @@ class ServiceSerializer(serializers.ModelSerializer):
             'id' : instance.id,
             'tipo_servicio' : instance.id
         }
-
-
-class VerifyDatesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetServMov
-        fields = ('fecha_inicio','fecha_termino')
-    
-    def to_representation(self, instance):
-        return {
-            'date_taken' : instance.fecha_inicio
-        }
-
-
-
 class LocationServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = UbicacionTrans
