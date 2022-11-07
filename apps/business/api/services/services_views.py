@@ -103,3 +103,13 @@ class ServiceViewSet(viewsets.GenericViewSet):
                 'message':'No se han encontrado fechas registradas para el empleado a cargo del servicio.'
             },
             status = status.HTTP_200_OK)
+
+    @action(methods=['GET'],detail=False, url_path = 'locations')
+    def location_service(self,request):
+        city_pk = request.query_params.get('pk','')
+        if city_pk == '':
+            return Response({'message':'Se debe enviar la ciudad.'},status = status.HTTP_400_BAD_REQUEST)
+
+        locations = UbicacionTrans.objects.filter(id_ciu = city_pk, estado = 'ACTIVO')
+        serializer = LocationServiceSerializer(locations, many = True)
+        return Response(serializer.data)
