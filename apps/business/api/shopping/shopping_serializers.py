@@ -54,7 +54,8 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                 for detail in details:
                     available.remove(detail.id_con)
             import random
-            index = random.randint(0, len(available))
+
+            index = random.randint(0, len(available) - 1)
             response = available[index]
         return response
 
