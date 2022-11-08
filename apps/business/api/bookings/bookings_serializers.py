@@ -113,7 +113,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
         try:
             checkout = CheckOut.objects.get(id_res = instance.id)
             data['check_out'] = checkout.fecha_salida
-            data['check_out'] = checkout.estado_checkout
+            data['estado_checkout'] = checkout.estado_checkout
         except Exception as e:
             data['check_out'] = 'N/A'
             data['estado_checkout'] = 'N/A'
@@ -145,7 +145,7 @@ class BookingListSerializer(serializers.ModelSerializer):
         try:
             checkout = CheckOut.objects.get(id_res = instance.id)
             data['check_out'] = checkout.fecha_salida
-            data['check_out'] = checkout.estado_checkout
+            data['estado_checkout'] = checkout.estado_checkout
         except Exception as e:
             data['check_out'] = 'N/A'
             data['estado_checkout'] = 'N/A'
