@@ -83,14 +83,16 @@ class ServiceViewSet(viewsets.GenericViewSet):
 
         response = {
             'message' : 'No hay conductores disponibles.',
+            'value' : 0,
             'status' : status.HTTP_400_BAD_REQUEST
         }
 
         if len(drivers) > len(details):
             response['message'] = 'Hay conductores disponibles.';
+            response['value'] = 1;
             response['status'] = status.HTTP_200_OK;
 
-        return Response({'message' : response['message']}, status = response['status']) 
+        return Response({'message' : response['message'], 'value' : response['value']}, status = response['status']) 
 
     @action(methods=['GET'],detail=False, url_path = 'locations')
     def location_service(self,request):
