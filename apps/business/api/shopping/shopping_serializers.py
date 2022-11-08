@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov
+from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov, Recepcionista, CheckIn, CheckOut
 from django.db.models import Q
 
 class CreateShoppingSerializer(serializers.ModelSerializer):
@@ -13,6 +13,20 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
         exclude = ('estado','creacion','actualizacion')
+
+    # Sólo un recepcionista estará asociado a una vivienda
+    def search_receptionist(self, dwelling_id):
+        queryset =  DetProyecto.objects.filter(id_viv = dwelling_id)
+        response = None
+
+        for index in range(len(queryset)):
+            if queryset[index].id_emp.id_car.id == 3:
+                # Obtenemos la instancia de empleado y luego de recepcionista
+                employee = Empleado.objects.get(id = queryset[index].id_emp.id)
+                receptionist = Recepcionista.objects.get(id = employee)
+                response = receptionist
+                break
+        return response
 
     def search_driver(self,dwelling_id, date):
         # Asignamos un conductor al servicio
@@ -197,7 +211,19 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                         print('No existe conductor')
                 if servicios[index]["id_tipo"] == 2:
                     pass
-                
+
+
+        recepcionist = self.search_receptionist(vivienda.id)
+        if recepcionist:
+            # Crear Check In
+            CheckIn.objects.create(fecha_llegada = reserva.fecha_inicio, hora_llegada = '11:00',
+            firma = None, estado_checkin = 'PENDIENTE', id_res = reserva, id_rec = recepcionist)
+
+            CheckOut.objects.create(fecha_salida = reserva.fecha_termino, hora_salida = '10:00',
+            estado_checkout = 'PENDIENTE', total_multa = None, id_rec = recepcionist, id_res = reserva)
+            print('Check In y Check out Creados!')
+        else:
+            print('No existe recepcionista')
         return True
 
 
