@@ -52,7 +52,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
             return Response({'message':'Se debe enviar pk y date.'},status = status.HTTP_400_BAD_REQUEST)
 
         try:       
-            dwelling = Vivienda.objects.get(id = dwelling_pk)
+            dwelling = Vivienda.objects.get(id = dwelling_pk, estado = 'ACTIVO')
         except:
             return Response(
             {
@@ -60,7 +60,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
             },
             status = status.HTTP_400_BAD_REQUEST)
 
-        queryset = DetProyecto.objects.filter(id_viv = dwelling.id)
+        queryset = DetProyecto.objects.filter(id_viv = dwelling.id, estado = 'ACTIVO')
         
         drivers = []
 
@@ -78,7 +78,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
         date = datetime.strptime(date,'%d-%m-%Y')
         
         details = DetServMov.objects.filter(
-            Q(id_con__in = drivers) & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
+            Q(id_con__in = drivers) & Q(estado = 'ACTIVO') & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
         )
 
         response = {

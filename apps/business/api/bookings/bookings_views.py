@@ -1,6 +1,6 @@
-from apps.base.models.db_models import Reserva
+from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
+from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer, DeleteBookingSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -9,14 +9,13 @@ from apps.base.stored_procedures import genericDelete
 from db_routers.permissions.db_connection import oracle_connection
 from rest_framework.decorators import action
 
-
 class BookingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
     #permission_classes = ()
     serializer_class = BookingListSerializer
     filterset_class  = BookingFilter
     search_fields = ['id_cli__id__id']
-    ordering_fields = ['id', 'id_cli__id__id']
+    ordering_fields = ['id', 'id_cli__id__id'] 
     ordering = ['id']
 
     def get_serializer_class(self):
@@ -63,3 +62,20 @@ class BookingViewSet(viewsets.GenericViewSet):
                 'message':'No hay fechas.'
             },
             status = status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        booking = self.get_queryset().filter(id = pk).update(estado = 'INACTIVO')
+        try:
+            service = Servicio.objects.get(id_reserva = pk)
+            DetServMov.objects.filter(id_mov = service.id).update(estado = 'INACTIVO')
+        except:
+            pass
+        if booking:
+            return Response(
+                {'message':'¡Reserva eliminada!.','value' : 1}, status = status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'¡La reserva no se pudo eliminar!',
+                'value' : 0
+            },
+            status = status.HTTP_400_BAD_REQUEST) 
