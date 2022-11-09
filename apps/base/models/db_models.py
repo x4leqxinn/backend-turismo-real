@@ -165,6 +165,7 @@ class Modelo(BaseModel):
         return self.nombre
 
 class Vehiculo(BaseModel):
+    patente = models.CharField(max_length=20, null=False, blank=False, unique=True)
     id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
     id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
     id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')

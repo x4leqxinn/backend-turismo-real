@@ -121,8 +121,8 @@ EMPLEADOS : list[Empleado] = [
 ]
 
 VEHICULOS : list[Vehiculo] = [
-    Vehiculo(id_mod = MODELOS[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
-    Vehiculo(id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'AO32FNV', id_mod = MODELOS[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'XDJN72', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
 ]
 
 CONDUCTORES : list[Conductor] = [

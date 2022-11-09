@@ -48,7 +48,7 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
                 'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
                 'telefono' : detail.id_con.id.id.telefono,
                 'vehiculo' : {
-                    'patente' : 'FALTA AGREGARLA',
+                    'patente' : detail.id_con.id_veh.patente,
                     'modelo' : detail.id_con.id_veh.id_mod.nombre,
                     'marca' : detail.id_con.id_veh.id_mar.nombre,
                     'color' : detail.id_con.id_veh.id_col.nombre
