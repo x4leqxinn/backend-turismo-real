@@ -46,6 +46,7 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             driver = {
                 'run' : detail.id_con.id.id.run,
                 'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
+                'telefono' : detail.id_con.id.id.telefono,
                 'vehiculo' : {
                     'patente' : 'FALTA AGREGARLA',
                     'modelo' : detail.id_con.id_veh.id_mod.nombre,
