@@ -30,7 +30,7 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
 
     def search_driver(self,dwelling_id, date):
         # Asignamos un conductor al servicio
-        queryset = DetProyecto.objects.filter(id_viv = dwelling_id)
+        queryset = DetProyecto.objects.filter(id_viv = dwelling_id, estado = 'ACTIVO')
         response = None
         drivers = []
 
@@ -44,8 +44,9 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
         # Verificamos las fechas disponibles
         
         details = DetServMov.objects.filter(
-            Q(id_con__in = drivers) & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
+            Q(id_con__in = drivers) & Q(estado = 'ACTIVO') & (Q(fecha_inicio = date) | Q(fecha_termino = date))
         )
+
 
         if len(drivers) > len(details):
             available = drivers

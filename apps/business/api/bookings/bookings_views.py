@@ -66,9 +66,13 @@ class BookingViewSet(viewsets.GenericViewSet):
     def destroy(self, request, pk=None):
         booking = self.get_queryset().filter(id = pk).update(estado = 'INACTIVO')
         try:
-            service = Servicio.objects.get(id_reserva = pk)
-            DetServMov.objects.filter(id_mov = service.id).update(estado = 'INACTIVO')
-        except:
+            services = Servicio.objects.filter(id_reserva = pk)
+            id_list = []
+            for service in services:
+                id_list.append(service.id)
+            DetServMov.objects.filter(id_mov__in = id_list).update(estado = 'INACTIVO')
+        except Exception as e:
+            print(e)    
             pass
         if booking:
             return Response(

@@ -78,7 +78,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
         date = datetime.strptime(date,'%d-%m-%Y')
         
         details = DetServMov.objects.filter(
-            Q(id_con__in = drivers) & Q(estado = 'ACTIVO') & (Q(fecha_inicio__gte = date) | Q(fecha_termino__gte = date))
+            Q(id_con__in = drivers) & Q(estado = 'ACTIVO') & (Q(fecha_inicio = date) | Q(fecha_termino = date))
         )
 
         response = {
