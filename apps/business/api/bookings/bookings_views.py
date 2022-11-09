@@ -1,6 +1,6 @@
-from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov
+from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov, DetProyecto, CheckIn, CheckOut, Recepcionista
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
+from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer, BookingReceptionistSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -83,3 +83,36 @@ class BookingViewSet(viewsets.GenericViewSet):
                 'value' : 0
             },
             status = status.HTTP_400_BAD_REQUEST) 
+
+    @action(methods=['GET'], detail=False, url_path='booking-receptionist')
+    def get_booking_receptionist(self,request):
+        pk = request.query_params.get('pk','')
+        if pk == '':
+            return Response( {'message' : 'Debe mandar un pk.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            project_detail = DetProyecto.objects.filter(id_emp = pk).first()
+            receptionist = Recepcionista.objects.get(id = project_detail.id_emp)
+            bookings = Reserva.objects.filter(id_viv = project_detail.id_viv, estado = 'ACTIVO')
+        except: 
+            return Response({'message' : 'No se encuentra un proyecto asociado a dicho recepcionista.'})
+        
+        receptionist_list = []
+        
+        for booking in bookings:
+            check_in, check_out = CheckIn(), CheckOut()
+            try:
+                check_in = CheckIn.objects.get(id_res = booking.id)
+            except:
+                pass
+
+            try: 
+                check_out = CheckOut.objects.get(id_res = booking.id)
+            except:
+                pass
+
+            if check_in.estado_checkin in('PENDIENTE''PAGADO') and check_out.estado_checkout == 'PENDIENTE':
+                receptionist_list.append(booking)
+        serializer = BookingReceptionistSerializer(receptionist_list, many = True)
+        
+        return Response(serializer.data,status = status.HTTP_200_OK)
+
