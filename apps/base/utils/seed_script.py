@@ -101,7 +101,8 @@ PERSONAS : list[Persona] = [
     Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 
     ## RECEPCIONISTAS
-    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '33333333',dv = '1', nombre = 'Recepcionista' , snombre = 'Uno' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '44444444',dv = '1', nombre = 'Recepcionista' , snombre = 'Dos' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     
@@ -118,6 +119,14 @@ EMPLEADOS : list[Empleado] = [
     ## Conductores
     Empleado(id = PERSONAS[5], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
     Empleado(id = PERSONAS[6], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    ## Recepcionistas
+    Empleado(id = PERSONAS[7], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[8], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+]
+
+RECEPCIONISTAS : list[Recepcionista] = [
+    Recepcionista(id = EMPLEADOS[7]),
+    Recepcionista(id = EMPLEADOS[8]),
 ]
 
 VEHICULOS : list[Vehiculo] = [
@@ -147,6 +156,8 @@ USUARIOS : list[User] = [
     get_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
     get_user('mats@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
     get_user('alcheco@gmail.com',ROLES[1],PERSONAS[6],'Admin123!'),
+    get_user('recepcionista1@gmail.com',ROLES[1],PERSONAS[7],'Recepcionista123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[8],'Recepcionista123!'),
 ]
 
 PRODUCTOS : list[Producto] = [
@@ -198,18 +209,70 @@ TIPOS_UBICACIONES : list[TipoUbicacion] = [
 ]
 
 UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
-    UbicacionTrans(nombre = 'Terminal de buses san bernardo', precio = 9999, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 1),
-    UbicacionTrans(nombre = 'Terminal de buses mona xina crew', precio = 9999, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 1),
+    UbicacionTrans(nombre = 'Terminal de buses Centro', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
+    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19130),
+    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19130),
+    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19080),
+    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19080),
+    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 18994),
+    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
+    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
+    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
 ]
 
 VIVIENDAS : list[Vivienda] = [
-    Vivienda(latitud = '-33.5342',longitud = '-70.59299',m2 = '53.45',estrellas = None,id_dis = DISPONIBILIDADES[0], nombre = 'Gran Avenida', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Calle Prueba #123',slug = 'gran-avenida',imagen_principal = None,valor_noche = '50000',abono_base = 0,id_ciu = '19111', id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
-    Vivienda(latitud = '-33.5342',longitud = '-70.59299',m2 = '23.45',estrellas = None,id_dis = DISPONIBILIDADES[0], nombre = 'Hiper Florida', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Calle Prueba #321',slug = 'hiper-florida',imagen_principal = None,valor_noche = '30000',abono_base = 0,id_ciu = '19111',id_est = '2824',id_pai = '44',capacidad = '4', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-33.01908',longitud = '-71.55206',m2 = '53.45',estrellas = 5,id_dis = DISPONIBILIDADES[0], nombre = 'Gran Avenida', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #123',slug = 'gran-avenida',imagen_principal = "viviendas/gran-avenida.jpg",valor_noche = '50000',abono_base = 0,id_ciu = '19130', id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-39.27761',longitud = '-71.97157',m2 = '52.15',estrellas = 5,id_dis = DISPONIBILIDADES[0], nombre = 'Oye Pucón', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #531',slug = 'oye-pucon',imagen_principal = "viviendas/oye-pucon.jpg",valor_noche = '55000',abono_base = 0,id_ciu = '19080',id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-33.01015',longitud = '-71.55120',m2 = '43.45',estrellas = 4,id_dis = DISPONIBILIDADES[0], nombre = 'Hiper Playa', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #321',slug = 'hiper-playa',imagen_principal = "viviendas/hiper-playa.jpg",valor_noche = '30000',abono_base = 0,id_ciu = '19130',id_est = '2824',id_pai = '44',capacidad = '4', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-29.93463',longitud = '-71.26074',m2 = '55.45',estrellas = 4,id_dis = DISPONIBILIDADES[0], nombre = 'Serena Grande', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #563',slug = 'serena-grande',imagen_principal = "viviendas/serena-grande.jpg",valor_noche = '20000',abono_base = 0,id_ciu = '18994',id_est = '2824',id_pai = '44',capacidad = '2', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-41.32745',longitud = '-72.97340',m2 = '59.15',estrellas = 5,id_dis = DISPONIBILIDADES[0], nombre = 'Puerto Lindo', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #421',slug = 'puerto-lindo',imagen_principal = "viviendas/puerto-lindo.jpg",valor_noche = '30000',abono_base = 0,id_ciu = '19087',id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
+    Vivienda(latitud = '-33.42929',longitud = '-70.59055',m2 = '69.15',estrellas = 4,id_dis = DISPONIBILIDADES[0], nombre = 'Provi Grande', descripcion = 'Departamento amplio, esta es una descripción de prueba',direccion = 'Barrio Prueba #444',slug = 'provi-grande',imagen_principal = "viviendas/provi-grande.jpg",valor_noche = '70000',abono_base = 0,id_ciu = '19111',id_est = '2824',id_pai = '44',capacidad = '3', id_tip = TIPOS_VIVIENDAS[0], internet = '1', luz = '1' , gas = '1', agua = '1'),
 ]
 
 DETALLES_PROYECTOS : list[DetProyecto] = [
     DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[5]),
     DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[6]),
+    DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[7]),
+    DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[8]),
+]
+
+GALERIAS_EXTERIORES : list[GaleriaExterior] = [
+    GaleriaExterior(id_viv = VIVIENDAS[0], imagen = 'exterior_gallery/gran-avenida.jpg'),
+    GaleriaExterior(id_viv = VIVIENDAS[1], imagen = 'exterior_gallery/oye-pucon.jpg'),
+    GaleriaExterior(id_viv = VIVIENDAS[2], imagen = 'exterior_gallery/hiper-playa.jpg'),
+    GaleriaExterior(id_viv = VIVIENDAS[3], imagen = 'exterior_gallery/serena-grande.jpg'),
+    GaleriaExterior(id_viv = VIVIENDAS[4], imagen = 'exterior_gallery/puerto-lindo.jpg'),
+    GaleriaExterior(id_viv = VIVIENDAS[5], imagen = 'exterior_gallery/provi-grande.jpg'),
+]
+
+GALERIAS_INTERIORES : list[GaleriaInterior] = [
+    GaleriaInterior(id_viv = VIVIENDAS[0], imagen = 'interior_gallery/gran-avenida-1.jpg'),
+    GaleriaInterior(id_viv = VIVIENDAS[0], imagen = 'interior_gallery/gran-avenida-2.jpg'),
+    GaleriaInterior(id_viv = VIVIENDAS[1], imagen = 'interior_gallery/oye-pucon-1.jpg'),
+    GaleriaInterior(id_viv = VIVIENDAS[1], imagen = 'interior_gallery/oye-pucon-2.jpg'),
+]
+
+INVENTARIOS : list[Inventario] = [
+    Inventario(id_viv = VIVIENDAS[0]),
+    Inventario(id_viv = VIVIENDAS[1]),
+]
+
+DETALLES_SALAS : list[DetalleSala] = [
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[0], imagen_sala = 'interior_gallery/gran-avenida-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-2.jpg'),
+]
+
+DETALLE_PRODUCTOS : list[DetalleProducto] = [
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[6]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[15]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[1], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[1], id_pro = PRODUCTOS[16]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[1], id_pro = PRODUCTOS[11]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[17]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[11]),
 ]
 
 # Diccionario con los modelos de la base de datos
@@ -233,6 +296,7 @@ ENTITY = {
     'PRODUCTO' : PRODUCTOS,
     'PERSONA' : PERSONAS,
     'EMPLEADO' : EMPLEADOS,
+    'RECEPCIONISTAS' : RECEPCIONISTAS,
     'VEHICULO' : VEHICULOS,
     'CONDUCTOR' : CONDUCTORES,
     'USUARIO' : USUARIOS,
@@ -241,6 +305,11 @@ ENTITY = {
     'UBICACION_TRANSPORTE' : UBICACIONES_TRANSPORTES,
     'DETALLE_PROYECTO' : DETALLES_PROYECTOS,
     'CLIENTE' : CLIENTES,
+    'GALERIA_EXTERIOR' : GALERIAS_EXTERIORES,
+    'GALERIA_INTERIOR' : GALERIAS_INTERIORES,
+    'INVENTARIOS' : INVENTARIOS,
+    'DETALLE_SALAS' : DETALLES_SALAS,
+    'DETALLE_PRODUCTOS' : DETALLE_PRODUCTOS,
 }
 
 def save_entity(model_name : str):
