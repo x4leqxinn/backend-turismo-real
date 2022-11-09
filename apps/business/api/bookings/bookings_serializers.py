@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta
+from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov
 from apps.locations.models import Cities
 from django.db.models import Q
 
@@ -16,6 +16,8 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             'tipo_servicio' : instance.id_tip.descripcion,
             'precio' : instance.precio
         }
+
+        driver = False
 
         if instance.id_tip.id == 1:
             transporte = None
@@ -34,10 +36,25 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             data['nombre'] = transporte.id_ub_trans.nombre 
             data['descripcion'] = transporte.id_ub_trans.id_tip.descripcion
             data['precio'] = transporte.id_ub_trans.precio 
-
+            driver = True
 
         elif instance.id_tip.id == 2:
             print('SERVICIO DE TOUR')
+
+        if driver:
+            detail = DetServMov.objects.get(id_mov__id = transporte.id_trans.id.id.id)
+            driver = {
+                'run' : detail.id_con.id.id.run,
+                'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
+                'vehiculo' : {
+                    'patente' : 'FALTA AGREGARLA',
+                    'modelo' : detail.id_con.id_veh.id_mod.nombre,
+                    'marca' : detail.id_con.id_veh.id_mar.nombre,
+                    'color' : detail.id_con.id_veh.id_col.nombre
+                }
+            }
+            data['conductor'] = driver
+            # detalle serv movilizacion     
         return data
 
 class BookingDetailSerializer(serializers.ModelSerializer):
@@ -100,7 +117,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             'total_pago' : instance.total_pago,
             'cant_personas' : instance.cant_total,
             'acompaniantes' : partner_list,
-            'servicios' : services_list
+            'servicios' : services_list,
         }
 
         try:
