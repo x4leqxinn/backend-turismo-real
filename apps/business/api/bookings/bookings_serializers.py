@@ -134,6 +134,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             'cliente' : {
                 'nombre' : instance.id_cli.id.nombre + ' ' + instance.id_cli.id.ap_paterno + ' ' + instance.id_cli.id.ap_materno,
                 'telefono' : instance.id_cli.id.telefono,
+                'dni' : instance.id_cli.id.run if instance.id_cli.id.id_doc.id == 1 else instance.id_cli.id.run
             },
             'vivienda' : {
                 'id' : instance.id_viv.id,
