@@ -139,6 +139,26 @@ class BookingViewSet(viewsets.GenericViewSet):
             return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckIn!', 'error' : check_in_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
+    @action(methods=['PUT'], detail=True, url_path='change-checkout')
+    def change_check_out(self,request, pk):
+        if pk is None:
+            return Response({'message':'Debe enviar un pk'}, status = status.HTTP_400_BAD_REQUEST)
+        
+        checkout, reserva = None, None
+        try:
+            reserva = Reserva.objects.get(id = pk)
+            checkout = CheckOut.objects.get(id_res = reserva.id)    
+        except:
+            pass
 
-    def change_check_out(self,request):
-        pass
+        if not checkout:
+            return Response({'message':'No existe el Check out'}, status = status.HTTP_400_BAD_REQUEST)
+        
+        check_out_serializer = CheckoutSerializer(data = request.data)
+        
+        if check_out_serializer.is_valid():
+            checkout.estado_checkout = check_out_serializer.validated_data['estado']
+            checkout.save()
+            return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
+        return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
+
