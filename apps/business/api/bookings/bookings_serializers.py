@@ -114,13 +114,9 @@ class BookingDetailSerializer(serializers.ModelSerializer):
         for x in range(len(detail_partners)):
             data = {
                 'id' : detail_partners[x].id_aco.id.id,
-                'nombre' : detail_partners[x].id_aco.id.nombre + ' ' + detail_partners[x].id_aco.id.ap_paterno
+                'nombre' : detail_partners[x].id_aco.id.nombre + ' ' + detail_partners[x].id_aco.id.ap_paterno,
+                'dni' : detail_partners[x].id_cli.id.run if detail_partners[x].id_cli.id.id_doc.id == 1 else detail_partners[x].id_cli.id.pasaporte
             }
-            if detail_partners[x].id_aco.id.id_doc.id == 1:
-                data['run'] = detail_partners[x].id_aco.id.run
-            else:
-                data['pasaporte'] = detail_partners[x].id_aco.id.pasaporte
-
             partner_list.append(data)
 
         detail_services = Servicio.objects.filter(id_reserva = instance.id)
@@ -134,7 +130,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             'cliente' : {
                 'nombre' : instance.id_cli.id.nombre + ' ' + instance.id_cli.id.ap_paterno + ' ' + instance.id_cli.id.ap_materno,
                 'telefono' : instance.id_cli.id.telefono,
-                'dni' : instance.id_cli.id.run if instance.id_cli.id.id_doc.id == 1 else instance.id_cli.id.run
+                'dni' : instance.id_cli.id.run if instance.id_cli.id.id_doc.id == 1 else instance.id_cli.id.pasaporte
             },
             'vivienda' : {
                 'id' : instance.id_viv.id,
