@@ -1,6 +1,6 @@
 from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov, DetProyecto, CheckIn, CheckOut, Recepcionista
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer, BookingReceptionistSerializer
+from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -112,7 +112,7 @@ class BookingViewSet(viewsets.GenericViewSet):
 
             if check_in.estado_checkin in('PENDIENTE''PAGADO') and check_out.estado_checkout == 'PENDIENTE':
                 receptionist_list.append(booking)
-        serializer = BookingReceptionistSerializer(receptionist_list, many = True)
+        serializer = BookingDetailSerializer(receptionist_list, many = True)
         
         return Response(serializer.data,status = status.HTTP_200_OK)
 
