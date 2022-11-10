@@ -1,6 +1,6 @@
 from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov, DetProyecto, CheckIn, CheckOut, Recepcionista
 from apps.business.api.general_filters import BookingFilter
-from apps.business.api.bookings.bookings_serializers import BookingDatesSerializer, BookingDetailSerializer, BookingListSerializer
+from apps.business.api.bookings.bookings_serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -116,3 +116,29 @@ class BookingViewSet(viewsets.GenericViewSet):
         
         return Response(serializer.data,status = status.HTTP_200_OK)
 
+    @action(methods=['PUT'],detail=True, url_path='change-checkin')
+    def change_check_in(self,request, pk = None):
+        if pk is None:
+            return Response({'message':'Debe enviar un pk'}, status = status.HTTP_400_BAD_REQUEST)
+        
+        checkin, reserva = None, None
+        try:
+            reserva = Reserva.objects.get(id = pk)
+            checkin = CheckIn.objects.get(id_res = reserva.id)    
+        except:
+            pass
+
+        if not checkin:
+            return Response({'message':'No existe el Check IN'}, status = status.HTTP_400_BAD_REQUEST)
+        
+        check_in_serializer = CheckinSerializer(data = request.data)
+        
+        if check_in_serializer.is_valid():
+            checkin.estado_checkin = check_in_serializer.validated_data['estado']
+            checkin.save()
+            return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
+        return Response({'message' : 'No se pudo actualizar el estado del CheckIn!', 'error' : check_in_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
+
+
+    def change_check_out(self,request):
+        pass
