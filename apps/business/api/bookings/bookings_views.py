@@ -16,7 +16,7 @@ class BookingViewSet(viewsets.GenericViewSet):
     filterset_class  = BookingFilter
     search_fields = ['id_cli__id__id']
     ordering_fields = ['id', 'id_cli__id__id'] 
-    ordering = ['id']
+    ordering = ['-id']
 
     def get_serializer_class(self):
         if self.action in ["retrieve"]:
@@ -92,7 +92,7 @@ class BookingViewSet(viewsets.GenericViewSet):
         try:
             project_detail = DetProyecto.objects.filter(id_emp = pk).first()
             receptionist = Recepcionista.objects.get(id = project_detail.id_emp)
-            bookings = Reserva.objects.filter(id_viv = project_detail.id_viv, estado = 'ACTIVO')
+            bookings = Reserva.objects.filter(id_viv = project_detail.id_viv, estado = 'ACTIVO').order_by('-id')
         except: 
             return Response({'message' : 'No se encuentra un proyecto asociado a dicho recepcionista.'})
         
