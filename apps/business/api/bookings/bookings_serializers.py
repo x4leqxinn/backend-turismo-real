@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov
+from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov, DetalleProducto
 from apps.locations.models import Cities
 from django.db.models import Q
 
@@ -197,6 +197,36 @@ class CheckoutSerializer(serializers.Serializer):
     estado = serializers.CharField(max_length=20)
 
     def validate_estado(self, value):
-        if value not in ('PENDIENTE','MULTADO','COMPLETADO', 'CANCELADO'):
-            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, MULTADO, CANCELADO o COMPLETADO.'})
+        if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
+            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
         return value
+
+
+class ValidateStateProductSerializer(serializers.Serializer):
+    # detail id
+    pk = serializers.IntegerField()
+    state_id = serializers.IntegerField()
+
+    def validate_pk(self, value):
+        if value == '' or value == None:
+            raise serializers.ValidationError({'pk' : 'Debe ingresar un pk.'})
+        exists = DetalleProducto.objects.filter(id = value).exists()
+        if not exists:
+            raise serializers.ValidationError({'pk' : 'No se pudo actualizar.'})
+        return value
+
+    def validate_state_id(self, value):
+        if value == '' or value == None:
+            raise serializers.ValidationError({'state_id' : 'Debe ingresar un estado id.'})
+        if value not in (1,2,3,4,5,6):
+            raise serializers.ValidationError({'state_id':'El estado id deber estar entre 1 y 6.'})
+        return value
+
+class UpdateCheckListProductSerializer(serializers.Serializer):
+    check_list = ValidateStateProductSerializer(many=True)
+
+    def update(self, instances, validated_data):
+        for key in instances['check_list']:
+            DetalleProducto.objects.filter(id = key['pk']).update(id_est = key['state_id'])
+        return validated_data
+
