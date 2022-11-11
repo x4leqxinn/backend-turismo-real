@@ -171,9 +171,9 @@ EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
 
 # Permite verificar los Mails sin enviarlos a usuarios.
-if DEBUG:
-    EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR,'../tmp')
+# if DEBUG:
+#     EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
+#     EMAIL_FILE_PATH = os.path.join(BASE_DIR,'../tmp')
 
 
 # Indicamos donde serviremos nuestras imágenes

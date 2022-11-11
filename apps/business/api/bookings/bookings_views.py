@@ -8,6 +8,7 @@ from rest_framework import status
 from apps.base.stored_procedures import genericDelete
 from db_routers.permissions.db_connection import oracle_connection
 from rest_framework.decorators import action
+from apps.users.models import User
 
 class BookingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -148,10 +149,12 @@ class BookingViewSet(viewsets.GenericViewSet):
         if pk is None:
             return Response({'message':'Debe enviar un pk'}, status = status.HTTP_400_BAD_REQUEST)
         
-        checkout, reserva = None, None
+        checkout, reserva, persona, usuario = None, None, None, None
         try:
             reserva = Reserva.objects.get(id = pk)
-            checkout = CheckOut.objects.get(id_res = reserva.id)    
+            checkout = CheckOut.objects.get(id_res = reserva.id)
+            persona = Persona.objects.get(id = reserva.id_cli.id.id)  
+            usuario = User.objects.get(person = persona)  
         except:
             pass
 
@@ -163,6 +166,8 @@ class BookingViewSet(viewsets.GenericViewSet):
         if check_out_serializer.is_valid():
             checkout.estado_checkout = check_out_serializer.validated_data['estado']
             checkout.save()
+            from templates.emails.utils import sendEmailClient
+            sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
