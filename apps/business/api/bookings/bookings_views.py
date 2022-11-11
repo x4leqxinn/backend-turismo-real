@@ -136,6 +136,10 @@ class BookingViewSet(viewsets.GenericViewSet):
         if check_in_serializer.is_valid():
             checkin.estado_checkin = check_in_serializer.validated_data['estado']
             checkin.save()
+            if  check_in_serializer.validated_data['estado'] == 'CANCELADO':
+                checkout = CheckOut.objects.get(id_res = reserva.id)
+                checkout.estado_checkout = 'CANCELADO'
+                checkout.save()     
             return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckIn!', 'error' : check_in_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
@@ -162,3 +166,4 @@ class BookingViewSet(viewsets.GenericViewSet):
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
+    ## TODO: Habilitar las fechas checkin y checkout COMPLETADO - 

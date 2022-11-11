@@ -661,13 +661,9 @@ class TramoAbono(models.Model):
         db_table = 'tramo_abono'
 
 
-class TramoMulta(models.Model):
-    id = models.IntegerField(primary_key=True)
-    estado_prod = models.BooleanField()
+class TramoMulta(BaseModel):
+    estado_prod = models.IntegerField()
     porcentaje = models.IntegerField()
-    estado = models.CharField(max_length=15)
-    creacion = models.DateTimeField()
-    actualizacion = models.DateTimeField()
 
     class Meta:
         managed = True

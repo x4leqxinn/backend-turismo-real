@@ -3,6 +3,19 @@ from apps.users.models import User, UserRole
 from django.contrib.auth.models import Group
 from django.db import connections
 
+## DJANGO ADMIN
+#TEMAS : list[The]
+
+
+TRAMO_MULTAS : list[TramoMulta] = [
+    TramoMulta(estado_prod = 1, porcentaje = 0),
+    TramoMulta(estado_prod = 2, porcentaje = 20),
+    TramoMulta(estado_prod = 3, porcentaje = 40),
+    TramoMulta(estado_prod = 4, porcentaje = 60),
+    TramoMulta(estado_prod = 5, porcentaje = 80),
+    TramoMulta(estado_prod = 6, porcentaje = 100),
+]
+
 GRUPOS : list[Group] = [
     Group(name = 'Administrador'),
     Group(name = 'Empleado'),
@@ -30,7 +43,7 @@ CATEGORIAS : list[Categoria] = [
 
 DISPONIBILIDADES : list[Disponibilidad] = [
     Disponibilidad(descripcion = 'DISPONIBLE'),
-    Disponibilidad(descripcion = 'NO DISPONIBLE')
+    Disponibilidad(descripcion = 'EN MANTENCION'),
 ]
 
 COLORES : list[Color] = [
@@ -277,6 +290,7 @@ DETALLE_PRODUCTOS : list[DetalleProducto] = [
 
 # Diccionario con los modelos de la base de datos
 ENTITY = {
+    'TRAMO_MULTA' : TRAMO_MULTAS,
     'GRUPO' : GRUPOS,
     'GENERO' : GENEROS,
     'MODELO' : MODELOS,
