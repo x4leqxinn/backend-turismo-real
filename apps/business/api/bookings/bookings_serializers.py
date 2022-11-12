@@ -280,4 +280,7 @@ class ListCheckListProductSerializer(serializers.Serializer):
         room_queryset = DetalleSala.objects.filter(id_inv = inventory.id)
         self.add_hash('pk',pk)
         self.get_detail_room(room_queryset)
-        return self.serializer_list
+        print(len(self.serializer_list))
+        #print(self.serializer_list[0])
+        
+        return self.serializer_list[0]
