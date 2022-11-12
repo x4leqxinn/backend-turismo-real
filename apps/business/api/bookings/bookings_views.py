@@ -172,7 +172,7 @@ class BookingViewSet(viewsets.GenericViewSet):
         return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
     ## TODO: Habilitar las fechas checkin y checkout COMPLETADO - 
-    @action(methods=['GET','POST'], detail=False, url_path='uwu')
+    @action(methods=['GET','POST'], detail=False, url_path='products-details')
     def product_list(self, request):
         if request.method == 'POST':
             serializer = UpdateCheckListProductSerializer(request.data ,data = request.data)
@@ -182,8 +182,17 @@ class BookingViewSet(viewsets.GenericViewSet):
                 {'message' : 'Estados de productos Actualizados con exito!'},
                 status = status.HTTP_201_CREATED)
             return Response({'error': serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
-            #process/save objects here
         else:
-            print('owo')
-        return Response({'message' : 'Hola Mundo'})
+            pk = request.query_params.get('pk','')
+            
+            if pk == '':
+                return Response({'message' : 'Debe enviar un pk vivienda.'}, status = status.HTTP_400_BAD_REQUEST)
+
+            serializer = ListCheckListProductSerializer(data = {'pk' : pk})
+
+            if serializer.is_valid():
+                serializer = ListCheckListProductSerializer(pk, many = True)
+                return Response(serializer.data)
+            return Response({'message' : serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
+            
             #otherwise return the requested list
