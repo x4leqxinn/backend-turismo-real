@@ -459,7 +459,7 @@ class Persona(BaseModel):
     ap_paterno = models.CharField(max_length=50)
     ap_materno = models.CharField(max_length=50)
     fecha_nacimiento = models.DateField()
-    telefono = models.CharField(max_length=10)
+    telefono = models.CharField(max_length=20)
     num_calle = models.CharField(max_length=10)
     calle = models.CharField(max_length=30)
     id_ciu = models.IntegerField()
