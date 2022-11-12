@@ -263,7 +263,7 @@ class ListCheckListProductSerializer(serializers.Serializer):
                     'id' : room.id_sal.id,
                     'descripcion' : room.id_sal.descripcion                    
                 },
-                'imagen' : room.imagen_sala.url if room.imagen_sala.url == '' else ''
+                'imagen' : room.imagen_sala.url if room.imagen_sala.url != '' else ''
             })
 
             self.get_detail_product(DetalleProducto.objects.filter(id_det = room.id))
