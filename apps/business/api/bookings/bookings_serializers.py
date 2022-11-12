@@ -232,7 +232,8 @@ class UpdateCheckListProductSerializer(serializers.Serializer):
 
 class ListCheckListProductSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
-    serializer_data = {} 
+    serializer_data = {}
+    serializer_list = []
     
     def validate_pk(self, value):
         exists = Vivienda.objects.filter(id = value).exists()
@@ -254,16 +255,18 @@ class ListCheckListProductSerializer(serializers.Serializer):
                     'descripcion' : product.id_est.descripcion
                 }
             })
+
+            self.serializer_list.append(self.serializer_data)
             
     def get_detail_room(self, queryset):
         for room in queryset:
             self.add_hash('detalle_sala', {
                 'id_detalle' : room.id,
+                'imagen' : room.imagen_sala.url if room.imagen_sala.url != '' else '',
                 'tipo_sala' : {
                     'id' : room.id_sal.id,
                     'descripcion' : room.id_sal.descripcion                    
-                },
-                'imagen' : room.imagen_sala.url if room.imagen_sala.url != '' else ''
+                }
             })
 
             self.get_detail_product(DetalleProducto.objects.filter(id_det = room.id))
@@ -277,4 +280,4 @@ class ListCheckListProductSerializer(serializers.Serializer):
         room_queryset = DetalleSala.objects.filter(id_inv = inventory.id)
         self.add_hash('pk',pk)
         self.get_detail_room(room_queryset)
-        return self.serializer_data
+        return self.serializer_list
