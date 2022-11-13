@@ -6,3 +6,8 @@ def genericDelete(db_user : str, pk : int, model_name : str):
         outval = cursor.var(int).var
         cursor.callproc("PKG_UTILS.SP_DELETE_ENTITY",[pk,model_name,outval])        
     return outval.getvalue()
+
+
+def generate_fine(db_user : str, pk : int):
+    with connections[db_user].cursor() as cursor:
+        cursor.callproc("PKG_BUSINESS.SP_FINE_VALUE",[pk]) 

@@ -5,10 +5,11 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from apps.base.stored_procedures import genericDelete
+from apps.base.stored_procedures import genericDelete, generate_fine
 from db_routers.permissions.db_connection import oracle_connection
 from rest_framework.decorators import action
 from apps.users.models import User
+
 
 class BookingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -195,4 +196,15 @@ class BookingViewSet(viewsets.GenericViewSet):
                 return Response(serializer.data)
             return Response({'message' : serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
             
-            #otherwise return the requested list
+
+    @action(methods=['GET'], detail=True, url_path='fine')
+    def fine(self, request, pk = None):
+        if pk is None:
+            return Response({'message' : 'Debe enviar un pk.'}, status = status.HTTP_400_BAD_REQUEST)
+        exists = CheckOut.objects.filter(id = pk).exists()
+        if exists:
+            generate_fine('turismo_real',pk)
+            return Response({'message':'Multa generada con éxito!'})
+        return Response({'message' : 'No se pudo generar la multa para el checkout id {pk}'})
+
+            # generate_fine
