@@ -50,7 +50,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     image = models.ImageField('Imagen de perfil', upload_to='user_profile/', default='', max_length=255, null=True, blank = True)
     role = models.ForeignKey(UserRole, on_delete = models.CASCADE, verbose_name = 'Rol Usuario', null = True)
-    person = models.OneToOneField(Persona, on_delete = models.CASCADE, verbose_name = 'Persona', null = True)
+    person = models.OneToOneField('people.Persona', on_delete = models.CASCADE, verbose_name = 'Persona', null = True)
 
     is_staff = models.BooleanField(default=False) # must needed, otherwise
     is_active = models.BooleanField(default=True) # must needed, otherwise
