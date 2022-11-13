@@ -205,6 +205,4 @@ class BookingViewSet(viewsets.GenericViewSet):
         if exists:
             generate_fine('turismo_real',pk)
             return Response({'message':'Multa generada con éxito!'})
-        return Response({'message' : 'No se pudo generar la multa para el checkout id {pk}'})
-
-            # generate_fine
+        return Response({'message' : 'No se pudo generar la multa para el checkout id ' + pk })
