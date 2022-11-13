@@ -235,8 +235,6 @@ class UpdateCheckListProductSerializer(serializers.Serializer):
 
 class ListCheckListProductSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
-    serializer_data = {}
-    serializer_list = []
     
     def validate_pk(self, value):
         exists = Vivienda.objects.filter(id = value).exists()
@@ -244,44 +242,45 @@ class ListCheckListProductSerializer(serializers.Serializer):
             raise serializers.ValidationError('La vivienda no existe.')
         return value
     
-    def get_detail_product(self,queryset):
+    def get_detail_products(self, pk):
+        queryset = DetalleProducto.objects.filter(id_det = pk)
+        product_list = []
         for product in queryset:
-            self.add_hash('detalle_producto' , {
+            data = {
                 'id_detalle' : product.id,
                 'producto' : {
                     'nombre' : product.id_pro.descripcion,
                     'precio' : product.id_pro.precio,
                     'categoria' : product.id_pro.id_cat.descripcion,
-                },
-                'estado' : {
-                    'id' : product.id_est.id,
-                    'descripcion' : product.id_est.descripcion
+                    'estado' : {
+                            'id' : product.id_est.id,
+                            'descripcion' : product.id_est.descripcion
+                        }
                 }
-            })
-            print('uwu')
-            self.serializer_list.append(self.serializer_data)
+            }
+            product_list.append(data)
+        return product_list
+
             
     def get_detail_room(self, queryset):
+        room_list = []
         for room in queryset:
-            self.add_hash('detalle_sala', {
-                'id_detalle' : room.id,
-                'imagen' : room.imagen_sala.url if room.imagen_sala.url != '' else '',
-                'tipo_sala' : {
-                    'id' : room.id_sal.id,
-                    'descripcion' : room.id_sal.descripcion                    
+            data = {
+                    'detalle_sala' : {
+                    'id_detalle' : room.id,
+                    'imagen' : room.imagen_sala.url if room.imagen_sala.url != '' else '',
+                    'tipo_sala' : {
+                        'id' : room.id_sal.id,
+                        'descripcion' : room.id_sal.descripcion,
+                        'detalle_producto' : self.get_detail_products(room.id)                 
+                    }
                 }
-            })
-
-            self.get_detail_product(DetalleProducto.objects.filter(id_det = room.id))
-
-            
-    def add_hash(self, key, value):
-        self.serializer_data[key] = value
+            }
+            room_list.append(data)
+        return room_list
 
     def to_representation(self, pk):
         inventory = Inventario.objects.filter(id_viv = pk).first()
         room_queryset = DetalleSala.objects.filter(id_inv = inventory.id)
-        self.serializer_list = []
-        self.add_hash('pk',pk)
-        self.get_detail_room(room_queryset)
-        return self.serializer_list
+        return self.get_detail_room(room_queryset)
+
