@@ -167,6 +167,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 
         try:
             checkin = CheckIn.objects.get(id_res = instance.id)
+            data['checkin_pk'] = checkin.id 
             data['check_in'] = checkin.fecha_llegada
             data['estado_checkin'] = checkin.estado_checkin
         except Exception as e:
@@ -174,6 +175,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             data['estado_checkin'] = 'N/A'
         try:
             checkout = CheckOut.objects.get(id_res = instance.id)
+            data['checkout_pk'] = checkout.id
             data['check_out'] = checkout.fecha_salida
             data['estado_checkout'] = checkout.estado_checkout
             data['multa'] = checkout.total_multa if checkout.total_multa else 0
