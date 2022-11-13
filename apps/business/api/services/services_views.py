@@ -103,3 +103,15 @@ class ServiceViewSet(viewsets.GenericViewSet):
         locations = UbicacionTrans.objects.filter(id_ciu = city_pk, estado = 'ACTIVO')
         serializer = LocationServiceSerializer(locations, many = True)
         return Response(serializer.data)
+
+    @action(methods=['GET'], detail=False, url_path = 'clients')
+    def get_clients(self, request):
+        pk = request.query_params.get('pk','')
+        if pk == '':
+            return Response({'message' : 'Debe mandar un pk!.'}, status = status.HTTP_400_BAD_REQUEST)
+        exists = Conductor.objects.filter(id = pk).exists()
+        if not exists:
+            return Response({'message' : 'Conductor no encontrado.'}, status = status.HTTP_404_NOT_FOUND)
+        
+        serializer = ClientFormatSerializer(pk)
+        return Response(serializer.data)
