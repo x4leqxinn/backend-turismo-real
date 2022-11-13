@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from apps.base.models.db_models import DetServMov, Servicio, UbicacionTrans
-
+from apps.base.models.db_models import DetServMov, Servicio, UbicacionTrans, Cliente, Conductor, DetServMov, Servicio, Reserva, TransporteIda, TransporteVuelta
+from apps.locations.models import *
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
@@ -40,3 +40,57 @@ class ContactForm(serializers.Serializer):
         email = self.validated_data['email']
         message = self.validated_data['message']
         #send_email(from=email, message=message)
+
+
+
+class ClientFormatSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()            
+
+    def to_representation(self, value):
+        queryset = DetServMov.objects.filter(id_con = value)
+        detail_list = []
+        
+        for x in queryset:
+            data = {
+                'fecha_inicio' : x.fecha_inicio,
+                'hora_inicio' : x.hora_inicio,
+                'fecha_termino' : x.fecha_termino,
+                'hora_termino' : x.hora_termino,
+                'nombre' : x.id_mov.id.id_reserva.id_cli.id.nombre + ' ' + x.id_mov.id.id_reserva.id_cli.id.ap_paterno + ' ' + x.id_mov.id.id_reserva.id_cli.id.ap_materno,
+                'telefono' : x.id_mov.id.id_reserva.id_cli.id.telefono
+            } 
+            
+            if x.id_mov.id.id_tip.id == 1:
+                try:
+                    transport = TransporteIda.objects.filter(id_trans = x.id_mov.id.id).first()
+                    city = Cities.objects.get(id = transport.id_ub_trans.id_ciu)
+                    data['tr_ida'] = {
+                        'nombre' : transport.id_ub_trans.nombre,
+                        'precio' : transport.id_ub_trans.precio,
+                        'tipo_ubicacion' : transport.id_ub_trans.id_tip.descripcion,
+                        'ciudad' : city.name
+                    }
+                except Exception as e:
+                    print(e)
+                    
+                try:
+                    transport = TransporteVuelta.objects.filter(id_trans = x.id_mov.id.id).first()
+                    city = Cities.objects.get(id = transport.id_ub_trans.id_ciu)
+                    data['tr_vuelta'] = {
+                        'nombre' : transport.id_ub_trans.nombre,
+                        'precio' : transport.id_ub_trans.precio,
+                        'tipo_ubicacion' : transport.id_ub_trans.id_tip.descripcion,
+                        'ciudad' : city.name
+                    }
+                except Exception as e:
+                    print(e)
+
+                print('Servicio de transporte')
+            
+            if x.id_mov.id.id_tip.id == 2:
+                print('Servicio de Tour')
+            
+            detail_list.append(data)
+
+
+        return {"servicios" : detail_list}
