@@ -258,7 +258,7 @@ class ListCheckListProductSerializer(serializers.Serializer):
                     'descripcion' : product.id_est.descripcion
                 }
             })
-
+            print('uwu')
             self.serializer_list.append(self.serializer_data)
             
     def get_detail_room(self, queryset):
@@ -281,9 +281,7 @@ class ListCheckListProductSerializer(serializers.Serializer):
     def to_representation(self, pk):
         inventory = Inventario.objects.filter(id_viv = pk).first()
         room_queryset = DetalleSala.objects.filter(id_inv = inventory.id)
+        self.serializer_list = []
         self.add_hash('pk',pk)
         self.get_detail_room(room_queryset)
-        print(len(self.serializer_list))
-        #print(self.serializer_list[0])
-        
-        return self.serializer_list[0]
+        return self.serializer_list
