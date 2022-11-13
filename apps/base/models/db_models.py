@@ -9,9 +9,12 @@ from django.db import models
 from apps.base.models.base_model import BaseModel
 
 
+# business, people, users
+
 class Acompaniante(models.Model):
-    id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='id', primary_key=True)
     class Meta:
+        app_label = 'people'
         managed = True
         db_table = 'acompaniante'
         verbose_name = "Acompañante"
@@ -23,8 +26,7 @@ class Acompaniante(models.Model):
 
 
 class Cargo(BaseModel):
-    descripcion = models.CharField(max_length=100)
-
+    descripcion = models.CharField(max_length=100, null = False, blank = False)
 
     class Meta:
         managed = True
@@ -36,7 +38,7 @@ class Cargo(BaseModel):
     def __str__(self) -> str:
         return self.descripcion
 class Categoria(BaseModel):
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100, null=False, blank=False)
     class Meta:
         managed = True
         db_table = 'categoria'
@@ -48,12 +50,13 @@ class Categoria(BaseModel):
         return self.descripcion
 
 class CheckIn(BaseModel):
-    fecha_llegada = models.DateField()
-    hora_llegada = models.CharField(max_length=5)
+    app_label = 'business'
+    fecha_llegada = models.DateField(null=False, blank=False)
+    hora_llegada = models.CharField(max_length=5, null=False, blank=False)
     firma = models.CharField(max_length=1, null= True)
-    estado_checkin = models.CharField(max_length=30)
-    id_res = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_res')
-    id_rec = models.ForeignKey('Recepcionista', models.DO_NOTHING, db_column='id_rec')
+    estado_checkin = models.CharField(max_length=30, null=False, blank=False)
+    id_res = models.OneToOneField('business.Reserva', models.DO_NOTHING, db_column='id_res')
+    id_rec = models.ForeignKey('people.Recepcionista', models.DO_NOTHING, db_column='id_rec')
 
     class Meta:
         managed = True
@@ -65,9 +68,10 @@ class CheckIn(BaseModel):
     def __str__(self) -> str:
         return 'ID : ' + str(self.id)
 class CheckOut(BaseModel):
-    fecha_salida = models.DateField()
-    hora_salida = models.CharField(max_length=5, blank=True, null=True)
-    estado_checkout = models.CharField(max_length=30)
+    app_label = 'business'
+    fecha_salida = models.DateField(null=False, blank=False)
+    hora_salida = models.CharField(max_length=5, blank=False, null=False)
+    estado_checkout = models.CharField(max_length=30, null=False, blank=False)
     total_multa = models.IntegerField(blank=True, null=True)
     id_rec = models.ForeignKey('Recepcionista', models.DO_NOTHING, db_column='id_rec')
     id_res = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_res')
@@ -82,15 +86,17 @@ class CheckOut(BaseModel):
     def __str__(self) -> str:
         return 'ID : ' + str(self.id)
 class CliAcom(BaseModel):
-    id_res = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_res')
+    app_label = 'people'
+    id_res = models.ForeignKey('business.Reserva', models.DO_NOTHING, db_column='id_res')
     id_aco = models.ForeignKey(Acompaniante, models.DO_NOTHING, db_column='id_aco')
-    id_cli = models.ForeignKey('Cliente', models.DO_NOTHING, db_column='id_cli')
+    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli')
     class Meta:
         managed = True
         db_table = 'cli_acom'
 
 
 class CliCom(BaseModel):
+    app_label = 'users'
     id_cli = models.ForeignKey('Cliente', models.DO_NOTHING, db_column='id_cli')
     id_viv = models.ForeignKey('Vivienda', models.DO_NOTHING, db_column='id_viv')
     class Meta:
@@ -99,6 +105,7 @@ class CliCom(BaseModel):
 
 
 class Cliente(models.Model):
+    app_label = 'people'
     id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
 
     class Meta:
@@ -113,7 +120,7 @@ class Cliente(models.Model):
 
 
 class Color(BaseModel):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50, null=False, blank=False)
 
     class Meta:
         managed = True
@@ -126,7 +133,8 @@ class Color(BaseModel):
         return self.nombre
 
 class Comentario(BaseModel):
-    descripcion = models.CharField(max_length=200)
+    app_label = 'users'
+    descripcion = models.CharField(max_length=200, null=False, blank=False)
     id_cli = models.OneToOneField(CliCom, models.DO_NOTHING, db_column='id_cli')
 
     class Meta:
@@ -141,7 +149,7 @@ class Comentario(BaseModel):
 
 
 class Marca(BaseModel):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, null=False, blank=False)
     class Meta:
         managed = True
         db_table = 'marca'
@@ -153,7 +161,7 @@ class Marca(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Modelo(BaseModel):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, null=False, blank=False)
     class Meta:
         managed = True
         db_table = 'modelo'
@@ -182,7 +190,8 @@ class Vehiculo(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Conductor(models.Model):
-    id = models.OneToOneField('Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
+    app_label = 'people'
+    id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
     id_veh = models.OneToOneField('Vehiculo', models.DO_NOTHING, db_column='id_veh')
 
     class Meta:
@@ -238,12 +247,13 @@ class Destino(BaseModel):
 
 
 class DetServMov(BaseModel):
-    id_con = models.ForeignKey(Conductor, models.DO_NOTHING, db_column='id_con')
-    id_mov = models.ForeignKey('Movilizacion', models.DO_NOTHING, db_column='id_mov')
-    fecha_inicio = models.DateField()
-    hora_inicio = models.CharField(max_length=5)
-    fecha_termino = models.DateField()
-    hora_termino = models.CharField(max_length=5)
+    app_label = 'business'
+    id_con = models.ForeignKey('people.Conductor', models.DO_NOTHING, db_column='id_con')
+    id_mov = models.ForeignKey('business.Movilizacion', models.DO_NOTHING, db_column='id_mov')
+    fecha_inicio = models.DateField(null=False, blank=False)
+    hora_inicio = models.CharField(max_length=5, null=False, blank=False)
+    fecha_termino = models.DateField(null=False, blank=False)
+    hora_termino = models.CharField(max_length=5, null=False, blank=False)
     cant_pasajeros = models.IntegerField()
     class Meta:
         managed = True
@@ -258,9 +268,10 @@ class DetalleMulta(BaseModel):
 
 
 class DetalleProducto(BaseModel):
-    id_est = models.ForeignKey('EstadoProducto', models.DO_NOTHING, db_column='id_est')
-    id_det = models.ForeignKey('DetalleSala', models.DO_NOTHING, db_column='id_det')
-    id_pro = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_pro')
+    app_label = 'business'
+    id_est = models.ForeignKey('business.EstadoProducto', models.DO_NOTHING, db_column='id_est')
+    id_det = models.ForeignKey('business.DetalleSala', models.DO_NOTHING, db_column='id_det')
+    id_pro = models.ForeignKey('business.Producto', models.DO_NOTHING, db_column='id_pro')
 
     class Meta:
         managed = True
@@ -268,6 +279,7 @@ class DetalleProducto(BaseModel):
 
 
 class DetalleSala(BaseModel):
+    app_label = 'business'
     id_inv = models.ForeignKey('Inventario', models.DO_NOTHING, db_column='id_inv')
     id_sal = models.ForeignKey('Sala', models.DO_NOTHING, db_column='id_sal')
     imagen_sala = models.ImageField(upload_to='rooms/')
@@ -287,8 +299,9 @@ class DetalleSala(BaseModel):
 
 
 class DetalleTour(BaseModel):
-    id_tou = models.ForeignKey('Tour', models.DO_NOTHING, db_column='id_tou')
-    id_des = models.ForeignKey(Destino, models.DO_NOTHING, db_column='id_des')
+    app_label = 'business'
+    id_tou = models.ForeignKey('business.Tour', models.DO_NOTHING, db_column='id_tou')
+    id_des = models.ForeignKey('business.Destino', models.DO_NOTHING, db_column='id_des')
 
     class Meta:
         managed = True
@@ -296,7 +309,8 @@ class DetalleTour(BaseModel):
 
 
 class Disponibilidad(BaseModel):
-    descripcion = models.CharField(max_length=20)
+    app_label = 'business'
+    descripcion = models.CharField(max_length=20, null=False, blank=False)
 
     class Meta:
         managed = True
@@ -309,7 +323,8 @@ class Disponibilidad(BaseModel):
         return self.descripcion
 
 class DocIdentidad(BaseModel):
-    descripcion = models.CharField(max_length=80)
+    app_label = 'people'
+    descripcion = models.CharField(max_length=80, null=False, blank=False)
     class Meta:
         managed = True
         db_table = 'doc_identidad'
@@ -320,6 +335,7 @@ class DocIdentidad(BaseModel):
     def __str__(self) -> str:
         return self.descripcion
 class Documento(BaseModel):
+    app_label = 'business'
     id_tip = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='id_tip')
 
     class Meta:
@@ -333,7 +349,8 @@ class Documento(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Empleado(models.Model):
-    id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
+    app_label = 'people'
+    id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='id', primary_key=True)
     sueldo = models.IntegerField()
     fecha_contrato = models.DateField()
     id_car = models.ForeignKey(Cargo, models.DO_NOTHING, db_column='id_car')
@@ -361,7 +378,7 @@ class ErrorProceso(models.Model):
 
 
 class EstadoCivil(BaseModel):
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100, null=False, blank=False)
     class Meta:
         managed = True
         db_table = 'estado_civil'
@@ -373,7 +390,8 @@ class EstadoCivil(BaseModel):
         return self.descripcion
 
 class EstadoProducto(BaseModel):
-    descripcion = models.CharField(max_length=20)
+    app_label = 'business'
+    descripcion = models.CharField(max_length=20, null=False, blank=False)
 
     class Meta:
         managed = True
