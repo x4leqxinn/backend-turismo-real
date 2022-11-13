@@ -176,6 +176,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             checkout = CheckOut.objects.get(id_res = instance.id)
             data['check_out'] = checkout.fecha_salida
             data['estado_checkout'] = checkout.estado_checkout
+            data['multa'] = checkout.total_multa if checkout.total_multa else 0
         except Exception as e:
             data['check_out'] = 'N/A'
             data['estado_checkout'] = 'N/A'
