@@ -193,7 +193,7 @@ class BookingViewSet(viewsets.GenericViewSet):
 
             if serializer.is_valid():
                 serializer = ListCheckListProductSerializer(pk, many = True)
-                return Response(serializer.data)
+                return Response(serializer.data[0])
             return Response({'message' : serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
             
 
