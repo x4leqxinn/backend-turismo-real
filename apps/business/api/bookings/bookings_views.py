@@ -46,7 +46,7 @@ class BookingViewSet(viewsets.GenericViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk = None):
-        queryset = Reserva.objects.filter(estado = 'ACTIVO')
+        queryset = Reserva.objects.filter()
         booking = get_object_or_404(queryset, pk=pk)
         serializer = BookingDetailSerializer(booking)
         return Response(serializer.data)
