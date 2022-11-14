@@ -29,8 +29,8 @@ class BookingViewSet(viewsets.GenericViewSet):
 
     def get_queryset(self, pk = None):
         if pk is None:
-            return self.get_serializer().Meta.model.objects.filter(estado = 'ACTIVO')
-        return self.get_serializer().Meta.model.objects.filter(id = pk, estado = 'ACTIVO').first()
+            return self.get_serializer().Meta.model.objects.filter()
+        return self.get_serializer().Meta.model.objects.filter(id = pk).first()
 
     def list(self, request):
         # with filter
