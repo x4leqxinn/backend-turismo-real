@@ -10,6 +10,7 @@ env = environ.Env()
 environ.Env.read_env(env_file='./.env') 
 
 X_FRAME_OPTIONS = 'ALLOWALL'
+SILENCED_SYSTEM_CHECKS = ['security.W019']
 
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 

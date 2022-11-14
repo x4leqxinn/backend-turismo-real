@@ -2,6 +2,7 @@ from apps.base.models.db_models import *
 from apps.users.models import User, UserRole
 from django.contrib.auth.models import Group
 from django.db import connections
+#from administration interface
 
 ## DJANGO ADMIN
 #TEMAS : list[The]
