@@ -1143,13 +1143,126 @@ class DetalleProductoAdmin(admin.ModelAdmin):
 admin.site.register(DetalleProducto,DetalleProductoAdmin)
 
 
-# TODO: Falta personalizar estos modelos
-admin.site.register(Reserva)
+class ReservaAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Reserva
+        fields = ('__all__')
 
-admin.site.register(Compra)
+## TODO: Revisar estos modelos
+class ReservaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id', )
+    search_fields = ('id','estado')
+    list_display_links = ('id',)
+    list_filter= ('estado','id') 
+    list_per_page = 5
+    form = ReservaAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'ACTIVO'
+            detalleProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'INACTIVO'
+            detalleProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+        
+admin.site.register(Reserva,ReservaAdmin)
+
+class CompraAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Compra
+        fields = ('__all__')
+
+class CompraAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id', )
+    search_fields = ('id','estado')
+    list_display_links = ('id',)
+    list_filter= ('estado','id',) 
+    list_per_page = 5
+    form = CompraAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'ACTIVO'
+            detalleProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'INACTIVO'
+            detalleProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+        
+admin.site.register(Compra,CompraAdmin)
 #admin.site.register(DetalleServicio)
+class ServicioAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = Servicio
+        fields = ('__all__')
 
-admin.site.register(Servicio)
+class ServicioAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id', )
+    search_fields = ('id','estado')
+    list_display_links = ('id',)
+    list_filter= ('estado','id',) 
+    list_per_page = 5
+    form = ServicioAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'ACTIVO'
+            detalleProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for detalleProducto in queryset:
+            detalleProducto.estado = 'INACTIVO'
+            detalleProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+        
+admin.site.register(Servicio,ServicioAdmin)
 
 # Movilizacion Admin
 class MovilizacionAdminForm(forms.ModelForm):    
