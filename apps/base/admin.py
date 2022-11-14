@@ -1292,30 +1292,296 @@ class MovilizacionAdmin(admin.ModelAdmin):
 
 admin.site.register(Movilizacion,MovilizacionAdmin)
 
-admin.site.register(Transporte)
-admin.site.register(Tour)
-admin.site.register(DetalleTour)
-admin.site.register(Destino)
+class TransporteAdminForm(forms.ModelForm):    
+    class Meta:
+        model = Transporte
+        exclude = ('creacion','actualizacion')
+
+class TransporteAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = TransporteAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Transporte,TransporteAdmin)
+
+#admin.site.register(Tour)
+#admin.site.register(DetalleTour)
+#admin.site.register(Destino)
 admin.site.register(Vehiculo)
 admin.site.register(DetServMov)
 admin.site.register(CheckIn)
 admin.site.register(CheckOut)
-admin.site.register(DetalleMulta)
-admin.site.register(Multa)
-admin.site.register(TipoMulta)
-admin.site.register(Documento)
-admin.site.register(DCheck)
-admin.site.register(Registro)
-admin.site.register(Salida)
-admin.site.register(DCoordinacion)
+#admin.site.register(DetalleMulta)
+#admin.site.register(Multa)
+#admin.site.register(TipoMulta)
 
-admin.site.register(Acompaniante)
-admin.site.register(CliAcom)
-admin.site.register(UbicacionTrans)
-admin.site.register(TipoUbicacion)
-admin.site.register(TransporteIda)
-admin.site.register(TransporteVuelta)
+#admin.site.register(Documento)
+#admin.site.register(DCheck)
+#admin.site.register(Registro)
+#admin.site.register(Salida)
+#admin.site.register(DCoordinacion)
 
-admin.site.register(DetProyecto)
+class AcompanianteAdminForm(forms.ModelForm):    
+    class Meta:
+        model = Acompaniante
+        exclude = ('creacion','actualizacion')
+
+class AcompanianteAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = AcompanianteAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Acompaniante,AcompanianteAdmin)
+
+class UbicacionTransAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = UbicacionTrans
+        fields = '__all__'
+
+class UbicacionTransAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id',)
+    search_fields = ('id','estado')
+    #list_editable = ()
+    list_display_links = ('id',)
+    list_filter= ('estado',) 
+    list_per_page = 5
+    form = UbicacionTransAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'ACTIVO'
+            estadoProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'INACTIVO'
+            estadoProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(UbicacionTrans,UbicacionTransAdmin)
+
+class CliAcomAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = CliAcom
+        fields = '__all__'
+
+class CliAcomAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id',)
+    search_fields = ('id','estado')
+    #list_editable = ()
+    list_display_links = ('id',)
+    list_filter= ('estado',) 
+    list_per_page = 5
+    form = CliAcomAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'ACTIVO'
+            estadoProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'INACTIVO'
+            estadoProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(CliAcom,CliAcomAdmin)
+
+
+class TipoUbicacionAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = TipoUbicacion
+        fields = '__all__'
+
+class TipoUbicacionAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id',)
+    search_fields = ('id','estado')
+    #list_editable = ()
+    list_display_links = ('id',)
+    list_filter= ('estado',) 
+    list_per_page = 5
+    form = TipoUbicacionAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'ACTIVO'
+            estadoProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'INACTIVO'
+            estadoProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(TipoUbicacion,TipoUbicacionAdmin)
+
+
+class TransporteIdaAdminForm(forms.ModelForm):    
+    class Meta:
+        model = TransporteIda
+        exclude = ('creacion','actualizacion')
+
+class TransporteIdaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = TransporteIdaAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(TransporteIda,TransporteIdaAdmin)
+
+class TransporteVueltaAdminForm(forms.ModelForm):    
+    class Meta:
+        model = TransporteVuelta
+        exclude = ('creacion','actualizacion')
+
+class TransporteVueltaAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id',)
+    ordering = ('id',)
+    search_fields = ('id',)
+    #list_editable = ('descripcion',)
+    list_display_links = ('id',)
+    list_filter= ('id',) 
+    list_per_page = 5
+    form = TransporteVueltaAdminForm
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(TransporteVuelta,TransporteVueltaAdmin)
+
+class DetProyectoAdminForm(forms.ModelForm):
+    estado = ChoiceField(choices=STATE_CHOICES)
+    
+    class Meta:
+        model = DetProyecto
+        fields = '__all__'
+
+class DetProyectoAdmin(admin.ModelAdmin):
+    actions = ['active_state','inactive_state']
+    list_display = ('id','estado')
+    ordering = ('id',)
+    search_fields = ('id','estado')
+    #list_editable = ()
+    list_display_links = ('id',)
+    list_filter= ('estado',) 
+    list_per_page = 5
+    form = DetProyectoAdminForm
+
+    @admin.action(description='Cambiar estado ACTIVO')
+    def active_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'ACTIVO'
+            estadoProducto.save()
+    
+    @admin.action(description='Cambiar estado INACTIVO')
+    def inactive_state(self,request,queryset):
+        for estadoProducto in queryset:
+            estadoProducto.estado = 'INACTIVO'
+            estadoProducto.save()
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(DetProyecto,DetProyectoAdmin)
+
 
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
