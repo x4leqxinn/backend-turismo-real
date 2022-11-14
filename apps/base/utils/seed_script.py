@@ -120,7 +120,7 @@ PERSONAS : list[Persona] = [
     #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     
     ## CLIENTES PARA TEST
-    Persona(run = '87843',dv = '1', nombre = 'Exclavo' , snombre = 'a' , ap_paterno = 'Sexual', ap_materno = 'uwu', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '55555555',dv = '1', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 ]
 
 EMPLEADOS : list[Empleado] = [
@@ -174,29 +174,29 @@ USUARIOS : list[User] = [
 ]
 
 PRODUCTOS : list[Producto] = [
-    Producto(id_cat = CATEGORIAS[1],descripcion ='Televisor', precio = 999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cocina',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Refrigerador',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Ducha',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Microondas',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Aspiradora',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Juguera',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Tostador',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Velador',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cómoda',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Clóset',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Escritorio',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Armario',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Estante',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Sofá',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cama 2 plazas',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cama individual',precio = 99999),
-    Producto(id_cat = CATEGORIAS[0],descripcion = 'Mesa ',precio = 99999),
-    Producto(id_cat = CATEGORIAS[2],descripcion = 'Secador ',precio = 99999),
-    Producto(id_cat = CATEGORIAS[2],descripcion = 'Depilador',precio = 99999),
-    Producto(id_cat = CATEGORIAS[2],descripcion = 'Plancha alisadora',precio = 99999),
-    Producto(id_cat = CATEGORIAS[2],descripcion = 'Afeitadora',precio = 99999),
-    Producto(id_cat = CATEGORIAS[1],descripcion = 'Lavadora',precio = 99999)
+    Producto(id_cat = CATEGORIAS[1],descripcion ='Televisor', precio = 200000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cocina',precio = 150000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Refrigerador',precio = 200000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Ducha',precio = 50000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Microondas',precio = 20000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Aspiradora',precio = 10000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Juguera',precio = 10000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Tostador',precio = 10000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Velador',precio = 35000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cómoda',precio = 40000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Clóset',precio = 40000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Escritorio',precio = 70000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Armario',precio = 70000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Estante',precio = 80000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Sofá',precio = 100000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cama 2 plazas',precio = 200000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Cama individual',precio = 100000),
+    Producto(id_cat = CATEGORIAS[0],descripcion = 'Mesa ',precio = 130000),
+    Producto(id_cat = CATEGORIAS[2],descripcion = 'Secador ',precio = 10000),
+    Producto(id_cat = CATEGORIAS[2],descripcion = 'Depilador',precio = 10000),
+    Producto(id_cat = CATEGORIAS[2],descripcion = 'Plancha alisadora',precio = 15000),
+    Producto(id_cat = CATEGORIAS[2],descripcion = 'Afeitadora',precio = 30000),
+    Producto(id_cat = CATEGORIAS[1],descripcion = 'Lavadora',precio = 200000)
 ]
 
 TIPOS_DOCUMENTOS : list[TipoDocumento] = [
@@ -222,15 +222,15 @@ TIPOS_UBICACIONES : list[TipoUbicacion] = [
 ]
 
 UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
+    UbicacionTrans(nombre = 'Aeropuerto Arturo Merino Benitez', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
     UbicacionTrans(nombre = 'Terminal de buses Centro', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
-    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19130),
-    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19130),
-    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19080),
-    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19080),
-    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 18994),
-    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
-    UbicacionTrans(nombre = 'Terminal de buses', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
-    UbicacionTrans(nombre = 'Aeropuerto', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
+    UbicacionTrans(nombre = 'Terminal de buses Viña Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19130),
+    UbicacionTrans(nombre = 'Aeropuerto Viña del Mar ', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19130),
+    UbicacionTrans(nombre = 'Terminal de buses Pucón Sur', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19080),
+    UbicacionTrans(nombre = 'Terminal de buses Serena', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 18994),
+    UbicacionTrans(nombre = 'Aeropuerto La Serena', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
+    UbicacionTrans(nombre = 'Terminal de buses Varas Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
+    UbicacionTrans(nombre = 'Aeropuerto Puerto Varas', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
 ]
 
 VIVIENDAS : list[Vivienda] = [
