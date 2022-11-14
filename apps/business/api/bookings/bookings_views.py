@@ -65,7 +65,7 @@ class BookingViewSet(viewsets.GenericViewSet):
             },
             status = status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk=None):
+    def delete_booking(self, pk = None):
         booking = self.get_queryset().filter(id = pk).update(estado = 'INACTIVO')
         try:
             services = Servicio.objects.filter(id_reserva = pk)
@@ -75,7 +75,10 @@ class BookingViewSet(viewsets.GenericViewSet):
             DetServMov.objects.filter(id_mov__in = id_list).update(estado = 'INACTIVO')
         except Exception as e:
             print(e)    
-            pass
+        return booking
+
+    def destroy(self, request, pk=None):
+        booking = self.delete_booking(pk)
         if booking:
             return Response(
                 {'message':'¡Reserva eliminada!.','value' : 1}, status = status.HTTP_200_OK)
@@ -141,7 +144,9 @@ class BookingViewSet(viewsets.GenericViewSet):
             if  check_in_serializer.validated_data['estado'] == 'CANCELADO':
                 checkout = CheckOut.objects.get(id_res = reserva.id)
                 checkout.estado_checkout = 'CANCELADO'
-                checkout.save()     
+                checkout.save()
+                # Se libera la fecha     
+                self.delete_booking(reserva.id)
             return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckIn!', 'error' : check_in_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
@@ -167,6 +172,9 @@ class BookingViewSet(viewsets.GenericViewSet):
         if check_out_serializer.is_valid():
             checkout.estado_checkout = check_out_serializer.validated_data['estado']
             checkout.save()
+
+            if check_out_serializer.validated_data['estado'] in ('COMPLETADO','CANCELADO'):
+                self.delete_booking(reserva.id)
             from templates.emails.utils import sendEmailClient
             sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
