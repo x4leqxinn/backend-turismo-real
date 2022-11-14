@@ -27,6 +27,7 @@ ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
 # Apps por defecto de django 
 BASE_APPS = [
+    'jazzmin',
     'admin_interface', # Customización del Admin de Django
     'colorfield', # Customización del Admin de Django
     'django.contrib.admin',
@@ -163,6 +164,7 @@ REST_FRAMEWORK = {
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, '../static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles')
 
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_PORT = env.str('EMAIL_PORT')
@@ -191,3 +193,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION' : 'none'
 }
+
