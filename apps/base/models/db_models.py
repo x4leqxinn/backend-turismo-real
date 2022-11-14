@@ -93,6 +93,9 @@ class CliAcom(BaseModel):
     class Meta:
         managed = True
         db_table = 'cli_acom'
+        verbose_name = "Detalle de Acompañante"
+        verbose_name_plural = "Detalles de Acompañantes"
+        ordering = ['id']
 
 
 class CliCom(BaseModel):
@@ -101,6 +104,9 @@ class CliCom(BaseModel):
     class Meta:
         app_label = 'users'
         managed = True
+        verbose_name = "Detalle comentario"
+        verbose_name_plural = "Detalle de comentarios"
+        ordering = ['id']
         db_table = 'cli_com'
 
 
@@ -211,6 +217,9 @@ class DCheck(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'd_check'
+        verbose_name = "Documento de Check"
+        verbose_name_plural = "Documentos de Check"
+        ordering = ['id']
 
 
 class DCoordinacion(models.Model):
@@ -221,7 +230,9 @@ class DCoordinacion(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'd_coordinacion'
-
+        verbose_name = "Documento de Coodinación"
+        verbose_name_plural = "Documentos de Coodinación"
+        ordering = ['id']
 
 class DatabaseDdl(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -261,6 +272,9 @@ class DetServMov(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'det_serv_mov'
+        verbose_name = "Detalles de servicio de Movilización"
+        verbose_name_plural = "Detalle de servicios de Movilización"
+        ordering = ['id']
 class DetalleMulta(BaseModel):
     id_mul = models.ForeignKey('Multa', models.DO_NOTHING, db_column='id_mul')
     id_che = models.ForeignKey(CheckOut, models.DO_NOTHING, db_column='id_che')
@@ -268,7 +282,9 @@ class DetalleMulta(BaseModel):
     class Meta:
         managed = True
         db_table = 'detalle_multa'
-
+        verbose_name = "Detalle de multa"
+        verbose_name_plural = "Detalles de multas"
+        ordering = ['id']
 
 class DetalleProducto(BaseModel):
     id_est = models.ForeignKey('business.EstadoProducto', models.DO_NOTHING, db_column='id_est')
@@ -279,6 +295,9 @@ class DetalleProducto(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'detalle_producto'
+        verbose_name = "Detalle de producto"
+        verbose_name_plural = "Detalles de productos"
+        ordering = ['id']
 
 
 class DetalleSala(BaseModel):
@@ -290,6 +309,9 @@ class DetalleSala(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'detalle_sala'
+        verbose_name = "Detalle de sala"
+        verbose_name_plural = "Detalles de salas"
+        ordering = ['id']
 
 
 #class DetalleServicio(BaseModel):
@@ -309,6 +331,9 @@ class DetalleTour(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'detalle_tour'
+        verbose_name = "Detalle de Tour"
+        verbose_name_plural = "Detalles de Tours"
+        ordering = ['id']
 
 
 class Disponibilidad(BaseModel):
@@ -450,7 +475,9 @@ class Inventario(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'inventario'
-
+        verbose_name = "Inventario"
+        verbose_name_plural = "Inventarios"
+        ordering = ['id']
 
 class Movilizacion(models.Model):
     id = models.OneToOneField('business.Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -458,7 +485,9 @@ class Movilizacion(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'movilizacion'
-
+        verbose_name = "Servicio de Movilización"
+        verbose_name_plural = "Servicios de Movilización"
+        ordering = ['id']
 
 class Multa(BaseModel):
     app_label = 'business'
@@ -562,7 +591,9 @@ class Registro(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'registro'
-
+        verbose_name = "Documento de Check-in"
+        verbose_name_plural = "Documentos de Check-in"
+        ordering = ['id']
 
 class Reserva(BaseModel):
     id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli')
@@ -579,7 +610,9 @@ class Reserva(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'reserva'
-
+        verbose_name = "Reserva"
+        verbose_name_plural = "Reservas"
+        ordering = ['id']
 
 class ResumenDepto(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -622,6 +655,9 @@ class Salida(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'salida'
+        verbose_name = "Documento de Check-out"
+        verbose_name_plural = "Documentos de Check-out"
+        ordering = ['id']
 
 class Sucursal(BaseModel):
     calle = models.CharField(max_length=20)
@@ -641,6 +677,9 @@ class TipoDocumento(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'tipo_documento'
+        verbose_name = "Tipo de documento"
+        verbose_name_plural = "Tipos de documentos"
+        ordering = ['id']
 
     def __str__(self):
         return 'Tipo Documento ' + self.descripcion
@@ -665,7 +704,9 @@ class TipoServicio(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'tipo_servicio'
-
+        verbose_name = "Tipo de servicio"
+        verbose_name_plural = "Tipos de servicios"
+        ordering = ['id']
 
 class TipoVivienda(BaseModel):
     descripcion = models.CharField(max_length=100, null=False, blank=False)
@@ -686,7 +727,9 @@ class Tour(models.Model):
         app_label = 'business'
         managed = True
         db_table = 'tour'
-
+        verbose_name = "Servicio de Tour"
+        verbose_name_plural = "Servicios de Tours"
+        ordering = ['id']
 
 class TramoAbono(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -711,12 +754,18 @@ class TramoMulta(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'tramo_multa'
+        verbose_name = "Tramo de multa"
+        verbose_name_plural = "Tramos de multas"
+        ordering = ['id']
 class Transporte(models.Model):
     id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True)
     class Meta:
         app_label = 'business'
         managed = True
         db_table = 'transporte'
+        verbose_name = "Servicio de transporte"
+        verbose_name_plural = "Servicios de transporte"
+        ordering = ['id']
 
 class TransporteIda(BaseModel):
     id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans')
@@ -726,7 +775,9 @@ class TransporteIda(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'transporte_ida'
-
+        verbose_name = "Servicio de transporte de ida"
+        verbose_name_plural = "Servicios de transportes de ida"
+        ordering = ['id']
 class TransporteVuelta(BaseModel):
     id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans')
     id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
@@ -735,14 +786,18 @@ class TransporteVuelta(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'transporte_vuelta'
-
+        verbose_name = "Servicio de transporte de vuelta"
+        verbose_name_plural = "Servicios de transportes de vuelta"
+        ordering = ['id']
 class TipoUbicacion(BaseModel):
     descripcion = models.CharField(max_length = 200, null=False, blank=False)
     class Meta:
         app_label = 'business'
         managed = True
         db_table = 'tipo_ubicacion'
-
+        verbose_name = "Tipo de ubicación"
+        verbose_name_plural = "Tipos de ubicaciones"
+        ordering = ['id']
 class UbicacionTrans(BaseModel):
     id_tip = models.ForeignKey('business.TipoUbicacion', models.DO_NOTHING, db_column='id_tip')
     id_ciu = models.IntegerField()
@@ -755,7 +810,9 @@ class UbicacionTrans(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'ubicacion_trans'
-
+        verbose_name = "Ubicación de transporte"
+        verbose_name_plural = "Ubicaciones de transporte"
+        ordering = ['id']
 class Vivienda(BaseModel):
     latitud = models.CharField(max_length=100, null=False, blank=False)
     longitud = models.CharField(max_length=100, null=False, blank=False)
@@ -799,7 +856,9 @@ class Compra(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'compra'
-
+        verbose_name = "Compra"
+        verbose_name_plural = "Compras"
+        ordering = ['id']
 class Servicio(BaseModel):
     precio = models.IntegerField(null=False, blank=False)
     id_tip = models.ForeignKey('business.TipoServicio', models.DO_NOTHING, db_column='id_tip')
@@ -808,7 +867,10 @@ class Servicio(BaseModel):
         app_label = 'business'
         managed = True
         db_table = 'servicio'
-    
+        verbose_name = "Servicio"
+        verbose_name_plural = "Servicios"
+        ordering = ['id']
+
     def to_dict(self):
         return {
             'id': self.id,
