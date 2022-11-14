@@ -72,17 +72,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('El email no puede contener datos de la contraseña.')
         return value
 
-    def validate(self, data):
-        if data['nombre'] == 'eliseo'.upper() and data['ap_paterno'] == 'concha'.upper():
-            raise serializers.ValidationError('Lo sentimos, el usuario que intentó registrar es degenerado =(')
-        
-        if data['nombre'] == 'freddy'.upper() and data['ap_paterno'] == 'campos'.upper():
-            raise serializers.ValidationError('Lo sentimos, el usuario que intentó registrar no tiene titulo de informático =(')
-
-        if data['nombre'] == 'luis'.upper() and data['ap_paterno'] == 'millao'.upper():
-            raise serializers.ValidationError('Lo sentimos, el usuario que intentó registrar es una mierda de profesor  =(')
-        
-        return data
 
     def create(self,validated_data):
         email = validated_data.pop("email")
