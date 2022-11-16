@@ -20,6 +20,48 @@ mantenimiento de un backend pensado para integrar distintas plataformas.
 
 ## Run Locally
 
+### Python
+
+Create env
+```
+python3 -m venv venv
+```
+
+Install requirements
+```
+pip install -r requirements.txt
+```
+
+Database migrations
+```
+python manage.py migrate --d turismo_real
+```
+
+Seeding Database
+```
+python manage.py seed
+```
+
+Server
+```
+python manage.py runserver
+```
+
+Drop database (optional)
+
+```
+python manage.py drop
+```
+
+## Docker
+
+Build docker file
+```
+docker build -t dockerfile .
+```
+
+
+
 ## Technologies
 * Python 3.9
 * HTML
