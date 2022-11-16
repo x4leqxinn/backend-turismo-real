@@ -12,33 +12,15 @@ mantenimiento de un backend pensado para integrar distintas plataformas.
 
 ( Portafolio de Título (10/08/2022) )
 
-## Instalación
+## Setup
 
-<hr>
+- _Django_
+- _Django restframework_
+- _Oracle Database 19c_
 
-> Entorno Virtual
-<a href="https://github.com/4lequinn/django_restframework_app/blob/main/ecommerce_rest/tmp/README.MD" _target="blank">More información</a>
+## Run Locally
 
-<div align="center">
-    <a href="https://github.com/4lequinn/django_restframework_app/blob/main/ecommerce_rest/tmp/README.MD" >
-        <img alt="Entorno Virtual" src="https://i.postimg.cc/pyN1F9hB/venv.png" height="500px" width="1000px">
-    </a>
-</div>
-
-<hr>
-
-> Docker
-<a href="https://github.com/4lequinn/django_restframework_app/blob/main/ecommerce_rest/tmp/README.MD" _target="blank">Más información</a>
-
-<div align="center">
-    <a href="https://github.com/4lequinn/django_restframework_app/blob/main/ecommerce_rest/tmp/README.MD" >
-        <img alt="Docker Compose" src="https://i.postimg.cc/XJS8xM7V/docker.png" height="500px" width="1000px">
-    </a>
-</div>
-
-<hr>
-
-## Tecnologías
+## Technologies
 * Python 3.9
 * HTML
 * CSS
@@ -46,14 +28,14 @@ mantenimiento de un backend pensado para integrar distintas plataformas.
 * Django RestFramework
 * Oracle Database 19c
 
-## Herramientas
+## Tools
 * Visual Studio Code 
 * Git 
 * Github 
 * Docker
 * Docker Compose
 
-## Características
+## Features
 
 * Auth Token
 * APIView
@@ -70,7 +52,7 @@ mantenimiento de un backend pensado para integrar distintas plataformas.
 * Admin Site Config and Customization
 * Send Emails
 
-## Créditos
+## Credits
 
 Kitu Dev
 
