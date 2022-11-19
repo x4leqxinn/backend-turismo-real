@@ -57,6 +57,9 @@ urlpatterns = [
     # Enrutador para viviendas
     path('business-api/',include('apps.business.api.routers')),
 
+    # Enturador data analysis
+    path('ml/',include('apps.website.api.routers')),
+
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
     re_path(r'^.*/$', index, name='unmatched'),
