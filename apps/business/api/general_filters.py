@@ -4,13 +4,12 @@ from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProdu
 
 
 class DwellingFilter(django_filters.FilterSet):
-
     class Meta:
         model = Vivienda
         #fields = ('description',)
         
         fields = {
-            'id' : ['gt','lt','contains','exact'],
+            'id' : ['gt','lt','contains','exact','in'],
             'latitud' : ['exact' ,'contains'],
             'longitud' : ['exact' ,'contains'],
             'estrellas' : ['exact' ,'contains'],
