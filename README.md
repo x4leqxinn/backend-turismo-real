@@ -53,15 +53,6 @@ Drop database (optional)
 python manage.py drop
 ```
 
-## Docker
-
-Build docker file
-```
-docker build -t dockerfile .
-```
-
-
-
 ## Technologies
 * Python 3.9
 * HTML
@@ -74,8 +65,6 @@ docker build -t dockerfile .
 * Visual Studio Code 
 * Git 
 * Github 
-* Docker
-* Docker Compose
 
 ## Features
 
@@ -94,13 +83,4 @@ docker build -t dockerfile .
 * Admin Site Config and Customization
 * Send Emails
 
-## Credits
-
-Kitu Dev
-
-> ## Shinigami ♡.
-
-<div align="center">
-        <img alt="Mona Xina Guns" src="https://i.postimg.cc/FKfc2Tn7/owox.jpg" height="500px" width="500px">
-</div>
 
