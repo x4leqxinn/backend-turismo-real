@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('creacion', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Creación')),
                 ('actualizacion', models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')),
                 ('cvv', models.CharField(max_length=3)),
-                ('fecha_expiracion', models.CharField(max_length=4)),
+                ('fecha_expiracion', models.CharField(max_length=5)),
                 ('nombre_titular', models.CharField(max_length=200)),
                 ('numero_cuenta', models.CharField(max_length=100, unique=True)),
                 ('persona_id', models.OneToOneField(db_column='persona_id', on_delete=django.db.models.deletion.DO_NOTHING, to='people.persona')),
