@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov, DetalleProducto, Inventario, DetalleSala
+from apps.business.models import CuentaBancaria
 from apps.locations.models import Cities
 from django.db.models import Q
 
@@ -283,4 +284,31 @@ class ListCheckListProductSerializer(serializers.Serializer):
         inventory = Inventario.objects.filter(id_viv = pk).first()
         room_queryset = DetalleSala.objects.filter(id_inv = inventory.id)
         return self.get_detail_room(room_queryset)
+
+class CardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuentaBancaria
+        fields = '__all__'
+
+    def validate_cvv(self,value):
+        if not value:
+            raise serializers.ValidationError({'cvv' : 'Debe enviar un cvv.'})
+        return value
+
+    def validate_fecha_expiracion(self,value):
+        if not value:
+            raise serializers.ValidationError({'fecha_expiracion' : 'Debe enviar una fecha de expiracion.'})
+        return value
+
+    def validate_nombre_titular(self,value):
+        if not value:
+            raise serializers.ValidationError({'nombre_titular' : 'Debe enviar un nombre del titular.'})
+        return value
+
+    def validate_numero_cuenta(self,value):
+        if not value:
+            raise serializers.ValidationError({'numero_cuenta' : 'Debe enviar un numero de cuenta.'})
+        if CuentaBancaria.objects.filter(numero_cuenta = value).exists():
+            raise serializers.ValidationError({'numero_cuenta' : 'El numero de cuenta ya existe.'})
+        return value
 
