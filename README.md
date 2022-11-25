@@ -84,4 +84,12 @@ python manage.py runserver
 * Admin Site Config and Customization
 * Send Emails
 
-
+## Contributors
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/joacogithub2022"><img src="https://avatars.githubusercontent.com/u/113393198?v=4" width="100px;" alt=""/><br /><sub><b>Joaquin Reyes</b></sub></a><br /><a href="https://github.com/4lequinn/backend-turismo-real?author=joacogithub2022" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lucasmenares"><img src="https://avatars.githubusercontent.com/u/47159689?v=4" width="100px;" alt=""/><br /><sub><b>Lucas Menares</b></sub></a><br /><a href="https://github.com/4lequinn/backend-turismo-real?author=lucasmenares" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/4lequinn"><img src="https://avatars.githubusercontent.com/u/66024934?v=4" width="100px;" alt=""/><br /><sub><b>Jorge Quintui</b></sub></a><br /><a href="https://github.com/4lequinn/backend-turismo-real?author=4lequinn" title="Code">💻</a></td>
+  </tr>
+</table>
