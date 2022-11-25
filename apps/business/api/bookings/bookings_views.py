@@ -215,16 +215,6 @@ class BookingViewSet(viewsets.GenericViewSet):
             return Response({'message':'Multa generada con éxito!'})
         return Response({'message' : 'No se pudo generar la multa para el checkout id ' + pk })
 
-    @action(methods=['POST'], detail=False, url_path='add-card')
-    def add_card(self, request):
-        serializer = CardSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {'message' : 'Tarjeta guardada con exito!'},
-                status = status.HTTP_201_CREATED)
-        return Response({'error': serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
-
 
 
 class CardViewSet(viewsets.ModelViewSet):
