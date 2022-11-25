@@ -9,6 +9,7 @@ from apps.base.stored_procedures import genericDelete, generate_fine
 from db_routers.permissions.db_connection import oracle_connection
 from rest_framework.decorators import action
 from apps.users.models import User
+from apps.users.api.auth.auth_views import Authentication
 
 
 class BookingViewSet(viewsets.GenericViewSet):
@@ -217,9 +218,10 @@ class BookingViewSet(viewsets.GenericViewSet):
 
 
 
-class CardViewSet(viewsets.ModelViewSet):
+class CardViewSet(Authentication,viewsets.ModelViewSet):
     #authentication_classes = ()
     #permission_classes = ()
+    model = CuentaBancaria
     serializer_class = CardSerializer
     filterset_class  = CardFilter
     search_fields = ['nombre_titular','fecha_expiracion']
@@ -238,9 +240,18 @@ class CardViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
     def get_queryset(self, pk = None):
+        # Proteger el filtro         
+        # Si es administrador (Puede ver todo)
+        if self.user.role.id == 1:
+            if pk is None:
+                return self.get_serializer().Meta.model.objects.filter()
+            return self.get_serializer().Meta.model.objects.filter(id = pk).first()
+        # Si es recepcionista o cliente solo puede ver las que estén relacionadas con él.
         if pk is None:
-            return self.get_serializer().Meta.model.objects.filter()
-        return self.get_serializer().Meta.model.objects.filter(id = pk).first()
+            print(self.user.person.id)
+            return self.get_serializer().Meta.model.objects.filter(persona_id__id = self.user.person.id)
+        return self.get_serializer().Meta.model.objects.filter(id = pk, persona_id__id = self.user.person.id).first()
+        
 
     def list(self, request):
         # with filter
@@ -256,7 +267,6 @@ class CardViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk = None):
-        queryset = CuentaBancaria.objects.filter()
-        card = get_object_or_404(queryset, pk=pk)
+        card = self.get_queryset(pk)
         serializer = CardSerializer(card)
         return Response(serializer.data)
