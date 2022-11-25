@@ -21,6 +21,18 @@ DATABASES = {
             'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_1')
         }
     },
+    # System connection
+    'system': {
+        'ENGINE': env.str('DATABASE_ENGINE_3'),
+        'NAME': env.str('DATABASE_NAME_3'),
+        'USER': env.str('DATABASE_USER_3'),
+        'PASSWORD' : env.str('DATABASE_PASSWORD_3'),
+        'TEST' : {
+            'USER' : env.str('DATABASE_TEST_USER_3'),
+            'TBLSPACE' : env.str('DATABASE_TBLSPACE_3'),
+            'TBLSPACE_TMP' : env.str('DATABASE_TBLSPACE_TMP_3')
+        }
+    },
     # ORACLE Turismo Real API
     'turismo_real': {
         'ENGINE': env.str('DATABASE_ENGINE_1'),
@@ -51,6 +63,7 @@ DATABASES = {
 DATABASE_ROUTERS = [
     'db_routers.country_api_router.CountryApiRouter',
     'db_routers.turismo_real_router.TurismoRealRouter',
+    'db_routers.system_router.SystemRouter',
 ]
 
 # Static files (CSS, JavaScript, Images)
