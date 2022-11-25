@@ -1,8 +1,7 @@
 from pyexpat import model
 import django_filters
 from apps.base.models.db_models import DetalleProducto, DetalleSala, EstadoProducto, GaleriaExterior, GaleriaInterior, Inventario, Reserva, Sala, Servicio, Vivienda, Comentario
-
-
+from apps.business.models import CuentaBancaria
 class DwellingFilter(django_filters.FilterSet):
     class Meta:
         model = Vivienda
@@ -108,3 +107,18 @@ class ServiceFilter(django_filters.FilterSet):
         fields = {
             'id' : ['gt','lt','contains','exact']
         }
+
+
+class CardFilter(django_filters.FilterSet):
+    class Meta:
+        model = CuentaBancaria
+        fields = {
+            'id' : ['contains', 'exact','in'],
+            'cvv' : ['contains', 'exact','in'],
+            'fecha_expiracion' : ['contains', 'exact','in'],
+            'nombre_titular' : ['contains', 'exact','in'],
+            'numero_cuenta' : ['contains', 'exact','in'],
+            'persona_id__id' : ['exact','in'],
+        }
+
+
