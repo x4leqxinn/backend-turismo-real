@@ -32,6 +32,13 @@ Install requirements
 pip install -r requirements.txt
 ```
 
+- Config your .env file
+
+Drop and Create database
+```
+python manage.py system
+```
+
 Database migrations
 ```
 python manage.py migrate --d turismo_real
@@ -45,12 +52,6 @@ python manage.py seed
 Server
 ```
 python manage.py runserver
-```
-
-Drop database (optional)
-
-```
-python manage.py drop
 ```
 
 ## Technologies
