@@ -1,5 +1,5 @@
 from apps.base.models.db_models import Reserva, Servicio, Movilizacion, DetServMov, DetProyecto, CheckIn, CheckOut, Recepcionista
-from apps.business.api.general_filters import BookingFilter
+from apps.business.api.general_filters import BookingFilter, CardFilter
 from apps.business.api.bookings.bookings_serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -224,3 +224,49 @@ class BookingViewSet(viewsets.GenericViewSet):
                 {'message' : 'Tarjeta guardada con exito!'},
                 status = status.HTTP_201_CREATED)
         return Response({'error': serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
+
+
+
+class CardViewSet(viewsets.ModelViewSet):
+    #authentication_classes = ()
+    #permission_classes = ()
+    serializer_class = CardSerializer
+    filterset_class  = CardFilter
+    search_fields = ['nombre_titular','fecha_expiracion']
+    ordering_fields = ['id','nombre_titular'] 
+    ordering = ['id']
+
+    def get_serializer_class(self):
+        if self.action in ["retrieve"]:
+            return CardSerializer
+        elif self.action in ["list"]:
+            return CardSerializer
+        elif self.action in ["create"]:
+            return CardSerializer
+        elif self.action in ["update"]:
+            return CardSerializer
+        return self.serializer_class
+
+    def get_queryset(self, pk = None):
+        if pk is None:
+            return self.get_serializer().Meta.model.objects.filter()
+        return self.get_serializer().Meta.model.objects.filter(id = pk).first()
+
+    def list(self, request):
+        # with filter
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # pagination
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk = None):
+        queryset = CuentaBancaria.objects.filter()
+        card = get_object_or_404(queryset, pk=pk)
+        serializer = CardSerializer(card)
+        return Response(serializer.data)
