@@ -4,8 +4,11 @@ from apps.business.models import CuentaBancaria
 from apps.locations.models import Cities
 from django.db.models import Q
 
+# Configuramos la lectura de nuestras variables de entorno
+import environ
+env = environ.Env()
+environ.Env.read_env(env_file='./.env') 
 
-#
 class ServiceBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
@@ -203,6 +206,7 @@ class CheckoutSerializer(serializers.Serializer):
     def validate_estado(self, value):
         if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
             raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
+        
         return value
 
 
