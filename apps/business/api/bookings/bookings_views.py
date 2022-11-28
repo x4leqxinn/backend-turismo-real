@@ -169,7 +169,8 @@ class BookingViewSet(viewsets.GenericViewSet):
         
         data = {
             'id' : pk,
-            'estado' : request.data['estado']
+            'estado' : request.data['estado'],
+            'monto' : request.data.get('monto')
         }
 
         check_out_serializer = CheckoutSerializer(data = data, context = data)
