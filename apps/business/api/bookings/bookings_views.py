@@ -167,7 +167,12 @@ class BookingViewSet(viewsets.GenericViewSet):
         if not checkout:
             return Response({'message':'No existe el Check out'}, status = status.HTTP_400_BAD_REQUEST)
         
-        check_out_serializer = CheckoutSerializer(data = request.data)
+        data = {
+            'id' : pk,
+            'estado' : request.data['estado']
+        }
+
+        check_out_serializer = CheckoutSerializer(data = data, context = data)
         
         if check_out_serializer.is_valid():
             checkout.estado_checkout = check_out_serializer.validated_data['estado']
