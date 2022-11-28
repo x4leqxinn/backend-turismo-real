@@ -9,6 +9,14 @@ import environ
 env = environ.Env()
 environ.Env.read_env(env_file='./.env') 
 
+# Realizar peticiones HTTP
+import requests
+import json
+
+# Global BASE URL
+BASE_URL = env.str('API_PAYMENT')
+
+
 class ServiceBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
@@ -201,12 +209,44 @@ class CheckinSerializer(serializers.Serializer):
         return value
 
 class CheckoutSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     estado = serializers.CharField(max_length=20)
 
     def validate_estado(self, value):
         if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
             raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
-        
+        if value == 'COMPLETADO':
+            checkout = CheckOut.objects.filter(id = self.context['id']).first()
+            client = checkout.id_res.id_cli
+            account = CuentaBancaria.objects.filter(persona_id = client.id).first()
+
+            global BASE_URL
+
+            headers = {
+                'content-type': "application/json",
+                'cache-control': "no-cache",
+            }
+
+            payload = {
+                'cvv' : account.cvv,
+                'numeroCuenta' : account.numero_cuenta,
+                'titular' : account.nombre_titular,
+                'fechaExpiracion' : account.fecha_expiracion,
+                'total' : 1000,
+            }
+            
+            client_response = requests.request("POST", f'{BASE_URL}/account/pago' , data=json.dumps(payload), headers=headers)            
+            
+            management = {
+                'numeroCuenta' : 9999,
+                'monto' : 1000
+            }
+
+            management_response = requests.request("POST", f'{BASE_URL}/account/monto' , data=json.dumps(management), headers=headers)
+
+            if (client_response.status_code and management_response.status_code) != 200:
+                raise serializers.ValidationError({'estado':'El pago no se pudo realizar.'})
+                
         return value
 
 
