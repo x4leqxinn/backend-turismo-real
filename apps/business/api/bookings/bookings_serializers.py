@@ -216,6 +216,9 @@ class CheckoutSerializer(serializers.Serializer):
         if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
             raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
         if value == 'COMPLETADO':
+            if not self.context.get('monto'):
+                raise serializers.ValidationError({'monto':'Se debe enviar el monto a pagar.'})
+            
             checkout = CheckOut.objects.filter(id = self.context['id']).first()
             client = checkout.id_res.id_cli
             account = CuentaBancaria.objects.filter(persona_id = client.id).first()
@@ -232,14 +235,14 @@ class CheckoutSerializer(serializers.Serializer):
                 'numeroCuenta' : account.numero_cuenta,
                 'titular' : account.nombre_titular,
                 'fechaExpiracion' : account.fecha_expiracion,
-                'total' : 1000,
+                'total' : self.context['monto'],
             }
             
             client_response = requests.request("POST", f'{BASE_URL}/account/pago' , data=json.dumps(payload), headers=headers)            
             
             management = {
                 'numeroCuenta' : 9999,
-                'monto' : 1000
+                'monto' : self.context['monto']
             }
 
             management_response = requests.request("POST", f'{BASE_URL}/account/monto' , data=json.dumps(management), headers=headers)
