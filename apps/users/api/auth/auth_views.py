@@ -118,6 +118,7 @@ class Logout(APIView):
         
         except:
             return Response({'error' : 'No se ha encontrado token en la petición.'}, status = status.HTTP_409_CONFLICT)
+
 class AccountUserViewSet(viewsets.GenericViewSet):
     model = User
     serializer_class = UserListSerializer
@@ -167,7 +168,7 @@ class AccountUserViewSet(viewsets.GenericViewSet):
                 'id_est' : user.person.id_est,
                 'id_est1' : user.person.id_est1.id,
             }
-            
+
             serializer = EditAccountSerializer(instance, data = request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -191,25 +192,3 @@ class AccountUserViewSet(viewsets.GenericViewSet):
             'message': 'Hay errores en la información enviada.',
             'errors' : password_serializer.errors
         }, status = status.HTTP_400_BAD_REQUEST)
-
-
-
-'''
-    run = models.CharField(unique=True, max_length=15, blank=True, null=True)
-    dv = models.CharField(max_length=1, blank=True, null=True)
-    pasaporte = models.CharField(unique=True, max_length=20, blank=True, null=True)
-    nombre = models.CharField(max_length=50, null=False, blank=False)
-    snombre = models.CharField(max_length=50, blank=True, null=True)
-    ap_paterno = models.CharField(max_length=50, null=False, blank=False)
-    ap_materno = models.CharField(max_length=50, null=False, blank=False)
-    fecha_nacimiento = models.DateField(null=False, blank=False)
-    telefono = models.CharField(max_length=20, null=False, blank=False)
-    num_calle = models.CharField(max_length=10,null=False, blank=False)
-    calle = models.CharField(max_length=30, null=False, blank=False)
-    id_ciu = models.IntegerField()
-    id_est = models.IntegerField()
-    id_pai = models.IntegerField()
-    id_doc = models.ForeignKey(DocIdentidad, models.DO_NOTHING, db_column='id_doc')
-    id_est1 = models.ForeignKey(EstadoCivil, models.DO_NOTHING, db_column='id_est1')
-    id_gen = models.ForeignKey('people.Genero', models.DO_NOTHING, db_column='id_gen')
-'''
