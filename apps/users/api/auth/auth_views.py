@@ -2,7 +2,7 @@
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from apps.users.api.auth.auth_filters import UserFilter
-from apps.users.api.auth.auth_serializers import PasswordSerializer, UserListSerializer
+from apps.users.api.auth.auth_serializers import PasswordSerializer, UserListSerializer, EditAccountSerializer
 from apps.users.api.auth.authentication_mixins import Authentication
 from django.shortcuts import get_object_or_404
 
@@ -153,6 +153,27 @@ class AccountUserViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    def update(self, request, pk = None):
+        user = self.get_object(pk)
+        if user:
+            instance = {
+                'email' : user.email,
+                'imagen' : user.image,
+                'telefono' : user.person.telefono,
+                'num_calle' : user.person.num_calle,
+                'calle' : user.person.calle,
+                'id_ciu' : user.person.id_ciu,
+                'id_pai' : user.person.id_pai,
+                'id_est' : user.person.id_est,
+                'id_est1' : user.person.id_est1.id,
+            }
+            
+            serializer = EditAccountSerializer(instance, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'message' : '¡Usuario modificado con éxito!'}, status = status.HTTP_200_OK)
+        return Response({'error':serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
+
 
     # Detail obligatorio, le agrega un campo id
     @action(detail=True, methods=['POST'], url_path='change-password')
@@ -170,3 +191,25 @@ class AccountUserViewSet(viewsets.GenericViewSet):
             'message': 'Hay errores en la información enviada.',
             'errors' : password_serializer.errors
         }, status = status.HTTP_400_BAD_REQUEST)
+
+
+
+'''
+    run = models.CharField(unique=True, max_length=15, blank=True, null=True)
+    dv = models.CharField(max_length=1, blank=True, null=True)
+    pasaporte = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    nombre = models.CharField(max_length=50, null=False, blank=False)
+    snombre = models.CharField(max_length=50, blank=True, null=True)
+    ap_paterno = models.CharField(max_length=50, null=False, blank=False)
+    ap_materno = models.CharField(max_length=50, null=False, blank=False)
+    fecha_nacimiento = models.DateField(null=False, blank=False)
+    telefono = models.CharField(max_length=20, null=False, blank=False)
+    num_calle = models.CharField(max_length=10,null=False, blank=False)
+    calle = models.CharField(max_length=30, null=False, blank=False)
+    id_ciu = models.IntegerField()
+    id_est = models.IntegerField()
+    id_pai = models.IntegerField()
+    id_doc = models.ForeignKey(DocIdentidad, models.DO_NOTHING, db_column='id_doc')
+    id_est1 = models.ForeignKey(EstadoCivil, models.DO_NOTHING, db_column='id_est1')
+    id_gen = models.ForeignKey('people.Genero', models.DO_NOTHING, db_column='id_gen')
+'''
