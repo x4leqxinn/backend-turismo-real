@@ -73,6 +73,10 @@ class BookingViewSet(viewsets.GenericViewSet):
             for service in services:
                 id_list.append(service.id)
             DetServMov.objects.filter(id_mov__in = id_list).update(estado = 'INACTIVO')
+            checkout = CheckOut.objects.filter(id_res = pk).first()
+            checkout.estado_checkout = 'CANCELADO'
+            checkout.save()
+
         except Exception as e:
             print(e)    
         return booking
@@ -80,6 +84,10 @@ class BookingViewSet(viewsets.GenericViewSet):
     def destroy(self, request, pk=None):
         booking = self.delete_booking(pk)
         if booking:
+            # Cancelamos Checkin
+            checkin = CheckIn.objects.filter(id_res = pk).first()
+            checkin.estado_checkin = 'CANCELADO'
+            checkin.save()
             return Response(
                 {'message':'¡Reserva eliminada!.','value' : 1}, status = status.HTTP_200_OK)
         return Response(
@@ -142,9 +150,6 @@ class BookingViewSet(viewsets.GenericViewSet):
             checkin.estado_checkin = check_in_serializer.validated_data['estado']
             checkin.save()
             if  check_in_serializer.validated_data['estado'] == 'CANCELADO':
-                checkout = CheckOut.objects.get(id_res = reserva.id)
-                checkout.estado_checkout = 'CANCELADO'
-                checkout.save()
                 # Se libera la fecha     
                 self.delete_booking(reserva.id)
             return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
