@@ -119,7 +119,7 @@ class Logout(APIView):
         except:
             return Response({'error' : 'No se ha encontrado token en la petición.'}, status = status.HTTP_409_CONFLICT)
 
-class AccountUserViewSet(viewsets.GenericViewSet):
+class AccountUserViewSet(Authentication,viewsets.GenericViewSet):
     model = User
     serializer_class = UserListSerializer
     filterset_class  = UserFilter
@@ -156,24 +156,25 @@ class AccountUserViewSet(viewsets.GenericViewSet):
 
     def update(self, request, pk = None):
         user = self.get_object(pk)
-        if user:
-            instance = {
-                'email' : user.email,
-                'imagen' : user.image,
-                'telefono' : user.person.telefono,
-                'num_calle' : user.person.num_calle,
-                'calle' : user.person.calle,
-                'id_ciu' : user.person.id_ciu,
-                'id_pai' : user.person.id_pai,
-                'id_est' : user.person.id_est,
-                'id_est1' : user.person.id_est1.id,
-                'password' : user.password,
-            }
+        if user != self.user:
+            return Response({'error':'No tienes los permisos para hacer esta operacion'}, status = status.HTTP_401_UNAUTHORIZED)
+        instance = {
+            'email' : user.email,
+            'imagen' : user.image,
+            'telefono' : user.person.telefono,
+            'num_calle' : user.person.num_calle,
+            'calle' : user.person.calle,
+            'id_ciu' : user.person.id_ciu,
+            'id_pai' : user.person.id_pai,
+            'id_est' : user.person.id_est,
+            'id_est1' : user.person.id_est1.id,
+            'password' : user.password,
+        }
 
-            serializer = EditAccountSerializer(instance, data = request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'message' : '¡Usuario modificado con éxito!'}, status = status.HTTP_200_OK)
+        serializer = EditAccountSerializer(instance, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message' : '¡Usuario modificado con éxito!'}, status = status.HTTP_200_OK)
         return Response({'error':serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
 
