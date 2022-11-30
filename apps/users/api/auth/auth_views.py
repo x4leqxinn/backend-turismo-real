@@ -167,6 +167,7 @@ class AccountUserViewSet(viewsets.GenericViewSet):
                 'id_pai' : user.person.id_pai,
                 'id_est' : user.person.id_est,
                 'id_est1' : user.person.id_est1.id,
+                'password' : user.password,
             }
 
             serializer = EditAccountSerializer(instance, data = request.data)
