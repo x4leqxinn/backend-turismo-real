@@ -65,7 +65,7 @@ class BookingViewSet(viewsets.GenericViewSet):
             },
             status = status.HTTP_400_BAD_REQUEST)
 
-    def delete_booking(self, pk = None):
+    def delete_booking(self, pk = None, state = 'CANCELADO'):
         booking = self.get_queryset().filter(id = pk).update(estado = 'INACTIVO')
         try:
             services = Servicio.objects.filter(id_reserva = pk)
@@ -74,7 +74,7 @@ class BookingViewSet(viewsets.GenericViewSet):
                 id_list.append(service.id)
             DetServMov.objects.filter(id_mov__in = id_list).update(estado = 'INACTIVO')
             checkout = CheckOut.objects.filter(id_res = pk).first()
-            checkout.estado_checkout = 'CANCELADO'
+            checkout.estado_checkout = state
             checkout.save()
 
         except Exception as e:
@@ -185,7 +185,7 @@ class BookingViewSet(viewsets.GenericViewSet):
             checkout.save()
 
             if check_out_serializer.validated_data['estado'] in ('COMPLETADO','CANCELADO'):
-                self.delete_booking(reserva.id)
+                self.delete_booking(reserva.id, check_out_serializer.validated_data['estado'])
             from templates.emails.utils import sendEmailClient
             sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
