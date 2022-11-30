@@ -95,6 +95,7 @@ class EditAccountSerializer(serializers.Serializer):
     id_gen = serializers.IntegerField(required=False)
     imagen = Base64ImageField(required=False)
     email = serializers.EmailField(required = False, max_length = 128, min_length = 5, write_only = True)
+    password = serializers.CharField(required=False,max_length = 128, min_length = 5)
 
     def validate_email(self, value):
         value = value.lower().strip()
@@ -108,6 +109,8 @@ class EditAccountSerializer(serializers.Serializer):
         person = user.person
         user.email = validated_data.get('email', instance['email'])
         user.image = validated_data.get('imagen', instance['imagen'])
+        if validated_data.get('password'):
+            user.set_password(validated_data['password'])
         person.telefono = validated_data.get('telefono',instance['telefono'])
         person.num_calle = validated_data.get('num_calle',instance['num_calle'])
         person.calle = validated_data.get('calle',instance['calle'])
