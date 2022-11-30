@@ -10,8 +10,8 @@ class ClientViewSet(viewsets.GenericViewSet):
     # model = Cliente
     serializer_class = ClientCreateSerializer
     filterset_class  = ClientFilter
-    search_fields = ['nombre','id']
-    ordering_fields = ['nombre','id']
+    search_fields = ['id__nombre']
+    ordering_fields = ['id__nombre','id']
     ordering = ['id']
 
 
