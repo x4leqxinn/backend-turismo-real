@@ -723,6 +723,7 @@ class TipoVivienda(BaseModel):
 
 class Tour(models.Model):
     id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True)
+    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
     class Meta:
         app_label = 'business'
         managed = True
