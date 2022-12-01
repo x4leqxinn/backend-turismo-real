@@ -223,15 +223,15 @@ TIPOS_UBICACIONES : list[TipoUbicacion] = [
 ]
 
 UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
-    UbicacionTrans(nombre = 'Aeropuerto Arturo Merino Benitez', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
-    UbicacionTrans(nombre = 'Terminal de buses Centro', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
-    UbicacionTrans(nombre = 'Terminal de buses Viña Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19130),
-    UbicacionTrans(nombre = 'Aeropuerto Viña del Mar ', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19130),
-    UbicacionTrans(nombre = 'Terminal de buses Pucón Sur', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19080),
-    UbicacionTrans(nombre = 'Terminal de buses Serena', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 18994),
-    UbicacionTrans(nombre = 'Aeropuerto La Serena', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
-    UbicacionTrans(nombre = 'Terminal de buses Varas Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
-    UbicacionTrans(nombre = 'Aeropuerto Puerto Varas', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto Arturo Merino Benitez', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Centro', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19111),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Viña Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19130),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto Viña del Mar ', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19130),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Pucón Sur', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19080),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Serena', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 18994),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto La Serena', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Varas Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
+    UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto Puerto Varas', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
 ]
 
 VIVIENDAS : list[Vivienda] = [
