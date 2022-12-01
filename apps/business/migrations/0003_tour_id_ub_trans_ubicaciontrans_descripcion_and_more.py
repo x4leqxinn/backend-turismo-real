@@ -27,4 +27,9 @@ class Migration(migrations.Migration):
             name='imagen',
             field=models.ImageField(null=True, upload_to='tr_location/'),
         ),
+        migrations.AddField(
+            model_name='ubicaciontrans',
+            name='categoria',
+            field=models.CharField(blank=False, max_length=200, null=False),
+        ),
     ]

@@ -803,6 +803,7 @@ class UbicacionTrans(BaseModel):
     id_tip = models.ForeignKey('business.TipoUbicacion', models.DO_NOTHING, db_column='id_tip')
     id_ciu = models.IntegerField()
     nombre = models.CharField(max_length = 100, null=False, blank=False)
+    categoria = models.CharField(max_length = 100, null=False, blank=False) 
     descripcion = models.CharField(max_length = 200, null=True, blank=True)
     imagen = models.ImageField(upload_to='tr_location/', null=True)
     precio = models.IntegerField(null=False, blank=False)
