@@ -1584,4 +1584,5 @@ class DetProyectoAdmin(admin.ModelAdmin):
 admin.site.register(DetProyecto,DetProyectoAdmin)
 
 
+admin.site.register(Tour)
 # TODO: Se pueden agregar modelos de base de datos para modificar la vista de la web dinámicamente
