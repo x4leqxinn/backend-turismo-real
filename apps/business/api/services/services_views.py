@@ -97,10 +97,14 @@ class ServiceViewSet(viewsets.GenericViewSet):
     @action(methods=['GET'],detail=False, url_path = 'locations')
     def location_service(self,request):
         city_pk = request.query_params.get('pk','')
-        if city_pk == '':
+        cat_pk = request.query_params.get('cat','')
+        
+        if not city_pk:
             return Response({'message':'Se debe enviar la ciudad.'},status = status.HTTP_400_BAD_REQUEST)
-
-        locations = UbicacionTrans.objects.filter(id_ciu = city_pk, estado = 'ACTIVO')
+        if not cat_pk:
+            return Response({'message':'Se debe enviar la categoria.'},status = status.HTTP_400_BAD_REQUEST)
+        category = {1 : 'TRANSPORTE',2 : 'TOUR'}
+        locations = UbicacionTrans.objects.filter(id_ciu=city_pk,categoria=category.get(int(cat_pk)),estado='ACTIVO')
         serializer = LocationServiceSerializer(locations, many = True)
         return Response(serializer.data)
 
