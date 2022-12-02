@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov, Recepcionista, CheckIn, CheckOut
+from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov, Recepcionista, CheckIn, CheckOut, Tour
 from django.db.models import Q
 
 class CreateShoppingSerializer(serializers.ModelSerializer):
@@ -112,7 +112,8 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                         values[index]["id_ubicacion"]
                         values[index]["id_transporte"]
                     elif values[index]["id_tipo"] == 2:
-                        pass
+                        values[index]["id_ubicacion"]
+                        values[index]["cant_pasajeros"]
             except:
                 raise serializers.ValidationError('¡Servicio en mal formato!')
         return values
@@ -208,12 +209,35 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                         print('Existe el conductor')
                         detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, fecha_inicio = date, fecha_termino = date, 
                         hora_inicio = '10:00', hora_termino = '11:00', cant_pasajeros = 0)
-                        detail_driver.save()   
+                        detail_driver.save()
                     else:
                         print('No existe conductor')
-                if servicios[index]["id_tipo"] == 2:
-                    pass
 
+                if servicios[index]["id_tipo"] == 2:
+                    ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
+                    tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
+                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio)
+                    servicio.save()
+                    # Movilizacion
+                    movilizacion = Movilizacion(id = servicio)
+                    movilizacion.save()
+                    # Tour
+                    tour = Tour(id = movilizacion, id_ub_trans = ubicacion)
+                    tour.save()
+
+                    # Buscamos el conductor
+                    driver = self.search_driver(vivienda.id, reserva.fecha_termino)
+                    date = reserva.fecha_termino
+                    
+                    if driver:
+                        print('Existe el conductor')
+                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
+                        fecha_inicio = date, fecha_termino = date, 
+                        hora_inicio = '10:00', hora_termino = '20:00', 
+                        cant_pasajeros = servicios[index]["cant_pasajeros"])
+                        detail_driver.save()
+                    else:
+                        print('No existe conductor')
 
         recepcionist = self.search_receptionist(vivienda.id)
         if recepcionist:
