@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+import threading
 
 def sendEmail(email):
     context = {'mail': "こんにちはホセ、私は私のロシアのバンカーから挨拶を送ります。" }
@@ -25,6 +26,9 @@ def sendEmail(email):
 def index(request):
     if request.method == 'POST':
         mail = request.POST.get('txtMail')
-        sendEmail(mail)
+        print('Hola')
+        hilo1 = threading.Thread(target=sendEmail,kwargs={'email':mail})
+        hilo1.start()
+        print('XD')
 
     return render(request,'index.html',{}) 
