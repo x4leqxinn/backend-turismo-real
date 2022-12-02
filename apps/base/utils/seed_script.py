@@ -220,6 +220,7 @@ TIPOS_SERVICIOS : list[TipoServicio] = [
 TIPOS_UBICACIONES : list[TipoUbicacion] = [
     TipoUbicacion(descripcion = 'Terminal de buses'),
     TipoUbicacion(descripcion = 'Aeropuerto'),
+    TipoUbicacion(descripcion = 'Recorrido'),
 ]
 
 UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
@@ -232,6 +233,7 @@ UBICACIONES_TRANSPORTES : list[UbicacionTrans] = [
     UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto La Serena', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 18994),
     UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Terminal de buses Varas Centro', precio = 10000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[0], id_ciu = 19087),
     UbicacionTrans(categoria = 'TRANSPORTE', nombre = 'Aeropuerto Puerto Varas', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[1], id_ciu = 19087),
+    UbicacionTrans(categoria = 'TOUR', nombre = 'Tour de prueba', precio = 20000, latitud = '72387', longitud = '423423', id_tip = TIPOS_UBICACIONES[2], id_ciu = 19087),
 ]
 
 VIVIENDAS : list[Vivienda] = [
