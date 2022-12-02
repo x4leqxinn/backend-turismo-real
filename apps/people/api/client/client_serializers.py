@@ -109,7 +109,7 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         print(group.name) 
         user.groups.add(group)
         
-        from templates.emails.utils import sendEmailClient
-        
-        sendEmailClient(email,'Bienvenid@ a Turismo Real',persona,'create_account/create-account.html')
+        # TODO: Email
+        #from templates.emails.utils import sendEmailClient
+        #sendEmailClient(email,'Bienvenid@ a Turismo Real',persona,'create_account/create-account.html')
         return True

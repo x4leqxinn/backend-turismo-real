@@ -4,7 +4,7 @@ from django.conf import settings
 
 from apps.base.models.db_models import Persona
 
-def sendEmailClient(email : str ,asunto : str,cliente : Persona, page : str):
+def send_email(email : str ,asunto : str,cliente : Persona, page : str):
     context = {'cliente': cliente }
     template = get_template('emails/create_account/create-account.html') #emails/verify/verify-account.html
     content = template.render(context)

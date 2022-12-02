@@ -186,12 +186,13 @@ class BookingViewSet(viewsets.GenericViewSet):
 
             if check_out_serializer.validated_data['estado'] in ('COMPLETADO','CANCELADO'):
                 self.delete_booking(reserva.id, check_out_serializer.validated_data['estado'])
-            from templates.emails.utils import sendEmailClient
-            sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
+            
+            # TODO: Email
+            #from templates.emails.utils import sendEmailClient
+            #sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
-    ## TODO: Habilitar las fechas checkin y checkout COMPLETADO - 
     @action(methods=['GET','POST'], detail=False, url_path='products-details')
     def product_list(self, request):
         if request.method == 'POST':
