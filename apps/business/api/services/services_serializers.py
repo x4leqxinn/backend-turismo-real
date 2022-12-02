@@ -22,6 +22,8 @@ class LocationServiceSerializer(serializers.ModelSerializer):
             'id' : instance.id,
             'nombre' : instance.nombre,
             'precio' : instance.precio,
+            'descripcion' : instance.descripcion,
+            'categoria' : instance.categoria,
             'tipo_ubicacion' : {
                 'id' : instance.id_tip.id,
                 'descripcion' : instance.id_tip.descripcion
