@@ -54,6 +54,12 @@ Server
 python manage.py runserver
 ```
 
+
+> Delete migrations
+```bash
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+```
 ## Technologies
 * Python 3.9
 * HTML
