@@ -27,7 +27,6 @@ ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
 # Apps por defecto de django 
 BASE_APPS = [
-    'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -180,7 +179,8 @@ EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
 # Indicamos donde serviremos nuestras imágenes
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'../media')
+MEDIA_DIR = os.path.join(BASE_DIR,'../media')
+MEDIA_ROOT = MEDIA_DIR
 
 
 # Default primary key field type
@@ -227,3 +227,5 @@ JET_THEMES = [
         'title': 'Light Gray'
     }
 ]
+
+
