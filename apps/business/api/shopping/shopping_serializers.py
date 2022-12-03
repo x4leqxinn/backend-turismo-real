@@ -114,6 +114,7 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                     elif values[index]["id_tipo"] == 2:
                         values[index]["id_ubicacion"]
                         values[index]["cant_pasajeros"]
+                        values[index]["fecha"]
             except:
                 raise serializers.ValidationError('¡Servicio en mal formato!')
         return values
@@ -231,6 +232,8 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                     
                     if driver:
                         print('Existe el conductor')
+                        from datetime import datetime
+                        date = datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y')
                         detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
                         fecha_inicio = date, fecha_termino = date, 
                         hora_inicio = '10:00', hora_termino = '20:00', 
