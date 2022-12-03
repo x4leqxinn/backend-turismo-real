@@ -32,14 +32,17 @@ schema_view = get_schema_view(
 from templates.views import index
 
 urlpatterns = [
+    # Administración de Django
+    path('admin/', admin.site.urls),
+
     # Documentación Open API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     
-    # Administración de Django
-    path('admin/', admin.site.urls),
-    
+    # Django admin theme
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+
     # Autenticación de usuarios
     path('logout/', Logout.as_view(),name='logout'),
     path('login/',Login.as_view(),name='login'),

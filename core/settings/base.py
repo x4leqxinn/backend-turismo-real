@@ -27,9 +27,7 @@ ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
 # Apps por defecto de django 
 BASE_APPS = [
-    'jazzmin',
-    'admin_interface', # Customización del Admin de Django
-    'colorfield', # Customización del Admin de Django
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -181,7 +179,8 @@ EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
 # Indicamos donde serviremos nuestras imágenes
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'../media')
+MEDIA_DIR = os.path.join(BASE_DIR,'../media')
+MEDIA_ROOT = MEDIA_DIR
 
 
 # Default primary key field type
@@ -194,38 +193,39 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION' : 'none'
 }
 
-JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Turismo Real Admin",
+# Django jet Themes
 
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Turismo Real",
-
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "Turismo Real",
-
-    # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "../static/logo/turismo_real.png",
-
-    # Welcome text on the login screen
-    "welcome_sign": "¡Bienvenido!",
-
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "people.cliente" : "fas fa-person",
-        "people.acompaniante" : "fas fa-person",
-        "people.recepcionista" : "fas fa-person",
-        "people.empleado" : "fas fa-person",
-        "people.conductor" : "fas fa-person",
-        "people.persona" : "fas fa-person",
-
-        "business" : "fas fa-business-time",  
-
-        "locations.cities": "fas fa-city",
-        "locations.countries": "fas fa-city",
-        "locations.states": "fas fa-city",
-        "auth.Group": "fas fa-users",
+JET_THEMES = [
+    {
+        'theme': 'default', # theme folder name
+        'color': '#47bac1', # color of the theme's button in user menu
+        'title': 'Default' # theme title
     },
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#a464c4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
 
-}
 
