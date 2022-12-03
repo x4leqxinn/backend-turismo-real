@@ -30,6 +30,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ubicaciontrans',
             name='categoria',
-            field=models.CharField(blank=False, max_length=200, null=False),
+            field=models.CharField(blank=False, max_length=100, null=False),
         ),
     ]
