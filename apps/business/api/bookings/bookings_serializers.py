@@ -15,6 +15,7 @@ import json
 
 # Global BASE URL
 BASE_URL = env.str('API_PAYMENT')
+ACCOUNT_NUMBER = env.int('ACCOUNT_NUMBER')
 
 
 class ServiceBookingSerializer(serializers.ModelSerializer):
@@ -241,7 +242,7 @@ class CheckoutSerializer(serializers.Serializer):
             client_response = requests.request("POST", f'{BASE_URL}/account/pago' , data=json.dumps(payload), headers=headers)            
             
             management = {
-                'numeroCuenta' : 9999,
+                'numeroCuenta' : ACCOUNT_NUMBER,
                 'monto' : self.context['monto']
             }
 
