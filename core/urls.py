@@ -42,6 +42,7 @@ urlpatterns = [
     
     # Django admin theme
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET URLS
 
     # Autenticación de usuarios
     path('logout/', Logout.as_view(),name='logout'),
