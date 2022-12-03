@@ -94,11 +94,6 @@ def list_services(services):
     return service_list
 
 
-"""
-        hilo1 = threading.Thread(target=sendEmail,kwargs={'email':mail})
-        hilo1.start()
-"""
-
 
 # Clients module
 def notice_client(client,subject,template):
@@ -169,12 +164,15 @@ def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Boo
             result = original_function(*args, **kwargs)
 
             # Enviamos un correo al finalizar la operacion
-            generate_notice(email_type,page,client,booking)
-            print('xd')
+            thread = threading.Thread(target=generate_notice,kwargs={
+                    'email_type': email_type,
+                    'page' : page,
+                    'client' : client,
+                    'booking' : booking,
+                })
+            thread.start()
             return result
 
         return wrapper_function
     return decorator_function
 
-# Un decorador nos permite ejecutar código antes o después de la función
-#@prefix_decorator(nombre='Jorge')
