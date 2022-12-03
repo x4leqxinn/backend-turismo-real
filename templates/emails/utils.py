@@ -1,9 +1,10 @@
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from apps.base.models.db_models import Reserva as Booking, Persona as Client, Servicio as Service, DetServMov as Mov, DetProyecto, Empleado, Recepcionista
+from apps.base.models.db_models import Reserva as Booking, Persona as Client, Servicio as Service, DetServMov as Mov, DetProyecto, Empleado, Recepcionista, Vivienda
 from apps.users.models import User
 import threading
+from core.settings.base import TURISMO_REAL_URI, DEFAULT_DOMAIN
 
 def send_email(subject:str,mail_to:str,template:str,data:dict):
     """Send email function
@@ -43,8 +44,8 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
                 3 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # Cambio estado Checkout
             }, 
         'client':{
-            1:{'template': 'emails/create_account/create-account.html','subject':'Bienvenido'}, # Registro
-            2:{'template': 'emails/create_account/create-account.html','subject':'Contraseña cambiada'} # Cambio de password
+            1:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
+            2:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] Contraseña cambiada'} # Cambio de password
         }
     }
 
@@ -102,14 +103,17 @@ def notice_client(client,subject,template):
             mail_to=user.email,
             subject=subject,
             template=template,
-            data={'client': client}
+            data={
+                'client': client,
+                'TURISMO_REAL_URI' : TURISMO_REAL_URI,
+            }
         )
 
 
 def notice_booking(booking:Booking, options, page):
     services = Service.objects.filter(id_reserva = booking.id)
     dwelling = booking.id_viv
-    client = booking.id_cli
+    client = booking.id_cli.id
     receptionist = search_receptionist(dwelling.id)
     services = list_services(services)
 
@@ -117,7 +121,8 @@ def notice_booking(booking:Booking, options, page):
         'dwelling' : dwelling,
         'client' : client,
         'receptionist': receptionist,
-        'services': services
+        'services': services,
+        'TURISMO_REAL_URI' : TURISMO_REAL_URI
     }
     
     #######################
@@ -128,7 +133,7 @@ def notice_booking(booking:Booking, options, page):
     user = User.objects.filter(person = client.id).first()
     send_email(
         mail_to=user.email,
-        subject=options.get('booking')[page]['subject'][0],
+        subject=f'Estimad@ {client.nombre}, ¡su reserva ha sido confirmada con éxito!',
         template=options.get('booking')[page]['template'][0],
         data=context
         )
