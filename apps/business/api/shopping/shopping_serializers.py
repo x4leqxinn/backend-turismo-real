@@ -217,7 +217,7 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                 if servicios[index]["id_tipo"] == 2:
                     ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
                     tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
-                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio)
+                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio * servicios[index]["cant_pasajeros"])
                     servicio.save()
                     # Movilizacion
                     movilizacion = Movilizacion(id = servicio)
