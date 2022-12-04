@@ -38,6 +38,7 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             data['fecha_termino'] = detail.fecha_termino
             data['hora_inicio'] = detail.hora_inicio
             data['hora_termino'] = detail.hora_termino
+            data['pasajeros'] = detail.cant_pasajeros
             driver = {
                 'run' : detail.id_con.id.id.run,
                 'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
