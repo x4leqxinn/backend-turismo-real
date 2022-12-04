@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov, DetalleProducto, Inventario, DetalleSala
+from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdentidad, EstadoCivil, Genero, Persona, Reserva, CliAcom, Cliente, Vivienda, Servicio, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, DetServMov, DetalleProducto, Inventario, DetalleSala, UbicacionTrans, Tour
 from apps.business.models import CuentaBancaria
 from apps.locations.models import Cities
 from django.db.models import Q
@@ -30,7 +30,26 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             'precio' : instance.precio
         }
 
-        driver = False
+        cant_pasajeros = 0
+        if instance.id_tip.id in(1,2):
+            detail = DetServMov.objects.get(id_mov__id = instance.id)
+            cant_pasajeros = detail.cant_pasajeros
+            data['fecha_inicio'] = detail.fecha_inicio
+            data['fecha_termino'] = detail.fecha_termino
+            data['hora_inicio'] = detail.hora_inicio
+            data['hora_termino'] = detail.hora_termino
+            driver = {
+                'run' : detail.id_con.id.id.run,
+                'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
+                'telefono' : detail.id_con.id.id.telefono,
+                'vehiculo' : {
+                    'patente' : detail.id_con.id_veh.patente,
+                    'modelo' : detail.id_con.id_veh.id_mod.nombre,
+                    'marca' : detail.id_con.id_veh.id_mar.nombre,
+                    'color' : detail.id_con.id_veh.id_col.nombre
+                }
+            }
+            data['conductor'] = driver 
 
         if instance.id_tip.id == 1:
             transporte = None
@@ -49,26 +68,15 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             data['nombre'] = transporte.id_ub_trans.nombre 
             data['descripcion'] = transporte.id_ub_trans.id_tip.descripcion
             data['precio'] = transporte.id_ub_trans.precio 
-            driver = True
 
-        elif instance.id_tip.id == 2:
+        elif instance.id_tip.id == 2: 
+            tour = Tour.objects.filter(id=instance.id).first() 
+            data['nombre'] = tour.id_ub_trans.nombre
+            data['descripcion'] = tour.id_ub_trans.descripcion
+            data['precio'] = instance.precio * cant_pasajeros
             print('SERVICIO DE TOUR')
 
-        if driver:
-            detail = DetServMov.objects.get(id_mov__id = transporte.id_trans.id.id.id)
-            driver = {
-                'run' : detail.id_con.id.id.run,
-                'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
-                'telefono' : detail.id_con.id.id.telefono,
-                'vehiculo' : {
-                    'patente' : detail.id_con.id_veh.patente,
-                    'modelo' : detail.id_con.id_veh.id_mod.nombre,
-                    'marca' : detail.id_con.id_veh.id_mar.nombre,
-                    'color' : detail.id_con.id_veh.id_col.nombre
-                }
-            }
-            data['conductor'] = driver
-            # detalle serv movilizacion     
+    
         return data
 
 class BookingListSerializer(serializers.ModelSerializer):
