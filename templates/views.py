@@ -24,9 +24,9 @@ def sendEmail(email):
     message.attach_alternative(content, 'text/html')
     message.send()
 
-reserva = Reserva.objects.filter(id=1).first()
+#reserva = Reserva.objects.filter(id=1).first()
 
-@prefix_decorator(email_type='booking',page=1,booking=reserva)
+#@prefix_decorator(email_type='booking',page=1,booking=reserva)
 def index(request):
     print('Hola')
     if request.method == 'POST':

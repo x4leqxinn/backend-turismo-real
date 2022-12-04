@@ -22,7 +22,7 @@ DEBUG = env('DJANGO_DEBUG',default=False)
 
 ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
-DEFAULT_DOMAIN = ALLOWED_HOSTS[0]
+DEFAULT_DOMAIN = 'http://localhost:8000'
 
 # TURISMO REAL URI
 TURISMO_REAL_URI = env.str('TURISMO_REAL_WEB')
