@@ -335,7 +335,11 @@ def save_entity(model_name : str):
 
 def delete_objects(table_name):
     with connections['turismo_real'].cursor() as cursor:
-            cursor.callproc("PKG_UTILS.SP_TRUNCATE_TABLE",[table_name])     
+        cursor.callproc("PKG_UTILS.SP_TRUNCATE_TABLE",[table_name])    
+
+def run_dataframe():
+    with connections['turismo_real'].cursor() as cursor:
+        cursor.callproc("dbms_scheduler.run_job",['JOB_MACHINE_LEARNING']) 
 
 def run_seed():
     try:
@@ -345,8 +349,10 @@ def run_seed():
         for key in ENTITY.keys():
             print(key)
             save_entity(key)
+        
+        run_dataframe()
+
         return True
     except:
         return False
 
-## TODO: ELIMINAR CLIENTES DE PRUEBA, RESERVAS DE PRUEBA
