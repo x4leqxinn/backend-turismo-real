@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import DetServMov, Servicio, UbicacionTrans, Cliente, Conductor, DetServMov, Servicio, Reserva, TransporteIda, TransporteVuelta
+from apps.base.models.db_models import DetServMov, Servicio, UbicacionTrans, Cliente, Conductor, DetServMov,Tour, Servicio, Reserva, TransporteIda, TransporteVuelta
 from apps.locations.models import *
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,7 +53,9 @@ class ClientFormatSerializer(serializers.Serializer):
         detail_list = []
         
         for x in queryset:
+            servicio = Servicio.objects.filter(id=x.id_mov.id.id).first()
             data = {
+                'tipo_servicio' : servicio.id_tip.descripcion,
                 'fecha_inicio' : x.fecha_inicio,
                 'hora_inicio' : x.hora_inicio,
                 'fecha_termino' : x.fecha_termino,
@@ -90,8 +92,12 @@ class ClientFormatSerializer(serializers.Serializer):
                 print('Servicio de transporte')
             
             if x.id_mov.id.id_tip.id == 2:
-                print('Servicio de Tour')
-            
+                print('SERVICIO TOUR')
+                tour = Tour.objects.filter(id=x.id_mov.id.id).first() 
+                data['nombre'] = tour.id_ub_trans.nombre
+                data['descripcion'] = tour.id_ub_trans.descripcion
+                data['precio'] = servicio.precio
+                
             detail_list.append(data)
 
 
