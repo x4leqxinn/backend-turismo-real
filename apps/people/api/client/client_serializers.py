@@ -4,9 +4,9 @@ from apps.base.models.db_models import Cliente, Persona
 from apps.users.models import User, UserRole
 from drf_extra_fields.fields import Base64ImageField
 from django.contrib.auth.models import Group
+from templates.emails.utils import prefix_decorator
 
 class ClientListSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = Cliente
         fields = '__all__'
@@ -54,11 +54,11 @@ class ClientCreateSerializer(serializers.ModelSerializer):
 
     # Custom validation
     def validate_nombre(self, value):
-        value = value.upper().strip()
+        value = value.capitalize().strip()
         return value
 
     def validate_ap_paterno(self, value):
-        value = value.upper().strip()
+        value = value.capitalize().strip()
         return value
 
     def validate_email(self, value):
@@ -71,7 +71,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         if self.validate_nombre(self.context['contrasenia']) in value:
             raise serializers.ValidationError('El email no puede contener datos de la contraseña.')
         return value
-
 
     def create(self,validated_data):
         email = validated_data.pop("email")
@@ -92,24 +91,20 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         cliente = Cliente(id = persona)
         cliente.save()
 
-        # Encriptamos la contraseña
-        role = UserRole.objects.get(id = 3) 
-        user = User(person = persona, role = role)
-        user.email = email
-        user.set_password(contrasenia)
-        
-        # Validamos si se envía una imagen
-        if imagen != None:
-            user.image = imagen
-        user.save()
+        @prefix_decorator(email_type='client',page=1,client=persona)
+        def register_user(email, password):
+            # Encriptamos la contraseña
+            role = UserRole.objects.get(id = 3) 
+            user = User(person = persona, role = role)
+            user.email = email
+            user.set_password(password)
+            
+            # Validamos si se envía una imagen
+            if imagen != None:
+                user.image = imagen
+            user.save()
 
-        # TODO: Se debe crear un grupo desde el admin de DJANGO o no funcionará
-        # Integrar IMAGEN
-        group = Group.objects.get(id=3)
-        print(group.name) 
-        user.groups.add(group)
-        
-        # TODO: Email
-        #from templates.emails.utils import sendEmailClient
-        #sendEmailClient(email,'Bienvenid@ a Turismo Real',persona,'create_account/create-account.html')
+            group = Group.objects.get(id=3)
+            user.groups.add(group)    
+        register_user(email, contrasenia)
         return True
