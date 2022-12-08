@@ -94,7 +94,7 @@ class ClientFormatSerializer(serializers.Serializer):
             if x.id_mov.id.id_tip.id == 2:
                 print('SERVICIO TOUR')
                 tour = Tour.objects.filter(id=x.id_mov.id.id).first() 
-                data['nombre'] = tour.id_ub_trans.nombre
+                data['nombre_tour'] = tour.id_ub_trans.nombre
                 data['descripcion'] = tour.id_ub_trans.descripcion
                 data['precio'] = servicio.precio
                 
