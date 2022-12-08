@@ -74,7 +74,7 @@ class ServiceBookingSerializer(serializers.ModelSerializer):
             tour = Tour.objects.filter(id=instance.id).first() 
             data['nombre'] = tour.id_ub_trans.nombre
             data['descripcion'] = tour.id_ub_trans.descripcion
-            data['precio'] = instance.precio * cant_pasajeros
+            data['precio'] = instance.precio
             print('SERVICIO DE TOUR')
 
     
