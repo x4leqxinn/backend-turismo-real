@@ -44,8 +44,8 @@ class DwellingSerializer(serializers.ModelSerializer):
             usuario = User.objects.filter(person__id=cliente.id.id).first()
             data = {
                 'pk' : p_queryset[x].id,
-                'publicacion' : comment.creacion,
-                'actualizacion' : comment.actualizacion,
+                'publicacion' : comment.creacion.strftime('%d-%m-%Y'),
+                'actualizacion' : comment.actualizacion.strftime('%d-%m-%Y'),
                 'cliente' : {
                     'id' : cliente.id.id,
                     'nombre' : f'{cliente.id.nombre} {cliente.id.ap_paterno}',
