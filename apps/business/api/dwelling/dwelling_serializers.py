@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda
+from apps.users.models import User
 from apps.locations.models import Cities
 from drf_extra_fields.fields import Base64ImageField
 
@@ -38,13 +39,17 @@ class DwellingSerializer(serializers.ModelSerializer):
         p_queryset = CliCom.objects.filter(id_viv = p_dwellingid)
         comments = []
         for x in range(len(p_queryset)):
-            cliente = Cliente.objects.get(id = p_queryset[x].id_cli.id)
-            comment = Comentario.objects.filter(id_cli = p_queryset[x].id).first()
+            cliente = Cliente.objects.get(id=p_queryset[x].id_cli.id)
+            comment = Comentario.objects.filter(id_cli=p_queryset[x].id).first()
+            usuario = User.objects.filter(person__id=cliente.id.id).first()
             data = {
                 'pk' : p_queryset[x].id,
+                'publicacion' : comment.creacion,
+                'actualizacion' : comment.actualizacion,
                 'cliente' : {
                     'id' : cliente.id.id,
-                    'nombre' : f'{cliente.id.nombre} {cliente.id.ap_paterno}'  
+                    'nombre' : f'{cliente.id.nombre} {cliente.id.ap_paterno}',
+                    'foto' : usuario.image.url if usuario.image else ''
                 },
                 'comentario' : comment.descripcion
             }
