@@ -10,7 +10,7 @@ class DwellingSerializer(serializers.ModelSerializer):
         model = Vivienda
         fields = '__all__'
 
-    def getInteriorGallery(self, p_dwellingid):
+    def get_interior_galery(self, p_dwellingid):
         p_queryset = GaleriaInterior.objects.filter(id_viv = p_dwellingid)
         interiorGallery = []
         for index in range(len(p_queryset)):
@@ -22,7 +22,7 @@ class DwellingSerializer(serializers.ModelSerializer):
             interiorGallery.append(data)
         return interiorGallery
 
-    def getExteriorGallery(self, p_dwellingid):
+    def get_exterior_gallery(self, p_dwellingid):
         p_queryset = GaleriaExterior.objects.filter(id_viv = p_dwellingid)
         exteriorGallery = []
         for index in range(len(p_queryset)):
@@ -34,7 +34,7 @@ class DwellingSerializer(serializers.ModelSerializer):
             exteriorGallery.append(data)
         return exteriorGallery
 
-    def getComments(self, p_dwellingid):
+    def get_comments(self, p_dwellingid):
         p_queryset = CliCom.objects.filter(id_viv = p_dwellingid)
         comments = []
         for x in range(len(p_queryset)):
@@ -95,7 +95,7 @@ class DwellingSerializer(serializers.ModelSerializer):
                 'id' : city.id,
                 'nombre' : city.name
             },
-            'galeria_interior' : self.getInteriorGallery(instance.id),
-            'galeria_exterior' : self.getExteriorGallery(instance.id),
-            'comentarios' : self.getComments(instance.id)
+            'galeria_interior' : self.get_interior_galery(instance.id),
+            'galeria_exterior' : self.get_exterior_gallery(instance.id),
+            'comentarios' : self.get_comments(instance.id)
         }
