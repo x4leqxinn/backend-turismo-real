@@ -115,3 +115,22 @@ class DwellingViewSet(viewsets.GenericViewSet):
         if dwelling and genericDelete(oracle_connection(1),pk,'VIVIENDA') == 1: 
             return Response({'message':'Vivienda eliminada correctamente.'}, status = status.HTTP_200_OK)
         return Response({'Error' :  '¡No existe una vivienda con estos datos!'}, status = status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['POST'],detail=False, url_path = 'add-comment')
+    def add_comment(self, request):
+        serializer = CreateCommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'Comentario creado con éxito!'}, status=status.HTTP_200_OK)
+        return Response({'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['PUT'],detail=True, url_path = 'change-comment')
+    def change_comment(self,request,pk=None):
+        comment = CliCom.objects.filter(id=pk)
+        if not comment:
+            return Response({'message':'Comentario no encontrado!'},status=status.HTTP_400_BAD_REQUEST)
+        serializer = UpdateCommentSerializer(comment.first(),data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'Comentario actualizado con éxito!'}, status=status.HTTP_200_OK)
+        return Response({'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
