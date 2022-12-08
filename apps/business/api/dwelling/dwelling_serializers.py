@@ -38,23 +38,18 @@ class DwellingSerializer(serializers.ModelSerializer):
         p_queryset = CliCom.objects.filter(id_viv = p_dwellingid)
         comments = []
         for x in range(len(p_queryset)):
-            p_queryset2 = Comentario.objects.filter(id = p_queryset[x].id)
-            clientes = Cliente.objects.get(id = p_queryset[x].id_cli.id)
-            
-            # Revisar
-            print(clientes.id)
-
-            for index in range(len(p_queryset2)):
-                data = {
-                    'pk' : p_queryset2[index].id,
-                    # TODO: Arreglar llamado a cliente, se puede intentar serializar
-                    'id_cliente' : str(clientes.id.id),
-                    'cliente' : str(clientes.id.nombre),
-                    'comentario' :p_queryset2[index].descripcion
-                }
-
-                comments.append(data)
-            return comments
+            cliente = Cliente.objects.get(id = p_queryset[x].id_cli.id)
+            comment = Comentario.objects.filter(id_cli = p_queryset[x].id).first()
+            data = {
+                'pk' : p_queryset[x].id,
+                'cliente' : {
+                    'id' : cliente.id.id,
+                    'nombre' : f'{cliente.id.nombre} {cliente.id.ap_paterno}'  
+                },
+                'comentario' : comment.descripcion
+            }
+            comments.append(data)
+        return comments
 
     def to_representation(self, instance):
         city = Cities.objects.get(id = instance.id_ciu)
@@ -99,3 +94,42 @@ class DwellingSerializer(serializers.ModelSerializer):
             'galeria_exterior' : self.get_exterior_gallery(instance.id),
             'comentarios' : self.get_comments(instance.id)
         }
+
+
+
+class CreateCommentSerializer(serializers.Serializer):
+    id_cliente = serializers.IntegerField(required=True)
+    id_vivienda = serializers.IntegerField(required=True)
+    descripcion = serializers.CharField(max_length=100,required=True) 
+    
+    def validate_id_cliente(self, value):
+        exists = Cliente.objects.filter(id=value)
+        if not exists:
+            raise serializers.ValidationError({'cliente':'El cliente no existe'})
+        return exists.first()
+
+    def validate_id_vivienda(self, value):
+        exists = Vivienda.objects.filter(id=value)
+        if not exists:
+            raise serializers.ValidationError({'vivienda':'la vivienda no existe'})
+        return exists.first()
+
+    def create(self, validated_data):        
+        detail = CliCom.objects.create(id_cli=validated_data.get('id_cliente'), id_viv=validated_data.get('id_vivienda'))
+        return Comentario.objects.create(descripcion=validated_data.get('descripcion'),id_cli=detail)
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError('`update()` must be implemented.')
+
+
+
+class UpdateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentario
+        fields = ('descripcion',)
+
+    def update(self,instance,validated_data):
+        instance = Comentario.objects.get(id_cli=instance.id)
+        instance.descripcion = validated_data.get('descripcion')
+        instance.save()
+        return instance
