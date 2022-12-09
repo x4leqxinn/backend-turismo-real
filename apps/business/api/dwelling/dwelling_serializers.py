@@ -134,7 +134,7 @@ class UpdateCommentSerializer(serializers.ModelSerializer):
         fields = ('descripcion',)
 
     def update(self,instance,validated_data):
-        instance = Comentario.objects.get(id_cli=instance.id)
+        instance = Comentario.objects.filter(id_cli=instance.id).first()
         instance.descripcion = validated_data.get('descripcion')
         instance.save()
         return instance
