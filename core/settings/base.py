@@ -87,7 +87,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,15 +166,14 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, '../static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_PORT = env.str('EMAIL_PORT')
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
-
 
 # Permite verificar los Mails sin enviarlos a usuarios.
 # if DEBUG:
@@ -184,7 +183,7 @@ EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
 # Indicamos donde serviremos nuestras imágenes
 MEDIA_URL = '/media/'
-MEDIA_DIR = os.path.join(BASE_DIR,'../media')
+MEDIA_DIR = os.path.join(BASE_DIR,'media')
 MEDIA_ROOT = MEDIA_DIR
 
 
