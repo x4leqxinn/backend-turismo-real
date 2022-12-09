@@ -9,6 +9,7 @@ from apps.locations.models import Countries
 from db_routers.permissions.db_connection import oracle_connection
 from rest_framework.decorators import action
 from apps.locations.api.general_serializers import *
+from apps.base.models.db_models import CheckOut
 
 class DwellingViewSet(viewsets.GenericViewSet):
     #authentication_classes = ()
@@ -162,3 +163,13 @@ class DwellingViewSet(viewsets.GenericViewSet):
         serializer.save()
         return Response({'message':'Puntuación agregada correctamente!','body':serializer.data},
                 status=status.HTTP_200_OK)    
+
+    @action(methods=['GET'],detail=False, url_path = 'validate-review')
+    def validate_review(self,request):
+        pk = request.query_params.get('pk','')
+        if not pk:
+            return Response({'message' : 'Debe enviar el id del cliente "pk".'},status=status.HTTP_400_BAD_REQUEST)
+
+        checkout = CheckOut.objects.filter(id_res__id_cli__id=pk,estado_checkout='COMPLETADO').exists()
+        return Response({'status':checkout,'message' : 'Tiene permitido hacer reseñas.' if checkout else 'No tiene permitido hacer reseñas.'},
+        status=status.HTTP_200_OK if checkout else status.HTTP_400_BAD_REQUEST)
