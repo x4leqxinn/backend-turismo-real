@@ -101,8 +101,8 @@ class DwellingSerializer(serializers.ModelSerializer):
         }
 
 
-def validate_review(pk:int):
-    return CheckOut.objects.filter(id_res__id_cli__id=pk,estado_checkout='COMPLETADO').exists()
+def validate_review(client_pk:int,dwelling_pk:int):
+    return CheckOut.objects.filter(id_res__id_cli__id=client_pk,id_res__id_viv__id=dwelling_pk,estado_checkout='COMPLETADO').exists()
 class CreateCommentSerializer(serializers.Serializer):
     id_cliente = serializers.IntegerField(required=True)
     id_vivienda = serializers.IntegerField(required=True)
@@ -121,7 +121,7 @@ class CreateCommentSerializer(serializers.Serializer):
         return exists.first()
 
     def validate(self, data):
-        if not validate_review(data['id_cliente'].id.id):
+        if not validate_review(data['id_cliente'].id.id,data['id_vivienda'].id):
             raise serializers.ValidationError({'reseña':'Debe hacer una reserva antes de realizar una reseña.'})
         return data
 
@@ -177,7 +177,7 @@ class PuntuacionSerializer(serializers.ModelSerializer):
         return value
     
     def validate(self, data):
-        if not validate_review(data['id_cli']):
+        if not validate_review(data['id_cli'],data['id_viv']):
             raise serializers.ValidationError({'reseña':'Debe hacer una reserva antes de realizar una reseña.'})
         return data
 
