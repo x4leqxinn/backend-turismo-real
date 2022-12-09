@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda, Puntuacion
+from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda, Puntuacion, CheckOut
 from apps.users.models import User
 from apps.locations.models import Cities
 from drf_extra_fields.fields import Base64ImageField
@@ -101,7 +101,8 @@ class DwellingSerializer(serializers.ModelSerializer):
         }
 
 
-
+def validate_review(pk:int):
+    return CheckOut.objects.filter(id_res__id_cli__id=pk,estado_checkout='COMPLETADO').exists()
 class CreateCommentSerializer(serializers.Serializer):
     id_cliente = serializers.IntegerField(required=True)
     id_vivienda = serializers.IntegerField(required=True)
@@ -118,6 +119,11 @@ class CreateCommentSerializer(serializers.Serializer):
         if not exists:
             raise serializers.ValidationError({'vivienda':'la vivienda no existe'})
         return exists.first()
+
+    def validate(self, data):
+        if not validate_review(data['id_cliente'].id.id):
+            raise serializers.ValidationError({'reseña':'Debe hacer una reserva antes de realizar una reseña.'})
+        return data
 
     def create(self, validated_data):        
         detail = CliCom.objects.create(id_cli=validated_data.get('id_cliente'), id_viv=validated_data.get('id_vivienda'))
@@ -138,7 +144,6 @@ class UpdateCommentSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion')
         instance.save()
         return instance
-
 class PuntuacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Puntuacion
@@ -171,6 +176,11 @@ class PuntuacionSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'vivienda':'La propiedad ingresada no existe!'})
         return value
     
+    def validate(self, data):
+        if not validate_review(data['id_cli']):
+            raise serializers.ValidationError({'reseña':'Debe hacer una reserva antes de realizar una reseña.'})
+        return data
+
     def create(self,validated_data):
         return Puntuacion.objects.create(**validated_data)
 
