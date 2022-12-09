@@ -134,3 +134,31 @@ class DwellingViewSet(viewsets.GenericViewSet):
             serializer.save()
             return Response({'message':'Comentario actualizado con éxito!'}, status=status.HTTP_200_OK)
         return Response({'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['POST'],detail=False, url_path = 'add-stars')
+    def add_stars(self,request):
+        # Create or Update
+        pk = request.data.get('id','')
+        if pk:
+            queryset = Puntuacion.objects.filter(estado='ACTIVO')
+            score = get_object_or_404(queryset,pk=pk)
+            serializer = PuntuacionSerializer(instance=score, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'message':'Puntuación actualizada correctamente!','body':serializer.data},
+                status=status.HTTP_200_OK)
+            return Response({'actualizado':''})  
+        # Verify is valid data
+        serializer = PuntuacionSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message' : serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+        # Verify if exists
+        score = Puntuacion.objects.filter(id_cli=request.data.get('id_cli'),id_viv=request.data.get('id_viv')) 
+        if score:
+            serializer.instance = score.first()
+            serializer.save()
+            return Response({'message':'Puntuación actualizada correctamente!','body':serializer.data},
+            status=status.HTTP_200_OK)
+        serializer.save()
+        return Response({'message':'Puntuación agregada correctamente!','body':serializer.data},
+                status=status.HTTP_200_OK)    
