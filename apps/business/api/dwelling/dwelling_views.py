@@ -173,10 +173,13 @@ class DwellingViewSet(viewsets.GenericViewSet):
 
     @action(methods=['GET'],detail=False, url_path = 'validate-review')
     def validate_review(self,request):
-        pk = request.query_params.get('pk','')
-        if not pk:
-            return Response({'message' : 'Debe enviar el id del cliente "pk".'},status=status.HTTP_400_BAD_REQUEST)
+        client_pk = request.query_params.get('c_pk','')
+        dwelling_pk = request.query_params.get('d_pk','')
+        if not client_pk:
+            return Response({'message' : 'Debe enviar el id del cliente "c_pk".'},status=status.HTTP_400_BAD_REQUEST)
+        if not dwelling_pk:
+            return Response({'message' : 'Debe enviar el id de la vivienda "d_pk".'},status=status.HTTP_400_BAD_REQUEST)
 
-        checkout = CheckOut.objects.filter(id_res__id_cli__id=pk,estado_checkout='COMPLETADO').exists()
+        checkout = CheckOut.objects.filter(id_res__id_cli__id=client_pk, id_res__id_viv__id=dwelling_pk,estado_checkout='COMPLETADO').exists()
         return Response({'status':checkout,'message' : 'Tiene permitido hacer reseñas.' if checkout else 'No tiene permitido hacer reseñas.'},
         status=status.HTTP_200_OK if checkout else status.HTTP_400_BAD_REQUEST)
