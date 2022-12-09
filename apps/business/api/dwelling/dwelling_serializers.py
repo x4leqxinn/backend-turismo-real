@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda
+from apps.base.models.db_models import CliCom, Cliente, Comentario, GaleriaExterior, GaleriaInterior, Vivienda, Puntuacion
 from apps.users.models import User
 from apps.locations.models import Cities
 from drf_extra_fields.fields import Base64ImageField
@@ -136,5 +136,47 @@ class UpdateCommentSerializer(serializers.ModelSerializer):
     def update(self,instance,validated_data):
         instance = Comentario.objects.get(id_cli=instance.id)
         instance.descripcion = validated_data.get('descripcion')
+        instance.save()
+        return instance
+
+class PuntuacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Puntuacion
+        fields = '__all__'
+
+
+    def to_representation(self, instance):
+        return {
+            'id' : instance.id,
+            'score' : instance.estrellas,
+            'vivienda' : instance.id_viv.nombre,
+            'cliente' : instance.id_cli.id.nombre
+        }
+    
+    def validate_estrellas(self,value):
+        value = int(value)
+        if value > 0 and value < 6:
+            return str(value)
+        raise serializers.ValidationError({'estrellas':'La puntuación debe estar entre 1 y 5 estrellas.'})
+    
+    def validate_id_cli(self,value):
+        exists = Cliente.objects.filter(id=value.id).exists()
+        if not exists:
+            raise serializers.ValidationError({'cliente':'El cliente ingresado no existe!'})
+        return value
+
+    def validate_id_viv(self,value):
+        exists = Vivienda.objects.filter(id=value.id).exists()
+        if not exists:
+            raise serializers.ValidationError({'vivienda':'La propiedad ingresada no existe!'})
+        return value
+    
+    def create(self,validated_data):
+        return Puntuacion.objects.create(**validated_data)
+
+    def update(self,instance,validated_data):
+        instance.estrellas = validated_data.get('estrellas',instance.estrellas)
+        instance.id_cli = validated_data.get('id_cli',instance.id_cli)
+        instance.id_viv = validated_data.get('id_viv',instance.id_viv)
         instance.save()
         return instance
