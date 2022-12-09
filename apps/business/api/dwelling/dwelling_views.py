@@ -119,6 +119,13 @@ class DwellingViewSet(viewsets.GenericViewSet):
 
     @action(methods=['POST'],detail=False, url_path = 'add-comment')
     def add_comment(self, request):
+        pk = request.data.get('id','')
+        if pk:
+            return self.change_comment(request=request,pk=pk)
+        # Verify if exists
+        comment = CliCom.objects.filter(id_cli=request.data.get('id_cliente'),id_viv=request.data.get('id_vivienda')) 
+        if comment:
+            return self.change_comment(request=request,pk=comment.first().id)
         serializer = CreateCommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -148,7 +155,7 @@ class DwellingViewSet(viewsets.GenericViewSet):
                 serializer.save()
                 return Response({'message':'Puntuación actualizada correctamente!','body':serializer.data},
                 status=status.HTTP_200_OK)
-            return Response({'actualizado':''})  
+            return Response({'message' : serializer.errors},status=status.HTTP_400_BAD_REQUEST)  
         # Verify is valid data
         serializer = PuntuacionSerializer(data=request.data)
         if not serializer.is_valid():
