@@ -4,7 +4,7 @@ from apps.base.models.db_models import Cliente, Persona
 from apps.users.models import User, UserRole
 from drf_extra_fields.fields import Base64ImageField
 from django.contrib.auth.models import Group
-from templates.emails.utils import prefix_decorator
+from core.templates.emails.utils import prefix_decorator
 
 class ClientListSerializers(serializers.ModelSerializer):
     class Meta:
