@@ -226,13 +226,13 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                     tour = Tour(id = movilizacion, id_ub_trans = ubicacion)
                     tour.save()
 
+                    from datetime import datetime
                     # Buscamos el conductor
-                    driver = self.search_driver(vivienda.id, reserva.fecha_termino)
+                    driver = self.search_driver(vivienda.id, datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y'))
                     date = reserva.fecha_termino
                     
                     if driver:
                         print('Existe el conductor')
-                        from datetime import datetime
                         date = datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y')
                         detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
                         fecha_inicio = date, fecha_termino = date, 
