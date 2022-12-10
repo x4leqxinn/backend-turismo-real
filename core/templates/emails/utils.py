@@ -5,6 +5,103 @@ from apps.base.models.db_models import Reserva as Booking, Persona as Client, Se
 from apps.users.models import User
 import threading
 from core.settings.base import TURISMO_REAL_URI, DEFAULT_DOMAIN
+from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio, Compra, DetServMov, TransporteIda, TransporteVuelta, Tour
+from datetime import datetime
+from apps.locations.models import Countries, States, Cities
+
+
+def get_booking_dict(booking_id:int) -> dict:
+    booking = Reserva.objects.filter(id=booking_id).first()
+    client = booking.id_cli.id
+    checkin = CheckIn.objects.get(id_res=booking)
+    checkout = CheckOut.objects.get(id_res=booking)
+    checkout.total_multa = 0 if (checkout.total_multa is None) or (checkout.total_multa < 0) else checkout.total_multa
+    services = Servicio.objects.filter(id_reserva=booking.id)
+    services_formatted = []
+    for service in services:
+        data = get_service(service)
+        services_formatted.append(data)
+    user = User.objects.get(person=client)
+    dwelling = booking.id_viv
+    nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
+    purchase = Compra.objects.get(id_reserva=booking)
+    paid_out = True if booking.total_pago == booking.monto_pagado else False
+    now = datetime.now()
+    client_address = f'{Cities.objects.get(id=client.id_ciu).name}, {States.objects.get(id=client.id_est).name}, {Countries.objects.get(id=client.id_pai).name}.'
+    context = {
+        'booking': booking,
+        'checkin': checkin,
+        'checkout': checkout,
+        'client': client,
+        'client_address': client_address,
+        'dwelling': dwelling,
+        'services': services_formatted,
+        'user': user,
+        'nights': nights,
+        'purchase': purchase,
+        'paid_out': paid_out,
+        'created_at': now,
+        'STATIC_ROOT': settings.STATIC_ROOT
+    }
+    return context
+
+
+def get_service(instance):
+    data = {
+        'id' : instance.id,
+        'tipo_id' : instance.id_tip.id,
+        'tipo_servicio' : instance.id_tip.descripcion,
+        'precio' : instance.precio
+    }
+
+    cant_pasajeros = 0
+    if instance.id_tip.id in(1,2):
+        detail = DetServMov.objects.get(id_mov__id = instance.id)
+        cant_pasajeros = detail.cant_pasajeros
+        data['fecha_inicio'] = detail.fecha_inicio
+        data['fecha_termino'] = detail.fecha_termino
+        data['hora_inicio'] = detail.hora_inicio
+        data['hora_termino'] = detail.hora_termino
+        data['pasajeros'] = detail.cant_pasajeros
+        driver = {
+            'run' : detail.id_con.id.id.run,
+            'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
+            'telefono' : detail.id_con.id.id.telefono,
+            'vehiculo' : {
+                'patente' : detail.id_con.id_veh.patente,
+                'modelo' : detail.id_con.id_veh.id_mod.nombre,
+                'marca' : detail.id_con.id_veh.id_mar.nombre,
+                'color' : detail.id_con.id_veh.id_col.nombre
+            }
+        }
+        data['conductor'] = driver 
+
+    if instance.id_tip.id == 1:
+        transporte = None
+        try:
+            transporte = TransporteIda.objects.get(id_trans = instance.id)
+            data['tipo_tranporte'] = 'transporte de ida'
+            data['valida_tipo'] = 1
+        except:
+            pass
+
+        try: 
+            transporte = TransporteVuelta.objects.get(id_trans = instance.id)
+            data['tipo_tranporte'] = 'transporte de vuelta'
+            data['valida_tipo'] = 2
+        except:
+            pass
+
+        data['nombre'] = transporte.id_ub_trans.nombre 
+        data['descripcion'] = transporte.id_ub_trans.id_tip.descripcion
+        data['precio'] = transporte.id_ub_trans.precio 
+
+    elif instance.id_tip.id == 2: 
+        tour = Tour.objects.filter(id=instance.id).first() 
+        data['nombre'] = tour.id_ub_trans.nombre
+        data['descripcion'] = tour.id_ub_trans.descripcion
+        data['precio'] = instance.precio
+    return data
 
 def send_email(subject:str,mail_to:str,template:str,data:dict):
     """Send email function
@@ -39,7 +136,7 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
                 2 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']} # TOUR
             }, 
         'booking':{
-                1 :{'template':['emails/create_account/create-account.html','emails/create_account/create-account.html'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # RESERVA
+                1 :{'template':['emails/booking/booking.html','emails/booking/booking.html'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # RESERVA
                 2 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # Cambio estado Checkin
                 3 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # Cambio estado Checkout
             }, 
@@ -111,34 +208,22 @@ def notice_client(client,subject,template):
 
 
 def notice_booking(booking:Booking, options, page):
-    services = Service.objects.filter(id_reserva = booking.id)
-    dwelling = booking.id_viv
-    client = booking.id_cli.id
-    receptionist = search_receptionist(dwelling.id)
-    services = list_services(services)
+    context = get_booking_dict(booking.id)
 
-    context = {
-        'dwelling' : dwelling,
-        'client' : client,
-        'receptionist': receptionist,
-        'services': services,
-        'TURISMO_REAL_URI' : TURISMO_REAL_URI
-    }
-    
     #######################
     ## Send Emails
     #######################
 
     ## Client
-    user = User.objects.filter(person = client.id).first()
     send_email(
-        mail_to=user.email,
-        subject=f'Estimad@ {client.nombre}, ¡su reserva ha sido confirmada con éxito!',
+        mail_to=context['user'].email,
+        subject='Estimad@ {}, ¡su reserva ha sido confirmada con éxito!'.format(context['client'].nombre),
         template=options.get('booking')[page]['template'][0],
         data=context
         )
 
     ## Receptionist
+    """
     user = User.objects.filter(person = receptionist.id.id).first() 
     send_email(
         mail_to=user.email,
@@ -146,7 +231,9 @@ def notice_booking(booking:Booking, options, page):
         template=options.get('booking')[page]['template'][1],
         data=context
     )
+    """
     
+    """
     if page == 1 and services:
         ## Drivers
         for x in range(len(services)):
@@ -159,7 +246,7 @@ def notice_booking(booking:Booking, options, page):
                 template=options.get('service')[1]['template'][1],
                 data=context
             )
-
+    """
 ## DECORATOR
 def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Booking = None):
     def decorator_function(original_function):
