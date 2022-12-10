@@ -42,7 +42,7 @@ class DwellingSerializer(serializers.ModelSerializer):
             cliente = Cliente.objects.get(id=p_queryset[x].id_cli.id)
             comment = Comentario.objects.filter(id_cli=p_queryset[x].id).first()
             usuario = User.objects.filter(person__id=cliente.id.id).first()
-            score = Puntuacion.objects.filter(id_cli=cliente.id,id_viv=p_dwellingid)
+            score = Puntuacion.objects.filter(id_cli=cliente.id.id,id_viv=p_dwellingid)
             data = {
                 'pk' : p_queryset[x].id,
                 'estrellas' : score.first().estrellas if score else 'Sin puntuación',
