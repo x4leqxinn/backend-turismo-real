@@ -3,7 +3,7 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from .emails.utils import prefix_decorator
-from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio
+from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio, Compra
 from django.views.generic import CreateView, ListView, DeleteView, View
 from apps.users.models import User
 
@@ -80,7 +80,8 @@ class BookingPdf(View):
         return path
 
     def get(self,request,*args,**kwargs):
-        print()
+        #Importamos primeramente date, para poder manejar el formato "fechas"
+        #from datetime import date
         # Find the template and render it
         template = get_template('reports/booking.html')
         booking = Reserva.objects.filter(id=self.kwargs['pk']).first()
@@ -89,13 +90,19 @@ class BookingPdf(View):
         checkout = CheckOut.objects.get(id_res=booking)
         services = Servicio.objects.filter(id_reserva=booking.id)
         user = User.objects.get(person=client)
+        dwelling = booking.id_viv
+        nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
+        purchase = Compra.objects.get(id_reserva=booking)
         context = {
             'booking': booking,
             'checkin': checkin,
             'checkout': checkout,
             'client': client,
+            'dwelling': dwelling,
             'services': services,
             'user': user,
+            'nights': nights,
+            'purchase': purchase,
             'STATIC_ROOT': settings.STATIC_ROOT
         }
         html = template.render(context)
