@@ -152,4 +152,19 @@ CREATE OR REPLACE PACKAGE BODY PKG_BUSINESS IS
         END LOOP;
     END SP_UPDATE_SCORE;
 
+    FUNCTION FN_AVG_STARS(p_deptoid vivienda.ID%TYPE) RETURN NUMBER IS
+        v_avg_stars vivienda.estrellas%TYPE;
+    BEGIN   
+        pkg_utils.v_sql := 'select ROUND(NVL(sum(estrellas),0) / NVL(count(estrellas),0),1) 
+        from puntuacion 
+        where id_viv = :p_deptoid and estado = ''ACTIVO''';
+        EXECUTE IMMEDIATE pkg_utils.v_sql
+        INTO v_avg_stars
+        USING p_deptoid;
+        RETURN v_avg_stars;
+    EXCEPTION
+        WHEN OTHERS THEN
+            RETURN 0;
+    END FN_AVG_STARS;
+
 END PKG_BUSINESS;
