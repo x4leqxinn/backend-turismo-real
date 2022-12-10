@@ -28,9 +28,9 @@ def sendEmail(email):
     message.attach_alternative(content, 'text/html')
     message.send()
 
-#reserva = Reserva.objects.filter(id=1).first()
+reserva = Reserva.objects.filter(id=1).first()
 
-#@prefix_decorator(email_type='booking',page=1,booking=reserva)
+@prefix_decorator(email_type='booking',page=1,booking=reserva)
 def index(request):
     if request.method == 'POST':
         mail = request.POST.get('txtMail')
@@ -84,32 +84,7 @@ class BookingPdf(View):
         #from datetime import date
         # Find the template and render it
         template = get_template('reports/booking.html')
-        booking = Reserva.objects.filter(id=self.kwargs['pk']).first()
-        client = booking.id_cli.id
-        checkin = CheckIn.objects.get(id_res=booking)
-        checkout = CheckOut.objects.get(id_res=booking)
-        checkout.total_multa = 0 if (checkout.total_multa is None) or (checkout.total_multa < 0) else checkout.total_multa
-        services = Servicio.objects.filter(id_reserva=booking.id)
-        user = User.objects.get(person=client)
-        dwelling = booking.id_viv
-        nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
-        purchase = Compra.objects.get(id_reserva=booking)
-        paid_out = True if booking.total_pago == booking.monto_pagado else False
-        now = datetime.now()
-        context = {
-            'booking': booking,
-            'checkin': checkin,
-            'checkout': checkout,
-            'client': client,
-            'dwelling': dwelling,
-            'services': services,
-            'user': user,
-            'nights': nights,
-            'purchase': purchase,
-            'paid_out': paid_out,
-            'created_at': now,
-            'STATIC_ROOT': settings.STATIC_ROOT
-        }
+        context = get_booking_context(self.kwargs['pk'])
         html = template.render(context)
         # Create a django response object
         response = HttpResponse(content_type='application/pdf')
@@ -123,3 +98,35 @@ class BookingPdf(View):
         if pisa_status.err:
             return HttpResponse('We had sime errors <pre>'+ html + '</pre>')
         return response
+
+
+
+
+def get_booking_context(booking_id:int) -> dict:
+    booking = Reserva.objects.filter(id=booking_id).first()
+    client = booking.id_cli.id
+    checkin = CheckIn.objects.get(id_res=booking)
+    checkout = CheckOut.objects.get(id_res=booking)
+    checkout.total_multa = 0 if (checkout.total_multa is None) or (checkout.total_multa < 0) else checkout.total_multa
+    services = Servicio.objects.filter(id_reserva=booking.id)
+    user = User.objects.get(person=client)
+    dwelling = booking.id_viv
+    nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
+    purchase = Compra.objects.get(id_reserva=booking)
+    paid_out = True if booking.total_pago == booking.monto_pagado else False
+    now = datetime.now()
+    context = {
+        'booking': booking,
+        'checkin': checkin,
+        'checkout': checkout,
+        'client': client,
+        'dwelling': dwelling,
+        'services': services,
+        'user': user,
+        'nights': nights,
+        'purchase': purchase,
+        'paid_out': paid_out,
+        'created_at': now,
+        'STATIC_ROOT': settings.STATIC_ROOT
+    }
+    return context
