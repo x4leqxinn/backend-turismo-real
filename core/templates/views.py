@@ -93,6 +93,7 @@ class BookingPdf(View):
         dwelling = booking.id_viv
         nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
         purchase = Compra.objects.get(id_reserva=booking)
+        paid_out = True if booking.total_pago == booking.monto_pagado else False
         context = {
             'booking': booking,
             'checkin': checkin,
@@ -103,6 +104,7 @@ class BookingPdf(View):
             'user': user,
             'nights': nights,
             'purchase': purchase,
+            'paid_out': paid_out,
             'STATIC_ROOT': settings.STATIC_ROOT
         }
         html = template.render(context)
