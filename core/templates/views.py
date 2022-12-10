@@ -6,6 +6,7 @@ from .emails.utils import prefix_decorator
 from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio, Compra
 from django.views.generic import CreateView, ListView, DeleteView, View
 from apps.users.models import User
+from datetime import datetime
 
 
 def sendEmail(email):
@@ -94,6 +95,7 @@ class BookingPdf(View):
         nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
         purchase = Compra.objects.get(id_reserva=booking)
         paid_out = True if booking.total_pago == booking.monto_pagado else False
+        now = datetime.now()
         context = {
             'booking': booking,
             'checkin': checkin,
@@ -105,6 +107,7 @@ class BookingPdf(View):
             'nights': nights,
             'purchase': purchase,
             'paid_out': paid_out,
+            'created_at': now,
             'STATIC_ROOT': settings.STATIC_ROOT
         }
         html = template.render(context)
