@@ -137,7 +137,7 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
         reserva.save()
 
         # Generamos la compra
-        compra = Compra(id_cliente = cliente, monto_final = 0, id_reserva = reserva)
+        compra = Compra(id_cliente = cliente, monto_final = reserva.total_pago, id_reserva = reserva)
         compra.save()
 
         if len(acompaniantes) > 0:
@@ -241,6 +241,10 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
                         detail_driver.save()
                     else:
                         print('No existe conductor')
+                
+                # Sumamos al valor total de la compra
+                compra.monto_final = compra.monto_final + servicio.precio
+                compra.save()
 
         recepcionist = self.search_receptionist(vivienda.id)
         if recepcionist:
