@@ -29,7 +29,7 @@ schema_view = get_schema_view(
 # TODO: Cambiar la ruta catch all y eliminar el template de prueba de mails
 
 # ELIMINAR DESPUÉS
-from templates.views import index
+from core.templates.views import index
 
 urlpatterns = [
     # Administración de Django
@@ -63,6 +63,9 @@ urlpatterns = [
 
     # Enturador data analysis
     path('website-api/',include('apps.website.api.routers')),
+
+    # Reportes 
+    path('reports/',include('core.templates.urls')),
 
     # Ruta de redirección por url erronéa
     # Momentareamente está la página de envio de mails
