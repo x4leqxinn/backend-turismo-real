@@ -614,6 +614,7 @@
                                         </tr>
                                     </table>
                                 </td>
+
                                 <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
                                     <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
                                         <tr>
@@ -621,6 +622,21 @@
                                                 <div style="font-family: sans-serif">
                                                     <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #FFFFFF; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
                                                         <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="font-size:14px;">PRECIO</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <!-- BREAK -->
+                                <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                    <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                        <tr>
+                                            <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:10px;">
+                                                <div style="font-family: sans-serif">
+                                                    <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #FFFFFF; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="font-size:14px;">TOTAL PAGADO</span></p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -649,7 +665,13 @@
                                             <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:25px;">
                                                 <div style="font-family: sans-serif">
                                                     <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
-                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="color:#000000;font-size:14px;">Reserva Gran Avenida 4 Noches</span></p>
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="color:#000000;font-size:14px;">Reserva realizada en <span style="font-weight: 500;">"{{dwelling.nombre}}"</span> con estadía de {{nights}} 
+                                                            {% if nights == 1 %}
+                                                                noche
+                                                            {% else %}
+                                                                noches
+                                                            {% endif %}
+                                                        </span></p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -663,7 +685,21 @@
                                             <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:25px;">
                                                 <div style="font-family: sans-serif">
                                                     <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
-                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;">$400000</p>
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;">${{booking.total_pago}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                    <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                        <tr>
+                                            <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:25px;">
+                                                <div style="font-family: sans-serif">
+                                                    <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;">${{booking.monto_pagado}}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -680,7 +716,7 @@
                                             <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:25px;">
                                                 <div style="font-family: sans-serif">
                                                     <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
-                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="color:#000000;font-size:14px;">{{servicio.id_tip.descripcion}}</span></p>
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><span style="color:#000000;font-size:14px;">Servicio de {{ service.id_tip.descripcion.lower }}</span></p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -688,6 +724,20 @@
                                     </table>
                                 </td>
                                 
+                                <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                    <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                        <tr>
+                                            <td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:25px;">
+                                                <div style="font-family: sans-serif">
+                                                    <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;">${{service.precio}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
                                 <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
                                     <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
                                         <tr>
@@ -765,7 +815,7 @@
                                             <td class="pad" style="padding-bottom:5px;padding-left:20px;padding-right:20px;padding-top:10px;">
                                                 <div style="font-family: sans-serif">
                                                     <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif;">
-                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><strong>$40000</strong></p>
+                                                        <p style="margin: 0; font-size: 14px; mso-line-height-alt: 16.8px;"><strong>${{purchase.monto_final}}</strong></p>
                                                     </div>
                                                 </div>
                                             </td>
