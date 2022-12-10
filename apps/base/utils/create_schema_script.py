@@ -5,7 +5,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env(env_file='./.env') 
 
-def run_create_schema():
+def run_create_schema() -> bool:
     user = 'CREATE USER {} IDENTIFIED BY "{}"'.format(env.str('DATABASE_USER_1'),env.str('DATABASE_PASSWORD_1'))
     permissions = 'GRANT CONNECT, RESOURCE, DBA TO {}'.format(env.str('DATABASE_USER_1'))
     try:
@@ -13,5 +13,6 @@ def run_create_schema():
             cursor.execute('ALTER SESSION SET "_oracle_script"=true')
             cursor.execute(user)
             cursor.execute(permissions)
+            return True
     except Exception as ex:
-        pass
+        return False

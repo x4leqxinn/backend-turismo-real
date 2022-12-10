@@ -10,5 +10,6 @@ class Command(BaseCommand):
         ## Debe intentar borrar el schema
         run_drop_schema()
         ## Se debe crear el schema
-        run_create_schema()
-        return self.stdout.write(self.style.SUCCESS('--- BASE DE DATOS REINICIADA ---'))
+        if run_create_schema():
+            return self.stdout.write(self.style.SUCCESS('--- BASE DE DATOS REINICIADA ---'))
+        return self.stdout.write(self.style.WARNING('¡Asegúrese de cerrar todas las conexiones!'))
