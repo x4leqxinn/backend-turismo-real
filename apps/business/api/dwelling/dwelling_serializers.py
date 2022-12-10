@@ -177,7 +177,7 @@ class PuntuacionSerializer(serializers.ModelSerializer):
         return value
     
     def validate(self, data):
-        if not validate_review(data['id_cli'],data['id_viv']):
+        if not validate_review(data['id_cli'].id,data['id_viv'].id):
             raise serializers.ValidationError({'reseña':'Debe hacer una reserva antes de realizar una reseña.'})
         return data
 
