@@ -32,7 +32,6 @@ def sendEmail(email):
 
 #@prefix_decorator(email_type='booking',page=1,booking=reserva)
 def index(request):
-    print('Hola')
     if request.method == 'POST':
         mail = request.POST.get('txtMail')
         
@@ -89,6 +88,7 @@ class BookingPdf(View):
         client = booking.id_cli.id
         checkin = CheckIn.objects.get(id_res=booking)
         checkout = CheckOut.objects.get(id_res=booking)
+        checkout.total_multa = 0 if (checkout.total_multa is None) or (checkout.total_multa < 0) else checkout.total_multa
         services = Servicio.objects.filter(id_reserva=booking.id)
         user = User.objects.get(person=client)
         dwelling = booking.id_viv
