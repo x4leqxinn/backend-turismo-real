@@ -3,8 +3,9 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from .emails.utils import prefix_decorator
-from apps.base.models.db_models import Reserva, Cliente
+from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio
 from django.views.generic import CreateView, ListView, DeleteView, View
+from apps.users.models import User
 
 
 def sendEmail(email):
@@ -82,10 +83,19 @@ class BookingPdf(View):
         print()
         # Find the template and render it
         template = get_template('reports/booking.html')
-        print('Path' , settings.STATIC_ROOT)
+        booking = Reserva.objects.filter(id=self.kwargs['pk']).first()
+        client = booking.id_cli.id
+        checkin = CheckIn.objects.get(id_res=booking)
+        checkout = CheckOut.objects.get(id_res=booking)
+        services = Servicio.objects.filter(id_reserva=booking.id)
+        user = User.objects.get(person=client)
         context = {
-            'title' : 'Titulo ejemplo',
-            'booking': Reserva.objects.filter(id=self.kwargs['pk']).first(),
+            'booking': booking,
+            'checkin': checkin,
+            'checkout': checkout,
+            'client': client,
+            'services': services,
+            'user': user,
             'STATIC_ROOT': settings.STATIC_ROOT
         }
         html = template.render(context)
