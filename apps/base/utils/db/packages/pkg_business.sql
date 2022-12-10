@@ -123,4 +123,33 @@ CREATE OR REPLACE PACKAGE BODY PKG_BUSINESS IS
         
     END SP_DF_ML;
 
+    -- Procedimiento que actualiza las puntuación promedio de la propiedad
+    PROCEDURE SP_UPDATE_SCORE IS 
+        TYPE t_deptos IS TABLE OF vivienda%rowtype INDEX BY PLS_INTEGER;
+        z PLS_INTEGER := 1;
+        v_deptos t_deptos;
+        v_avg_stars vivienda.estrellas%TYPE;
+        v_id vivienda.id%type;
+    BEGIN
+        SELECT * BULK COLLECT INTO v_deptos FROM vivienda;
+        FOR I IN v_deptos.FIRST()..v_deptos.LAST()
+        LOOP
+            BEGIN
+                v_id := v_deptos(I).ID;
+                v_avg_stars:= fn_avg_stars(v_id);
+                -- Aquí debo actualizar las estrellas por el promedio de calificaciones
+                pkg_utils.v_sql := 'UPDATE vivienda SET estrellas = :v_avg_stars 
+                WHERE ID = :v_id AND estado = ''ACTIVO''';
+                EXECUTE IMMEDIATE pkg_utils.v_sql
+                USING v_avg_stars, v_id;
+                IF sql%rowcount > 0 THEN
+                    COMMIT;
+                END IF;
+            EXCEPTION
+                WHEN OTHERS THEN
+                    DBMS_OUTPUT.PUT_LINE('Error');
+            END;
+        END LOOP;
+    END SP_UPDATE_SCORE;
+
 END PKG_BUSINESS;
