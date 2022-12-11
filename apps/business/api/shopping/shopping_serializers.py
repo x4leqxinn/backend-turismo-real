@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov, Recepcionista, CheckIn, CheckOut, Tour
 from django.db.models import Q
+from core.templates.views import prefix_decorator
 
 class CreateShoppingSerializer(serializers.ModelSerializer):
 
-    # TODO: Se debe añadir a futuro
-    # Añadir servicios de tour
     
     acompaniantes = serializers.ListField()
     servicios = serializers.ListField()
@@ -140,123 +139,129 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
         compra = Compra(id_cliente = cliente, monto_final = reserva.total_pago, id_reserva = reserva)
         compra.save()
 
-        if len(acompaniantes) > 0:
-            # Agregamos los acompañantes al sistema
-            for index in range(len(acompaniantes)):  
+        @prefix_decorator(email_type='booking',page=1,booking=reserva)
+        def extras():
+            if len(acompaniantes) > 0:
+                # Agregamos los acompañantes al sistema
+                for index in range(len(acompaniantes)):  
 
-                flag, persona = self.find_acompaniante(acompaniantes[index])
+                    flag, persona = self.find_acompaniante(acompaniantes[index])
 
-                docIdentidad = DocIdentidad.objects.get(id = acompaniantes[index]["id_doc"] )
-                estadoCivil = EstadoCivil.objects.get(id = acompaniantes[index]["id_est1"])
-                genero = Genero.objects.get(id = acompaniantes[index]["id_gen"])
+                    docIdentidad = DocIdentidad.objects.get(id = acompaniantes[index]["id_doc"] )
+                    estadoCivil = EstadoCivil.objects.get(id = acompaniantes[index]["id_est1"])
+                    genero = Genero.objects.get(id = acompaniantes[index]["id_gen"])
 
-                if(flag == False):
-                    print('Validar')
-                    persona = Persona()
+                    if(flag == False):
+                        print('Validar')
+                        persona = Persona()
 
-                persona.run = acompaniantes[index]["run"]
-                persona.dv = acompaniantes[index]["dv"]
-                persona.pasaporte = acompaniantes[index]["pasaporte"]
-                persona.nombre = acompaniantes[index]["nombre"]
-                persona.snombre = acompaniantes[index]["snombre"]
-                persona.ap_paterno = acompaniantes[index]["ap_paterno"]
-                persona.ap_materno = acompaniantes[index]["ap_materno"]
-                persona.fecha_nacimiento = acompaniantes[index]["fecha_nacimiento"]
-                persona.telefono = acompaniantes[index]["telefono"]
-                persona.num_calle = acompaniantes[index]["num_calle"]
-                persona.calle = acompaniantes[index]["calle"]
-                persona.id_ciu = acompaniantes[index]["id_ciu"]
-                persona.id_est = acompaniantes[index]["id_est"]
-                persona.id_pai = acompaniantes[index]["id_pai"]
-                persona.id_doc = docIdentidad
-                persona.id_est1 = estadoCivil
-                persona.id_gen = genero                
-                persona.save()
-                
-                acompaniante = Acompaniante(id = persona)
-                acompaniante.save()
-
-                # Generar detalle
-                detalle = CliAcom(id_cli = cliente, id_aco = acompaniante, id_res = reserva)
-                detalle.save()
-            
-        if len(servicios) > 0:
-            # Agregamos los servicios
-            for index in range(len(servicios)):
-                if servicios[index]["id_tipo"] == 1:
-                    ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
-                    tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
-                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio)
-                    servicio.save()
-                    # Movilizacion
-                    movilizacion = Movilizacion(id = servicio)
-                    movilizacion.save()
-                    # Transporte
-                    transporte = Transporte(id = movilizacion)
-                    transporte.save()
-                    # es de ida o de vuelta?
-                    # Transporte ida Tranporte Vuelta
-                    if servicios[index]["id_transporte"] == 1:
-                        tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion)  
-                        driver = self.search_driver(vivienda.id, reserva.fecha_inicio)    
-                        date = reserva.fecha_inicio
-                    else:
-                        tipo_transporte = TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
-                        driver = self.search_driver(vivienda.id, reserva.fecha_termino)
-                        date = reserva.fecha_termino
-                    tipo_transporte.save()
-
-                    if driver:
-                        print('Existe el conductor')
-                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, fecha_inicio = date, fecha_termino = date, 
-                        hora_inicio = '10:00', hora_termino = '11:00', cant_pasajeros = 0)
-                        detail_driver.save()
-                    else:
-                        print('No existe conductor')
-
-                if servicios[index]["id_tipo"] == 2:
-                    ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
-                    tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
-                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio * servicios[index]["cant_pasajeros"])
-                    servicio.save()
-                    # Movilizacion
-                    movilizacion = Movilizacion(id = servicio)
-                    movilizacion.save()
-                    # Tour
-                    tour = Tour(id = movilizacion, id_ub_trans = ubicacion)
-                    tour.save()
-
-                    from datetime import datetime
-                    # Buscamos el conductor
-                    driver = self.search_driver(vivienda.id, datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y'))
-                    date = reserva.fecha_termino
+                    persona.run = acompaniantes[index]["run"]
+                    persona.dv = acompaniantes[index]["dv"]
+                    persona.pasaporte = acompaniantes[index]["pasaporte"]
+                    persona.nombre = acompaniantes[index]["nombre"]
+                    persona.snombre = acompaniantes[index]["snombre"]
+                    persona.ap_paterno = acompaniantes[index]["ap_paterno"]
+                    persona.ap_materno = acompaniantes[index]["ap_materno"]
+                    persona.fecha_nacimiento = acompaniantes[index]["fecha_nacimiento"]
+                    persona.telefono = acompaniantes[index]["telefono"]
+                    persona.num_calle = acompaniantes[index]["num_calle"]
+                    persona.calle = acompaniantes[index]["calle"]
+                    persona.id_ciu = acompaniantes[index]["id_ciu"]
+                    persona.id_est = acompaniantes[index]["id_est"]
+                    persona.id_pai = acompaniantes[index]["id_pai"]
+                    persona.id_doc = docIdentidad
+                    persona.id_est1 = estadoCivil
+                    persona.id_gen = genero                
+                    persona.save()
                     
-                    if driver:
-                        print('Existe el conductor')
-                        date = datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y')
-                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
-                        fecha_inicio = date, fecha_termino = date, 
-                        hora_inicio = '10:00', hora_termino = '20:00', 
-                        cant_pasajeros = servicios[index]["cant_pasajeros"])
-                        detail_driver.save()
-                    else:
-                        print('No existe conductor')
+                    acompaniante = Acompaniante(id = persona)
+                    acompaniante.save()
+
+                    # Generar detalle
+                    detalle = CliAcom(id_cli = cliente, id_aco = acompaniante, id_res = reserva)
+                    detalle.save()
                 
-                # Sumamos al valor total de la compra
-                compra.monto_final = compra.monto_final + servicio.precio
-                compra.save()
+            if len(servicios) > 0:
+                # Agregamos los servicios
+                for index in range(len(servicios)):
+                    if servicios[index]["id_tipo"] == 1:
+                        ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
+                        tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
+                        servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio)
+                        servicio.save()
+                        # Movilizacion
+                        movilizacion = Movilizacion(id = servicio)
+                        movilizacion.save()
+                        # Transporte
+                        transporte = Transporte(id = movilizacion)
+                        transporte.save()
+                        # es de ida o de vuelta?
+                        # Transporte ida Tranporte Vuelta
+                        if servicios[index]["id_transporte"] == 1:
+                            tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion)  
+                            driver = self.search_driver(vivienda.id, reserva.fecha_inicio)    
+                            date = reserva.fecha_inicio
+                        else:
+                            tipo_transporte = TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
+                            driver = self.search_driver(vivienda.id, reserva.fecha_termino)
+                            date = reserva.fecha_termino
+                        tipo_transporte.save()
 
-        recepcionist = self.search_receptionist(vivienda.id)
-        if recepcionist:
-            # Crear Check In
-            CheckIn.objects.create(fecha_llegada = reserva.fecha_inicio, hora_llegada = '11:00',
-            firma = None, estado_checkin = 'PENDIENTE', id_res = reserva, id_rec = recepcionist)
+                        if driver:
+                            print('Existe el conductor')
+                            detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, fecha_inicio = date, fecha_termino = date, 
+                            hora_inicio = '10:00', hora_termino = '11:00', cant_pasajeros = 0)
+                            detail_driver.save()
+                        else:
+                            print('No existe conductor')
 
-            CheckOut.objects.create(fecha_salida = reserva.fecha_termino, hora_salida = '10:00',
-            estado_checkout = 'PENDIENTE', total_multa = None, id_rec = recepcionist, id_res = reserva)
-            print('Check In y Check out Creados!')
-        else:
-            print('No existe recepcionista')
+                    if servicios[index]["id_tipo"] == 2:
+                        ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
+                        tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
+                        servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio * servicios[index]["cant_pasajeros"])
+                        servicio.save()
+                        # Movilizacion
+                        movilizacion = Movilizacion(id = servicio)
+                        movilizacion.save()
+                        # Tour
+                        tour = Tour(id = movilizacion, id_ub_trans = ubicacion)
+                        tour.save()
+
+                        from datetime import datetime
+                        # Buscamos el conductor
+                        driver = self.search_driver(vivienda.id, datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y'))
+                        date = reserva.fecha_termino
+                        
+                        if driver:
+                            print('Existe el conductor')
+                            date = datetime.strptime(servicios[index]["fecha"],'%d-%m-%Y')
+                            detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
+                            fecha_inicio = date, fecha_termino = date, 
+                            hora_inicio = '10:00', hora_termino = '20:00', 
+                            cant_pasajeros = servicios[index]["cant_pasajeros"])
+                            detail_driver.save()
+                        else:
+                            print('No existe conductor')
+                    
+                    # Sumamos al valor total de la compra
+                    compra.monto_final = compra.monto_final + servicio.precio
+                    compra.save()
+
+            recepcionist = self.search_receptionist(vivienda.id)
+            if recepcionist:
+                # Crear Check In
+                CheckIn.objects.create(fecha_llegada = reserva.fecha_inicio, hora_llegada = '11:00',
+                firma = None, estado_checkin = 'PENDIENTE', id_res = reserva, id_rec = recepcionist)
+
+                CheckOut.objects.create(fecha_salida = reserva.fecha_termino, hora_salida = '10:00',
+                estado_checkout = 'PENDIENTE', total_multa = None, id_rec = recepcionist, id_res = reserva)
+                print('Check In y Check out Creados!')
+            else:
+                print('No existe recepcionista')
+        
+        # Generamos un mail
+        extras()
+
         return True
 
 
