@@ -276,12 +276,19 @@ INVENTARIOS : list[Inventario] = [
 ]
 
 DETALLES_SALAS : list[DetalleSala] = [
+    ## Gran Avenida
     DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[0], imagen_sala = 'interior_gallery/gran-avenida-1.jpg'),
     DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-1.jpg'),
     DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-2.jpg'),
+    ## Oye Pucon
+    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[0], imagen_sala = 'interior_gallery/oye-pucon-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-2.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[1], imagen_sala = 'rooms/oye-pucon-cocina-1.jpeg'),
 ]
 
 DETALLE_PRODUCTOS : list[DetalleProducto] = [
+    ## Gran Avenida
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[0]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[6]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[0], id_pro = PRODUCTOS[15]),
@@ -291,6 +298,17 @@ DETALLE_PRODUCTOS : list[DetalleProducto] = [
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[0]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[17]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[2], id_pro = PRODUCTOS[11]),
+    ## Oye Pucon
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[3], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[3], id_pro = PRODUCTOS[6]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[3], id_pro = PRODUCTOS[15]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[4], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[4], id_pro = PRODUCTOS[16]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[4], id_pro = PRODUCTOS[11]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[5], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[5], id_pro = PRODUCTOS[17]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[5], id_pro = PRODUCTOS[11]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[6], id_pro = PRODUCTOS[1]),
 ]
 
 # Diccionario con los modelos de la base de datos
