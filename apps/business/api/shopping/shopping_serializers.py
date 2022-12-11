@@ -250,7 +250,7 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
             recepcionist = self.search_receptionist(vivienda.id)
             if recepcionist:
                 # Crear Check In
-                CheckIn.objects.create(fecha_llegada = reserva.fecha_inicio, hora_llegada = '11:00',
+                CheckIn.objects.create(fecha_llegada = reserva.fecha_inicio, hora_llegada = '10:00',
                 firma = None, estado_checkin = 'PENDIENTE', id_res = reserva, id_rec = recepcionist)
 
                 CheckOut.objects.create(fecha_salida = reserva.fecha_termino, hora_salida = '10:00',
@@ -319,6 +319,13 @@ class ServicePaymentSerializer(serializers.Serializer):
             # Transporte
             if service.get('id_tipo') == 1 and (not service.get('id_transporte')):                
                 raise serializers.ValidationError({'id_transporte':'¡Se debe enviar id transporte en servicio de transporte!'})
+            if service.get('id_tipo') == 1 and service.get('id_transporte') == 1:
+                raise serializers.ValidationError({'id_transporte':'¡No se puede contratar un servicio de ida!'})
+            if service.get('id_tipo') == 1:
+                list_services = Servicio.objects.filter(id_reserva=self.context['id_reserva'],id_tip=1)
+                for x in list_services:
+                    if TransporteVuelta.objects.filter(id_trans=x.id).exists():
+                        raise serializers.ValidationError({'id_transporte':'¡Ya posees un servicio de vuelta vigente!'})
             # Tour
             if service.get('id_tipo') == 2 and ((not service.get('cant_pasajeros')) or (not service.get('fecha'))):
                 raise serializers.ValidationError({'tour':'Asegúrese de enviar la cant de pasajeros y la fecha.'})
