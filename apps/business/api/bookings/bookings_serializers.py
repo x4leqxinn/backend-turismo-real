@@ -208,7 +208,16 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 
         return data
 
-
+# Gestionar pago
+def payment(payload:dict, management:dict):
+    global BASE_URL
+    headers = {
+        'content-type': "application/json",
+        'cache-control': "no-cache",
+    }
+    client_response = requests.request("POST", f'{BASE_URL}/account/pago' , data=json.dumps(payload), headers=headers)            
+    management_response = requests.request("POST", f'{BASE_URL}/account/monto' , data=json.dumps(management), headers=headers)
+    return client_response, management_response
 
 class CheckinSerializer(serializers.Serializer):
     estado = serializers.CharField(max_length=20)
@@ -233,13 +242,6 @@ class CheckoutSerializer(serializers.Serializer):
             client = checkout.id_res.id_cli
             account = CuentaBancaria.objects.filter(persona_id = client.id).first()
 
-            global BASE_URL
-
-            headers = {
-                'content-type': "application/json",
-                'cache-control': "no-cache",
-            }
-
             payload = {
                 'cvv' : account.cvv,
                 'numeroCuenta' : account.numero_cuenta,
@@ -247,19 +249,16 @@ class CheckoutSerializer(serializers.Serializer):
                 'fechaExpiracion' : account.fecha_expiracion,
                 'total' : self.context['monto'],
             }
-            
-            client_response = requests.request("POST", f'{BASE_URL}/account/pago' , data=json.dumps(payload), headers=headers)            
-            
+
             management = {
                 'numeroCuenta' : ACCOUNT_NUMBER,
                 'monto' : self.context['monto']
             }
 
-            management_response = requests.request("POST", f'{BASE_URL}/account/monto' , data=json.dumps(management), headers=headers)
+            client_response, management_response = payment(payload,management)
 
             if (client_response.status_code and management_response.status_code) != 200:
                 raise serializers.ValidationError({'estado':'El pago no se pudo realizar.'})
-                
         return value
 
 
