@@ -529,9 +529,16 @@ ACCOUNT_NUMBER = env.int('ACCOUNT_NUMBER')
 class SuscriptionPaymentSerializer(serializers.ModelSerializer):
     total = serializers.IntegerField(required=True)
     numero_cuenta = serializers.IntegerField(required=True)
+    persona_id = serializers.IntegerField(required=True)
     class Meta:
         model = CuentaBancaria
         fields = '__all__'
+
+    def validate_person_id(self,value):
+        exists = Persona.objects.filter(id=value)
+        if not exists:
+            raise serializers.ValidationError({'person_id':'¡La persona no existe!'})
+        return exists.first()
 
     def validate_total(self,value):
         if value < 1:
