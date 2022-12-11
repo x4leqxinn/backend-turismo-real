@@ -3,6 +3,23 @@ from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocI
 from django.db.models import Q
 from core.templates.views import prefix_decorator
 
+
+def find_acompaniante(data):
+    flag = False
+    persona = None
+    if data["id_doc"] == 1: 
+        try:
+            persona = Persona.objects.get(run = data["run"])
+            flag = True
+        except:
+            pass
+    else:
+        try:
+            persona = Persona.objects.get(pasaporte = data["pasaporte"])
+            flag = True
+        except:
+            pass
+    return flag, persona
 class CreateShoppingSerializer(serializers.ModelSerializer):
 
     
@@ -446,7 +463,56 @@ class AddCompanionSerializer(serializers.Serializer):
             message = 'sólo queda 1 espacio disponible' if available == 1 else message
             msg = 'acompañante' if count == 1 else 'acompañantes'
             raise serializers.ValidationError({'capacidad':f'¡Se intentó añadir {count} {msg} y ' +  message})
+        data['client'] = reserva.id_cli
         return data
 
     def create(self,validated_data):
+        acompaniantes = validated_data['companions']
+        count = len(acompaniantes)
+        if count > 0:
+            # Agregamos los acompañantes al sistema
+            for index in range(len(acompaniantes)):  
+
+                flag, persona = find_acompaniante(acompaniantes[index])
+
+                docIdentidad = DocIdentidad.objects.get(id = acompaniantes[index]["id_doc"].id )
+                estadoCivil = EstadoCivil.objects.get(id = acompaniantes[index]["id_est1"].id)
+                genero = Genero.objects.get(id = acompaniantes[index]["id_gen"].id)
+
+                if(flag == False):
+                    print('Validar')
+                    persona = Persona()
+
+                persona.run = acompaniantes[index]["run"]
+                persona.dv = acompaniantes[index]["dv"]
+                persona.pasaporte = acompaniantes[index]["pasaporte"]
+                persona.nombre = acompaniantes[index]["nombre"]
+                persona.snombre = acompaniantes[index]["snombre"]
+                persona.ap_paterno = acompaniantes[index]["ap_paterno"]
+                persona.ap_materno = acompaniantes[index]["ap_materno"]
+                persona.fecha_nacimiento = acompaniantes[index]["fecha_nacimiento"]
+                persona.telefono = acompaniantes[index]["telefono"]
+                persona.num_calle = acompaniantes[index]["num_calle"]
+                persona.calle = acompaniantes[index]["calle"]
+                persona.id_ciu = acompaniantes[index]["id_ciu"]
+                persona.id_est = acompaniantes[index]["id_est"]
+                persona.id_pai = acompaniantes[index]["id_pai"]
+                persona.id_doc = docIdentidad
+                persona.id_est1 = estadoCivil
+                persona.id_gen = genero                
+                persona.save()
+                
+                acompaniante = Acompaniante(id = persona)
+                acompaniante.save()
+
+                booking = validated_data['id_reserva']
+
+                # Generar detalle
+                detalle = CliAcom(id_cli = validated_data['client'], id_aco = acompaniante, id_res = booking)
+                detalle.save()
+
+                # Actualizo la reserva
+                booking.cant_acompaniante = booking.cant_acompaniante + count 
+                booking.cant_total = booking.cant_total + count
+                booking.save()
         return True
