@@ -265,8 +265,38 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
         return True
 
 
-# Le especifico el formato como quiero que se envien los datos
-# TODO: Falta implementar lógica para tours
+def search_driver(dwelling_id, date):
+    # Asignamos un conductor al servicio
+    queryset = DetProyecto.objects.filter(id_viv = dwelling_id, estado = 'ACTIVO')
+    response = None
+    drivers = []
+
+    for index in range(len(queryset)):
+        if queryset[index].id_emp.id_car.id == 4:
+            # Obtenemos la instancia de empleado y luego de conductor
+            employee = Empleado.objects.get(id = queryset[index].id_emp.id)
+            driver = Conductor.objects.get(id = employee)
+            drivers.append(driver)
+    
+    # Verificamos las fechas disponibles
+    
+    details = DetServMov.objects.filter(
+        Q(id_con__in = drivers) & Q(estado = 'ACTIVO') & (Q(fecha_inicio = date) | Q(fecha_termino = date))
+    )
+
+
+    if len(drivers) > len(details):
+        available = drivers
+        if len(details) != 0:
+        # Elimino los conductores
+            for detail in details:
+                available.remove(detail.id_con)
+        import random
+
+        index = random.randint(0, len(available) - 1)
+        response = available[index]
+    return response
+
 class ValidateServiceSerializer(serializers.Serializer):
     id_tipo = serializers.IntegerField(required=True)
     id_ubicacion = serializers.IntegerField(required=True)
@@ -287,11 +317,79 @@ class ServicePaymentSerializer(serializers.Serializer):
     def validate_services(self, services):
         for service in services:
             # Transporte
-            if service.get('id_tipo') == 1 and (not service.get('id_transporte')):                raise serializers.ValidationError({'id_transporte':'¡Se debe enviar id transporte en servicio de transporte!'})
+            if service.get('id_tipo') == 1 and (not service.get('id_transporte')):                
+                raise serializers.ValidationError({'id_transporte':'¡Se debe enviar id transporte en servicio de transporte!'})
             # Tour
             if service.get('id_tipo') == 2 and ((not service.get('cant_pasajeros')) or (not service.get('fecha'))):
                 raise serializers.ValidationError({'tour':'Asegúrese de enviar la cant de pasajeros y la fecha.'})
         return services
 
     def create(self, validated_data):
+        servicios = validated_data['services']
+        reserva = validated_data['id_reserva']
+        compra = Compra.objects.get(id_reserva=reserva)
+        if len(servicios) > 0:
+            # Agregamos los servicios
+            for index in range(len(servicios)):
+                if servicios[index]["id_tipo"] == 1:
+                    ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
+                    tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
+                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio)
+                    servicio.save()
+                    # Movilizacion
+                    movilizacion = Movilizacion(id = servicio)
+                    movilizacion.save()
+                    # Transporte
+                    transporte = Transporte(id = movilizacion)
+                    transporte.save()
+                    # es de ida o de vuelta?
+                    # Transporte ida Tranporte Vuelta
+                    if servicios[index]["id_transporte"] == 1:
+                        tipo_transporte = TransporteIda(id_trans = transporte, id_ub_trans = ubicacion)  
+                        driver = search_driver(reserva.id_viv.id, reserva.fecha_inicio)    
+                        date = reserva.fecha_inicio
+                    else:
+                        tipo_transporte = TransporteVuelta(id_trans = transporte, id_ub_trans = ubicacion)
+                        driver = search_driver(reserva.id_viv.id, reserva.fecha_termino)
+                        date = reserva.fecha_termino
+                    tipo_transporte.save()
+
+                    if driver:
+                        print('Existe el conductor')
+                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, fecha_inicio = date, fecha_termino = date, 
+                        hora_inicio = '10:00', hora_termino = '11:00', cant_pasajeros = 0)
+                        detail_driver.save()
+                    else:
+                        print('No existe conductor')
+
+                if servicios[index]["id_tipo"] == 2:
+                    ubicacion = UbicacionTrans.objects.get(id = servicios[index]["id_ubicacion"])
+                    tipo_servicio = TipoServicio.objects.get(id = servicios[index]["id_tipo"])
+                    servicio = Servicio(id_tip = tipo_servicio, id_reserva = reserva, precio = ubicacion.precio * servicios[index]["cant_pasajeros"])
+                    servicio.save()
+                    # Movilizacion
+                    movilizacion = Movilizacion(id = servicio)
+                    movilizacion.save()
+                    # Tour
+                    tour = Tour(id = movilizacion, id_ub_trans = ubicacion)
+                    tour.save()
+
+                    # Buscamos el conductor
+                    driver = search_driver(reserva.id_viv.id, servicios[index]["fecha"])
+                    date = reserva.fecha_termino
+                    
+                    if driver:
+                        print('Existe el conductor')
+                        date = servicios[index]["fecha"]
+                        detail_driver = DetServMov(id_con = driver, id_mov = movilizacion, 
+                        fecha_inicio = date, fecha_termino = date, 
+                        hora_inicio = '10:00', hora_termino = '20:00', 
+                        cant_pasajeros = servicios[index]["cant_pasajeros"])
+                        detail_driver.save()
+                    else:
+                        print('No existe conductor')
+                
+                # Sumamos al valor total de la compra
+                compra.monto_final = compra.monto_final + servicio.precio
+                compra.save()
         return True
