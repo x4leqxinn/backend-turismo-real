@@ -403,5 +403,11 @@ class ServicePaymentSerializer(serializers.Serializer):
 
 
 
+class CompanionFormatted(serializers.ModelSerializer):
+    class Meta: 
+        model = Persona
+        fields = '__all__'
+
+
 class AddCompanionSerializer(serializers.Serializer):
     pass
