@@ -264,15 +264,27 @@ GALERIAS_EXTERIORES : list[GaleriaExterior] = [
 ]
 
 GALERIAS_INTERIORES : list[GaleriaInterior] = [
+    ## Gran Avenida
     GaleriaInterior(id_viv = VIVIENDAS[0], imagen = 'interior_gallery/gran-avenida-1.jpg'),
     GaleriaInterior(id_viv = VIVIENDAS[0], imagen = 'interior_gallery/gran-avenida-2.jpg'),
+    ## Oye Pucon
     GaleriaInterior(id_viv = VIVIENDAS[1], imagen = 'interior_gallery/oye-pucon-1.jpg'),
     GaleriaInterior(id_viv = VIVIENDAS[1], imagen = 'interior_gallery/oye-pucon-2.jpg'),
+    ## Hiper Playa
+    GaleriaInterior(id_viv = VIVIENDAS[2], imagen = 'interior_gallery/hiper-playa-1.jpeg'),
+    ## Serena Grande
+    GaleriaInterior(id_viv = VIVIENDAS[3], imagen = 'interior_gallery/serena-grande-1.jpg'),
 ]
 
 INVENTARIOS : list[Inventario] = [
+    ## Gran Avenida
     Inventario(id_viv = VIVIENDAS[0]),
+    ## Oye Pucon
     Inventario(id_viv = VIVIENDAS[1]),
+    ## Hiper Playa
+    Inventario(id_viv = VIVIENDAS[2]),
+    ## Serena Grande
+    Inventario(id_viv = VIVIENDAS[3]),
 ]
 
 DETALLES_SALAS : list[DetalleSala] = [
@@ -285,6 +297,14 @@ DETALLES_SALAS : list[DetalleSala] = [
     DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-1.jpeg'),
     DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-2.jpeg'),
     DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[1], imagen_sala = 'rooms/oye-pucon-cocina-1.jpeg'),
+    ## Hiper Playa
+    DetalleSala(id_inv = INVENTARIOS[2], id_sal = SALAS[0], imagen_sala = 'interior_gallery/hiper-playa-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[2], id_sal = SALAS[5], imagen_sala = 'rooms/hiper-playa-dorm-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[2], id_sal = SALAS[4], imagen_sala = 'rooms/hiper-playa-balcon-1.jpeg'),
+    ## Serena Grande
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[0], imagen_sala = 'interior_gallery/serena-grande-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-2.jpg'),
 ]
 
 DETALLE_PRODUCTOS : list[DetalleProducto] = [
@@ -309,6 +329,24 @@ DETALLE_PRODUCTOS : list[DetalleProducto] = [
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[5], id_pro = PRODUCTOS[17]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[5], id_pro = PRODUCTOS[11]),
     DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[6], id_pro = PRODUCTOS[1]),
+    ## Hiper Playa
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[7], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[7], id_pro = PRODUCTOS[6]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[7], id_pro = PRODUCTOS[15]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[8], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[8], id_pro = PRODUCTOS[16]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[8], id_pro = PRODUCTOS[11]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[9], id_pro = PRODUCTOS[14]),
+    ## Serena Grande
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[10], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[10], id_pro = PRODUCTOS[6]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[10], id_pro = PRODUCTOS[15]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[11], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[11], id_pro = PRODUCTOS[16]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[11], id_pro = PRODUCTOS[11]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[12], id_pro = PRODUCTOS[0]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[12], id_pro = PRODUCTOS[17]),
+    DetalleProducto(id_est = ESTADOS_PRODUCTOS[0], id_det = DETALLES_SALAS[12], id_pro = PRODUCTOS[11]),
 ]
 
 # Diccionario con los modelos de la base de datos
