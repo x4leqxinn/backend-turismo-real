@@ -268,8 +268,8 @@ class CreateShoppingSerializer(serializers.ModelSerializer):
 # Le especifico el formato como quiero que se envien los datos
 # TODO: Falta implementar lógica para tours
 class ValidateServiceSerializer(serializers.Serializer):
-    id_tipo = serializers.IntegerField()
-    id_ubicacion = serializers.IntegerField(required=False)
+    id_tipo = serializers.IntegerField(required=True)
+    id_ubicacion = serializers.IntegerField(required=True)
     id_transporte = serializers.IntegerField(required=False)
     cant_pasajeros = serializers.IntegerField(required=False)
     fecha = serializers.DateField(required=False)
@@ -284,9 +284,14 @@ class ServicePaymentSerializer(serializers.Serializer):
             raise serializers.ValidationError({'id_reserva':'¡No existe la reserva!'})
         return exists.first()
 
-    def validate_services(self, values):
-        print(values)
-        return values
+    def validate_services(self, services):
+        for service in services:
+            # Transporte
+            if service.get('id_tipo') == 1 and (not service.get('id_transporte')):                raise serializers.ValidationError({'id_transporte':'¡Se debe enviar id transporte en servicio de transporte!'})
+            # Tour
+            if service.get('id_tipo') == 2 and ((not service.get('cant_pasajeros')) or (not service.get('fecha'))):
+                raise serializers.ValidationError({'tour':'Asegúrese de enviar la cant de pasajeros y la fecha.'})
+        return services
 
     def create(self, validated_data):
         return True
