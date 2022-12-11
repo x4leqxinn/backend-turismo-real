@@ -454,7 +454,7 @@ class AddCompanionSerializer(serializers.Serializer):
         from datetime import date   
         time = date.today()
         # Validamos que sólo pueda agregar acompañantes 1 día antes de su llegada
-        if(time == reserva.fecha_inicio):
+        if(time >= reserva.fecha_inicio):
             raise serializers.ValidationError({'fecha':'¡El usuario sólo puede agregar acompañantes antes de su llegada!'})
         # Validar cantidad de acompañantes en la reserva
         count, available = len(data['companions']), (dwelling.capacidad - reserva.cant_total)
