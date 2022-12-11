@@ -531,7 +531,7 @@ class SuscriptionPaymentSerializer(serializers.ModelSerializer):
     numero_cuenta = serializers.IntegerField(required=True)
     class Meta:
         model = CuentaBancaria
-        exclude = ('numero_cuenta',)
+        fields = '__all__'
 
     def validate_total(self,value):
         if value < 1:
