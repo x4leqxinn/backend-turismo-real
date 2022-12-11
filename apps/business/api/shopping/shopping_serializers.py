@@ -2,7 +2,7 @@ from rest_framework import serializers
 from apps.base.models.db_models import Reserva, Persona, Vivienda, Cliente, DocIdentidad, EstadoCivil, Genero, Acompaniante, CliAcom, Compra, Servicio, UbicacionTrans, TipoServicio, Movilizacion, Transporte, TransporteIda, TransporteVuelta, Empleado, Conductor, DetProyecto, DetServMov, Recepcionista, CheckIn, CheckOut, Tour
 from django.db.models import Q
 from core.templates.views import prefix_decorator
-
+from apps.business.models import CuentaBancaria
 
 def find_acompaniante(data):
     flag = False
@@ -516,3 +516,10 @@ class AddCompanionSerializer(serializers.Serializer):
                 booking.cant_total = booking.cant_total + count
                 booking.save()
         return True
+
+
+
+class SuscriptionPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuentaBancaria
+        fields = '__all__'
