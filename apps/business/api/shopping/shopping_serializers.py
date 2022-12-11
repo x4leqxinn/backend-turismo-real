@@ -271,10 +271,18 @@ class ValidateServiceSerializer(serializers.Serializer):
     id_tipo = serializers.IntegerField()
     id_ubicacion = serializers.IntegerField(required=False)
     id_transporte = serializers.IntegerField(required=False)
+    cant_pasajeros = serializers.IntegerField(required=False)
+    fecha = serializers.DateField(required=False)
 class ServicePaymentSerializer(serializers.Serializer):
+    id_reserva = serializers.IntegerField(required=True)
     # Defino que puede recibir muchos servicios
-    services = ValidateServiceSerializer(many=True,  read_only=True)
+    services = ValidateServiceSerializer(many=True)
 
+    def validate_id_reserva(self,value):
+        exists =  Reserva.objects.filter(id=value)
+        if not exists:
+            raise serializers.ValidationError({'id_reserva':'¡No existe la reserva!'})
+        return exists.first()
 
     def validate_services(self, values):
         print(values)
