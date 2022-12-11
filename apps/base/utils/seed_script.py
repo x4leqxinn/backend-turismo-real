@@ -302,9 +302,9 @@ DETALLES_SALAS : list[DetalleSala] = [
     DetalleSala(id_inv = INVENTARIOS[2], id_sal = SALAS[5], imagen_sala = 'rooms/hiper-playa-dorm-1.jpeg'),
     DetalleSala(id_inv = INVENTARIOS[2], id_sal = SALAS[4], imagen_sala = 'rooms/hiper-playa-balcon-1.jpeg'),
     ## Serena Grande
-    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[0], imagen_sala = 'interior_gallery/serena-grande-1.jpg'),
-    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-1.jpg'),
-    DetalleSala(id_inv = INVENTARIOS[0], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-2.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[3], id_sal = SALAS[0], imagen_sala = 'interior_gallery/serena-grande-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[3], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-1.jpg'),
+    DetalleSala(id_inv = INVENTARIOS[3], id_sal = SALAS[5], imagen_sala = 'rooms/gran-avenida-dorm-2.jpg'),
 ]
 
 DETALLE_PRODUCTOS : list[DetalleProducto] = [
