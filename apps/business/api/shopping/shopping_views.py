@@ -74,3 +74,19 @@ class ShoppingViewSet(viewsets.GenericViewSet):
                 'errors' : serializer.errors
             },status=status.HTTP_400_BAD_REQUEST
         )
+
+    @action(methods=['POST'],detail=False, url_path = 'suscription-payment')
+    def suscription_payment(self,request):
+        serializer = SuscriptionPaymentSerializer(data = request.data, context = request.data) 
+        if serializer.is_valid():
+            if serializer.save(): 
+                return Response(
+                    {
+                        'message' : '¡Pago realizado con éxito!'
+                    }, status = status.HTTP_201_CREATED)
+        return Response(
+            {
+                'message':'Hay errores en la creación.',
+                'errors' : serializer.errors
+            },status=status.HTTP_400_BAD_REQUEST
+        )
