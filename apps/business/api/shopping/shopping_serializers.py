@@ -400,3 +400,8 @@ class ServicePaymentSerializer(serializers.Serializer):
                 compra.monto_final = compra.monto_final + servicio.precio
                 compra.save()
         return True
+
+
+
+class AddCompanionSerializer(serializers.Serializer):
+    pass
