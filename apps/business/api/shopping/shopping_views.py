@@ -71,6 +71,6 @@ class ShoppingViewSet(viewsets.GenericViewSet):
         return Response(
             {
                 'message':'Hay errores en la creación.',
-                'errors' : serializers.errors
+                'errors' : serializer.errors
             },status=status.HTTP_400_BAD_REQUEST
         )

@@ -410,4 +410,37 @@ class CompanionFormatted(serializers.ModelSerializer):
 
 
 class AddCompanionSerializer(serializers.Serializer):
-    pass
+    id_reserva = serializers.IntegerField(required=True)
+    companions = CompanionFormatted(many=True)
+
+    def validate_id_reserva(self,value):
+        exists =  Reserva.objects.filter(id=value)
+        if not exists:
+            raise serializers.ValidationError({'id_reserva':'¡No existe la reserva!'})
+        return exists.first()
+
+    def validate_companions(self,companions):
+        for companion in companions:
+            # Cédula de identidad
+            if companion.get('id_doc').id == 1 and not (companion.get('run') and companion.get('dv')):
+                raise serializers.ValidationError({'id_doc':'Debe enviar un rut y un dv'})
+            if companion.get('id_doc').id == 2 and not companion.get('pasaporte'):
+                raise serializers.ValidationError({'id_doc':'Debe enviar un pasaporte'})
+            if companion.get('id_doc').id == 2:
+                companion['run'], companion['dv'] = None, None
+            companion['pasaporte'] = companion.get('pasaporte') if companion.get('id_doc').id == 2 else None
+        return companions
+
+    def validate(self,data):
+        # Validar cantidad de acompañantes en la reserva
+        reserva, dwelling = data['id_reserva'], data['id_reserva'].id_viv
+        count, available = len(data['companions']), (dwelling.capacidad - reserva.cant_total)
+        if count > available:
+            message = 'no hay espacios disponibles.' if available == 0 else 'sólo quedan {available} espacios disponibles.'
+            message = 'sólo queda 1 espacio disponible' if available == 1 else message
+            msg = 'acompañante' if count == 1 else 'acompañantes'
+            raise serializers.ValidationError({'capacidad':f'¡Se intentó añadir {count} {msg} y ' +  message})
+        return data
+
+    def create(self,validated_data):
+        return True
