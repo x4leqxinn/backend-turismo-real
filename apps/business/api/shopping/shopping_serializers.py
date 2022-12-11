@@ -518,8 +518,42 @@ class AddCompanionSerializer(serializers.Serializer):
         return True
 
 
+# Configuramos la lectura de nuestras variables de entorno
+import environ
+env = environ.Env()
+environ.Env.read_env(env_file='./.env') 
 
+from apps.business.api.bookings.bookings_serializers import payment
+ACCOUNT_NUMBER = env.int('ACCOUNT_NUMBER')
 class SuscriptionPaymentSerializer(serializers.ModelSerializer):
+    persona_id = serializers.IntegerField(required=False)
+    total = serializers.IntegerField(required=True)
     class Meta:
         model = CuentaBancaria
         fields = '__all__'
+
+    def validate_total(self,value):
+        if value < 1:
+            raise serializers.ValidationError({'total':'¡El monto a pagar no puede ser menor o igual a 0!'})
+        return value
+
+    def create(self,validated_data):
+        payload = {
+            'cvv' : validated_data['cvv'],
+            'numeroCuenta' : validated_data['numero_cuenta'],
+            'titular' : validated_data['nombre_titular'],
+            'fechaExpiracion' : validated_data['fecha_expiracion'],
+            'total' : validated_data['total'],
+        }
+
+        management = {
+            'numeroCuenta' : ACCOUNT_NUMBER,
+            'monto' : validated_data['total']
+        }
+
+        client_response, management_response = payment(payload,management)
+
+        if (client_response.status_code and management_response.status_code) != 200:
+                raise serializers.ValidationError({'estado':'El pago no se pudo realizar.'})
+        return True
+    
