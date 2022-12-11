@@ -432,8 +432,14 @@ class AddCompanionSerializer(serializers.Serializer):
         return companions
 
     def validate(self,data):
-        # Validar cantidad de acompañantes en la reserva
         reserva, dwelling = data['id_reserva'], data['id_reserva'].id_viv
+        # current date
+        from datetime import date   
+        time = date.today()
+        # Validamos que sólo pueda agregar acompañantes 1 día antes de su llegada
+        if(time == reserva.fecha_inicio):
+            raise serializers.ValidationError({'fecha':'¡El usuario sólo puede agregar acompañantes antes de su llegada!'})
+        # Validar cantidad de acompañantes en la reserva
         count, available = len(data['companions']), (dwelling.capacidad - reserva.cant_total)
         if count > available:
             message = 'no hay espacios disponibles.' if available == 0 else 'sólo quedan {available} espacios disponibles.'
