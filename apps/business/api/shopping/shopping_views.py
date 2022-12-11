@@ -42,7 +42,7 @@ class ShoppingViewSet(viewsets.GenericViewSet):
             }
             , status = status.HTTP_400_BAD_REQUEST)
     
-    @action(methods=['post'],detail=False, url_path = 'service-payment')
+    @action(methods=['POST'],detail=False, url_path = 'service-payment')
     def service_payment(self,request):
         serializer = ServicePaymentSerializer(data = request.data, context = request.data) # Aquí enviariamos el resultado de data
         if serializer.is_valid():
@@ -57,3 +57,20 @@ class ShoppingViewSet(viewsets.GenericViewSet):
                 'errors' : serializer.errors
             }
             , status = status.HTTP_400_BAD_REQUEST)
+
+
+    @action(methods=['POST'],detail=False, url_path = 'add-companion')
+    def add_companion(self,request):
+        serializer = AddCompanionSerializer(data = request.data, context = request.data) 
+        if serializer.is_valid():
+            if serializer.save(): 
+                return Response(
+                    {
+                        'message' : '¡Acompañantes agregados correctamente!'
+                    }, status = status.HTTP_201_CREATED)
+        return Response(
+            {
+                'message':'Hay errores en la creación.',
+                'errors' : serializers.errors
+            },status=status.HTTP_400_BAD_REQUEST
+        )
