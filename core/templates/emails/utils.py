@@ -6,7 +6,7 @@ from apps.users.models import User
 import threading
 from core.settings.base import TURISMO_REAL_URI, DEFAULT_DOMAIN
 from apps.base.models.db_models import Reserva, CheckIn, CheckOut, Servicio, Compra, DetServMov, TransporteIda, TransporteVuelta, Tour
-from datetime import datetime
+from datetime import datetime, date
 from apps.locations.models import Countries, States, Cities
 
 
@@ -138,7 +138,7 @@ def send_email(subject:str,mail_to:str,template:str,data:dict,account:int=1):
     connection.close()
     
 
-def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=None):
+def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=None,amount:int=None):
     """Generic send an email to users 
     Args: 
         email_type (str): Dict key for business area involved
@@ -171,7 +171,7 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
     
     if email_type == 'client':
         if page == 3:
-            notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],2)
+            notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],2,amount)
         else:
             notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],1)
 
@@ -218,14 +218,21 @@ def list_services(services):
 
 
 # Clients module
-def notice_client(client,subject,template,account):
+def notice_client(client,subject,template,account,amount=0):
     user = User.objects.filter(person = client).first()
+    now = datetime.now()
+    today = date.today()
     send_email(
             mail_to=user.email,
             subject=subject,
             template=template,
             data={
+                'amount': amount,
+                'comission': settings.COMISSION,
+                'today': today,
+                'created_at':now,
                 'client': client,
+                'total':amount+settings.COMISSION,
                 'TURISMO_REAL_URI' : TURISMO_REAL_URI,
             },
             account=account
@@ -273,7 +280,7 @@ def notice_booking(booking:Booking, options, page):
             )
     """
 ## DECORATOR
-def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Booking = None):
+def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Booking = None,amount:int=None):
     def decorator_function(original_function):
 
         # Función decorada
@@ -286,6 +293,7 @@ def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Boo
                     'page' : page,
                     'client' : client,
                     'booking' : booking,
+                    'amount' : amount,
                 })
             thread.start()
             return result
