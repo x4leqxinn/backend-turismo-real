@@ -90,3 +90,43 @@ class ShoppingViewSet(viewsets.GenericViewSet):
                 'errors' : serializer.errors
             },status=status.HTTP_400_BAD_REQUEST
         )
+
+    @action(methods=['DELETE'],detail=True, url_path = 'delete-companion')
+    def delete_companion(self,request,pk=None):
+        booking_id = request.data.get('booking_id','')
+        if not pk:
+            return Response({
+                'message' : '¡Debe enviar el id del acompañante!'
+            },status=status.HTTP_400_BAD_REQUEST)
+        if not booking_id:
+            return Response({
+                'message' : '¡Debe enviar el id de la reserva!'
+            },status=status.HTTP_400_BAD_REQUEST)
+        exists = Acompaniante.objects.filter(id=pk)
+        if not exists:
+            return Response({
+                'message' : '¡El acompañante no existe!'
+            },status=status.HTTP_400_BAD_REQUEST)
+        booking = Reserva.objects.filter(id=booking_id).first()
+        companion = exists.first()
+        person = Persona.objects.filter(id=companion.id.id).first()
+        detail = CliAcom.objects.filter(id_res=booking.id,id_aco=companion.id.id).first()
+        # 4 acompaniante, persona, CliAcom, Booking
+        # Delete
+        detail.delete()
+        companion.delete()
+        person.delete()
+        # Update booking
+        booking.cant_acompaniante = booking.cant_acompaniante - 1 
+        booking.cant_total = booking.cant_total - 1
+        booking.save()
+        return Response(
+        {
+            'message' : '¡Acompañante eliminado con éxito!'
+        }, status = status.HTTP_201_CREATED)
+        return Response(
+            {
+                'message':'Hay errores en la creación.',
+                'errors' : serializer.errors
+            },status=status.HTTP_400_BAD_REQUEST
+        )
