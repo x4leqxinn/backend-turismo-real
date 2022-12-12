@@ -64,6 +64,7 @@ def get_service(instance):
         data['hora_termino'] = detail.hora_termino
         data['pasajeros'] = detail.cant_pasajeros
         driver = {
+            'id' : detail.id_con.id.id.id,
             'run' : detail.id_con.id.id.run,
             'nombre' : detail.id_con.id.id.nombre + ' ' + detail.id_con.id.id.ap_paterno + ' ' + detail.id_con.id.id.ap_materno,
             'telefono' : detail.id_con.id.id.telefono,
@@ -151,8 +152,8 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
     # Filter with email type
     options = {
         'service':{
-                1 :{'template':['emails/service/client_notice.html','emails/service/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Transporte contratado!','[Turismo Real] Servicio solicitado']}, # TRANSPORTE
-                2 :{'template':['emails/service/client_notice.html','emails/service/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Tour contratado!','[Turismo Real] Servicio solicitado']} # TOUR
+                1 :{'template':['emails/service/client_notice.html','emails/services/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Transporte contratado!','[Turismo Real] Servicio solicitado']}, # TRANSPORTE
+                2 :{'template':['emails/service/client_notice.html','emails/services/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Tour contratado!','[Turismo Real] Servicio solicitado']} # TOUR
             }, 
         'booking':{
                 1 :{'template':['emails/booking/booking.html','emails/booking/receptionist_notice.html'],'subject':['Estimado Jorge, su reserva esta lista','[Turismo Real] Reserva creada']}, # RESERVA
@@ -263,21 +264,20 @@ def notice_booking(booking:Booking, options, page):
         template=options.get('booking')[page]['template'][1],
         data=context
     )
+
+    services = context['services']
     
-    """
     if page == 1 and services:
         ## Drivers
         for x in range(len(services)):
-            user = User.objects.filter(person = services[x].get('driver').id.id).first()
-
-            
+            user = User.objects.filter(person = services[x].get('conductor')['id']).first()
+            context['user'] = user
             send_email(
                 mail_to=user.email,
                 subject=options.get('service')[1]['subject'][1],
                 template=options.get('service')[1]['template'][1],
                 data=context
             )
-    """
 ## DECORATOR
 def prefix_decorator(email_type:str, page:int, client:Client = None, booking:Booking = None,amount:int=None):
     def decorator_function(original_function):
