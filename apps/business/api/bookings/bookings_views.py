@@ -137,7 +137,8 @@ class BookingViewSet(viewsets.GenericViewSet):
         checkin, reserva = None, None
         try:
             reserva = Reserva.objects.get(id = pk)
-            checkin = CheckIn.objects.get(id_res = reserva.id)    
+            checkin = CheckIn.objects.get(id_res = reserva.id) 
+            persona = Persona.objects.get(id = reserva.id_cli.id.id)    
         except:
             pass
 
@@ -152,6 +153,11 @@ class BookingViewSet(viewsets.GenericViewSet):
             if  check_in_serializer.validated_data['estado'] == 'CANCELADO':
                 # Se libera la fecha     
                 self.delete_booking(reserva.id)
+            booking = checkin.id_res
+            @prefix_decorator(email_type='client',page=4,client=persona,booking=booking)
+            def change_state():
+                print(check_in_serializer.validated_data['estado'])
+            change_state()
             return Response({'message' : 'Estado del checkin actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckIn!', 'error' : check_in_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
