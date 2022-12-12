@@ -429,7 +429,7 @@ class EstadoProducto(BaseModel):
 class GaleriaExterior(BaseModel):
     app_label = 'business'
     imagen = models.ImageField(upload_to='exterior_gallery/')
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv', verbose_name='Vivienda')
     class Meta:
         managed = True
         db_table = 'galeria_exterior'
@@ -443,7 +443,7 @@ class GaleriaExterior(BaseModel):
 class GaleriaInterior(BaseModel):
     app_label = 'business'
     imagen = models.ImageField(upload_to='interior_gallery/')
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv', verbose_name='Vivienda')
 
     class Meta:
         managed = True
@@ -470,7 +470,7 @@ class Genero(BaseModel):
         return self.descripcion
 
 class Inventario(BaseModel):
-    id_viv = models.OneToOneField('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_viv = models.OneToOneField('business.Vivienda', models.DO_NOTHING, db_column='id_viv', verbose_name='Vivienda')
     class Meta:
         app_label = 'business'
         managed = True
@@ -555,8 +555,8 @@ class Producto(BaseModel):
 
 class Puntuacion(BaseModel):
     estrellas = models.CharField(max_length=1, null=False, blank=False)
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
-    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv', verbose_name='Vivienda')
+    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli', verbose_name='Cliente')
 
     class Meta:
         app_label = 'business'
@@ -596,15 +596,15 @@ class Registro(models.Model):
         ordering = ['id']
 
 class Reserva(BaseModel):
-    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli')
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli', verbose_name='Cliente')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv', verbose_name='Vivienda')
     fecha_inicio = models.DateField(null=False, blank=False)
     fecha_termino = models.DateField(null=False, blank=False)
     abono = models.IntegerField(null=False, blank=False)
     monto_pagado = models.IntegerField(null=False, blank=False)
     total_pago = models.BigIntegerField(null=False,blank=False)
-    cant_acompaniante = models.IntegerField()
-    cant_total = models.IntegerField()
+    cant_acompaniante = models.IntegerField(verbose_name='Cantidad de compañantes')
+    cant_total = models.IntegerField( verbose_name='Cantidad total arrendatarios')
 
     class Meta:
         app_label = 'business'
