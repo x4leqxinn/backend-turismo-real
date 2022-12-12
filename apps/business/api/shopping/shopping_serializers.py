@@ -534,7 +534,7 @@ class SuscriptionPaymentSerializer(serializers.ModelSerializer):
         model = CuentaBancaria
         fields = '__all__'
 
-    def validate_person_id(self,value):
+    def validate_persona_id(self,value):
         exists = Persona.objects.filter(id=value)
         if not exists:
             raise serializers.ValidationError({'person_id':'¡La persona no existe!'})
@@ -546,7 +546,7 @@ class SuscriptionPaymentSerializer(serializers.ModelSerializer):
         return value
 
     def create(self,validated_data):
-        #@prefix_decorator(email_type='client',page=3,client=validated_data['persona_id'])
+        @prefix_decorator(email_type='client',page=3,client=validated_data['persona_id'])
         def process():
             payload = {
                 'cvv' : validated_data['cvv'],
