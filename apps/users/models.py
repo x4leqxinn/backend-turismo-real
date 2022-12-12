@@ -47,14 +47,14 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser,PermissionsMixin):
     # Abstractbaseuser has password, last_login, is_active by default
-    email = models.EmailField(db_index=True, unique=True, max_length=254)
+    email = models.EmailField(db_index=True, unique=True, max_length=254,verbose_name = 'Correo',)
     image = models.ImageField('Imagen de perfil', upload_to='user_profile/', default='', max_length=255, null=True, blank = True)
     role = models.ForeignKey(UserRole, on_delete = models.CASCADE, verbose_name = 'Rol Usuario', null = True)
     person = models.OneToOneField('people.Persona', on_delete = models.CASCADE, verbose_name = 'Persona', null = True)
 
-    is_staff = models.BooleanField(default=False) # must needed, otherwise
-    is_active = models.BooleanField(default=True) # must needed, otherwise
-    is_superuser = models.BooleanField(default=False) # this field we inherit
+    is_staff = models.BooleanField(default=False, verbose_name = 'Usuario Staff') # must needed, otherwise
+    is_active = models.BooleanField(default=True, verbose_name = 'Usuario Activo') # must needed, otherwise
+    is_superuser = models.BooleanField(default=False, verbose_name = 'Super Usuario') # this field we inherit
 
     
     objects = CustomUserManager() 
