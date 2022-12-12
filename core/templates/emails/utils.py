@@ -272,6 +272,7 @@ def notice_booking(booking:Booking, options, page):
         for x in range(len(services)):
             user = User.objects.filter(person = services[x].get('conductor')['id']).first()
             context['user'] = user
+            context['service'] = get_service(Service.objects.filter(id=services[x]['id']).first())
             send_email(
                 mail_to=user.email,
                 subject=options.get('service')[1]['subject'][1],
