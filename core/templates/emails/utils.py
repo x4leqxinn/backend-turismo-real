@@ -155,13 +155,13 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
                 2 :{'template':['emails/service/client_notice.html','emails/service/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Tour contratado!','[Turismo Real] Servicio solicitado']} # TOUR
             }, 
         'booking':{
-                1 :{'template':['emails/booking/booking.html','emails/booking/booking.html'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # RESERVA
+                1 :{'template':['emails/booking/booking.html','emails/booking/receptionist_notice.html'],'subject':['Estimado Jorge, su reserva esta lista','[Turismo Real] Reserva creada']}, # RESERVA
                 2 :{'template':'emails/booking/checkin.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkin
                 3 :{'template':'emails/booking/checkout.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkout
             }, 
         'client':{
             1:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
-            2:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] Contraseña cambiada'}, # Cambio de password
+            2:{'template': 'emails/change_password/change-password.html','subject':'[Turismo Real] Contraseña cambiada'}, # Cambio de password
             3:{'template': 'emails/payment/bank.html','subject':'[Banco BV LATAM] Se ha realizado un cargo a su tarjeta'} # Cambio de password
         }
     }
@@ -175,7 +175,6 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
         else:
             notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],1)
 
-    
     if email_type == 'booking':
         notice_booking(booking,options,page)
         
@@ -253,17 +252,17 @@ def notice_booking(booking:Booking, options, page):
         template=options.get('booking')[page]['template'][0],
         data=context
         )
-
+    receptionist = search_receptionist(booking.id_viv.id)
     ## Receptionist
-    """
-    user = User.objects.filter(person = receptionist.id.id).first() 
+    user = User.objects.filter(person = receptionist.id.id.id).first() 
+    context['receptionist'] = receptionist.id.id
+    context['user'] = user
     send_email(
         mail_to=user.email,
         subject=options.get('booking')[page]['subject'][1],
         template=options.get('booking')[page]['template'][1],
         data=context
     )
-    """
     
     """
     if page == 1 and services:
