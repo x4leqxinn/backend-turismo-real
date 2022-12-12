@@ -1,5 +1,5 @@
 from django.template.loader import get_template
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives,get_connection
 from django.conf import settings
 from apps.base.models.db_models import Reserva as Booking, Persona as Client, Servicio as Service, DetServMov as Mov, DetProyecto, Empleado, Recepcionista, Vivienda
 from apps.users.models import User
@@ -103,21 +103,40 @@ def get_service(instance):
         data['precio'] = instance.precio
     return data
 
-def send_email(subject:str,mail_to:str,template:str,data:dict):
+def send_email(subject:str,mail_to:str,template:str,data:dict,account:int=1):
     """Send email function
     Args: 
         subject (str): Email subject
         mail_to (str): Person who receives the mail
         template (str): File name
         data (dict): Information to show in the email
+        account (int): Type email sender (TURISMO_REAL OR BANK BV LATAM)
     """
+
+    sender = settings.EMAIL_HOST_USER
+    connection = get_connection() # uses SMTP server specified in settings.py
+    if account == 2:
+        sender = settings.BANK_EMAIL_HOST_USER
+        my_host = settings.BANK_EMAIL_HOST
+        my_port = settings.BANK_EMAIL_PORT
+        my_username = sender
+        my_password = settings.BANK_EMAIL_HOST_PASSWORD
+        my_use_tls = settings.BANK_EMAIL_USE_TLS
+        connection = get_connection(host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls) 
+    
+    connection.open()
     context = data
     template = get_template(template)
     content = template.render(context)
-    message = EmailMultiAlternatives(subject,settings.EMAIL_HOST_USER,settings.EMAIL_HOST_USER,[mail_to])
+    message = EmailMultiAlternatives(subject,sender,sender,[mail_to],connection=connection)
     message.attach_alternative(content, 'text/html')
     message.send()
-
+    connection.close()
+    
 
 def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=None):
     """Generic send an email to users 
@@ -142,7 +161,8 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
             }, 
         'client':{
             1:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
-            2:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] Contraseña cambiada'} # Cambio de password
+            2:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] Contraseña cambiada'}, # Cambio de password
+            3:{'template': 'emails/payment/bank.html','subject':'[Banco BV LATAM] Se ha realizado un cargo a su tarjeta'} # Cambio de password
         }
     }
 
@@ -150,7 +170,11 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
         return f"The operation '{email_type}' is not supported!"
     
     if email_type == 'client':
-        notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'])
+        if page == 3:
+            notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],2)
+        else:
+            notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],1)
+
     
     if email_type == 'booking':
         notice_booking(booking,options,page)
@@ -194,7 +218,7 @@ def list_services(services):
 
 
 # Clients module
-def notice_client(client,subject,template):
+def notice_client(client,subject,template,account):
     user = User.objects.filter(person = client).first()
     send_email(
             mail_to=user.email,
@@ -203,7 +227,8 @@ def notice_client(client,subject,template):
             data={
                 'client': client,
                 'TURISMO_REAL_URI' : TURISMO_REAL_URI,
-            }
+            },
+            account=account
         )
 
 
