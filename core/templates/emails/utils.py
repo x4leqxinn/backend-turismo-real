@@ -23,7 +23,7 @@ def get_booking_dict(booking_id:int) -> dict:
         services_formatted.append(data)
     user = User.objects.get(person=client)
     dwelling = booking.id_viv
-    nights = (booking.fecha_termino - booking.fecha_inicio).days + 1
+    nights = (booking.fecha_termino - booking.fecha_inicio).days 
     purchase = Compra.objects.get(id_reserva=booking)
     paid_out = True if booking.total_pago == booking.monto_pagado else False
     now = datetime.now()
