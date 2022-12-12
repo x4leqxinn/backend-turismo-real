@@ -2,6 +2,7 @@ from rest_framework import serializers
 from apps.base.models.db_models import Empleado
 from apps.users.models import User
 from apps.base.models.db_models import DocIdentidad, EstadoCivil, Genero
+from core.templates.emails.utils import prefix_decorator
 
 # Serializer para login 
 class UserListSerializer(serializers.ModelSerializer): 
@@ -109,8 +110,16 @@ class EditAccountSerializer(serializers.Serializer):
         person = user.person
         user.email = validated_data.get('email', instance['email'])
         user.image = validated_data.get('imagen', instance['imagen'])
+        flag = None
+        @prefix_decorator(email_type='client',page=2,client=person)
+        def update_password():
+            print('Contraseña actualizada')
+        
         if validated_data.get('password'):
             user.set_password(validated_data['password'])
+            flag = True
+        if flag:
+            update_password()
         person.telefono = validated_data.get('telefono',instance['telefono'])
         person.num_calle = validated_data.get('num_calle',instance['num_calle'])
         person.calle = validated_data.get('calle',instance['calle'])
