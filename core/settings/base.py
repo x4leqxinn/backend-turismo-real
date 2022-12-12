@@ -9,6 +9,9 @@ import environ
 env = environ.Env()
 environ.Env.read_env(env_file='./.env') 
 
+# Comisión
+COMISSION = env.int('COMISSION')
+
 X_FRAME_OPTIONS = 'ALLOWALL'
 SILENCED_SYSTEM_CHECKS = ['security.W019']
 
