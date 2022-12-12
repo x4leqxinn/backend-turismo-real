@@ -522,10 +522,10 @@ class AddCompanionSerializer(serializers.Serializer):
 import environ
 env = environ.Env()
 environ.Env.read_env(env_file='./.env') 
-from core.templates.emails.utils import prefix_decorator
 
 from apps.business.api.bookings.bookings_serializers import payment
 ACCOUNT_NUMBER = env.int('ACCOUNT_NUMBER')
+COMISSION = env.int('COMISSION')
 class SuscriptionPaymentSerializer(serializers.ModelSerializer):
     total = serializers.IntegerField(required=True)
     numero_cuenta = serializers.IntegerField(required=True)
@@ -546,14 +546,14 @@ class SuscriptionPaymentSerializer(serializers.ModelSerializer):
         return value
 
     def create(self,validated_data):
-        @prefix_decorator(email_type='client',page=3,client=validated_data['persona_id'])
+        @prefix_decorator(email_type='client',page=3,client=validated_data['persona_id'],amount=validated_data['total'])
         def process():
             payload = {
                 'cvv' : validated_data['cvv'],
                 'numeroCuenta' : validated_data['numero_cuenta'],
                 'titular' : validated_data['nombre_titular'],
                 'fechaExpiracion' : validated_data['fecha_expiracion'],
-                'total' : validated_data['total'],
+                'total' : validated_data['total'] + COMISSION,
             }
 
             management = {
