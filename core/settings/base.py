@@ -175,6 +175,12 @@ EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
+BANK_EMAIL_HOST=env.str('BANK_EMAIL_HOST')
+BANK_EMAIL_PORT=env.str('BANK_EMAIL_PORT')
+BANK_EMAIL_HOST_USER=env.str('BANK_EMAIL_HOST_USER')
+BANK_EMAIL_USE_TLS=env.str('BANK_EMAIL_USE_TLS')
+BANK_EMAIL_HOST_PASSWORD=env.str('BANK_EMAIL_HOST_PASSWORD')
+
 # Permite verificar los Mails sin enviarlos a usuarios.
 # if DEBUG:
 #     EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
