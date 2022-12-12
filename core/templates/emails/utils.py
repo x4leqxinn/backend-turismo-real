@@ -157,25 +157,25 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
             }, 
         'booking':{
                 1 :{'template':['emails/booking/booking.html','emails/booking/receptionist_notice.html'],'subject':['Estimado Jorge, su reserva esta lista','[Turismo Real] Reserva creada']}, # RESERVA
-                2 :{'template':'emails/booking/checkin.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkin
-                3 :{'template':'emails/booking/checkout.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkout
             }, 
         'client':{
-            1:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
-            2:{'template': 'emails/change_password/change-password.html','subject':'[Turismo Real] Contraseña cambiada'}, # Cambio de password
-            3:{'template': 'emails/payment/bank.html','subject':'[Banco BV LATAM] Se ha realizado un cargo a su tarjeta'} # Cambio de password
+            1:{'template':'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
+            2:{'template':'emails/change_password/change-password.html','subject':'[Turismo Real] Contraseña cambiada'}, # Cambio de password
+            3:{'template':'emails/payment/bank.html','subject':'[Banco BV LATAM] Se ha realizado un cargo a su tarjeta'}, # Cargo en la tarjeta
+            4:{'template':'emails/booking/checkin.html','subject':'[Turismo Real] Seguimiento Check IN'}, # Cambio estado Checkin
+            5:{'template':'emails/booking/checkout.html','subject':'[Turismo Real] Seguimiento Check OUT'}, # Cambio estado Checkout
         }
     }
 
     if not options:
         return f"The operation '{email_type}' is not supported!"
-    
     if email_type == 'client':
         if page == 3:
             notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],2,amount)
+        elif page in(4,5):
+            notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],1,booking=booking)
         else:
             notice_client(client,options.get(email_type)[page]['subject'],options.get(email_type)[page]['template'],1)
-
     if email_type == 'booking':
         notice_booking(booking,options,page)
         
@@ -218,7 +218,11 @@ def list_services(services):
 
 
 # Clients module
-def notice_client(client,subject,template,account,amount=0):
+def notice_client(client,subject,template,account,amount=0,booking=None):
+    checkin,checkout=None,None
+    if booking:
+        checkin = CheckIn.objects.get(id_res=booking)
+        checkout = CheckOut.objects.get(id_res=booking)
     user = User.objects.filter(person = client).first()
     now = datetime.now()
     today = date.today()
@@ -233,6 +237,8 @@ def notice_client(client,subject,template,account,amount=0):
                 'created_at':now,
                 'client': client,
                 'total':amount+settings.COMISSION,
+                'checkin':checkin,
+                'checkout':checkout,
                 'TURISMO_REAL_URI' : TURISMO_REAL_URI,
             },
             account=account

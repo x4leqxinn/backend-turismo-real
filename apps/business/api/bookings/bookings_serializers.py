@@ -264,7 +264,7 @@ class CheckoutSerializer(serializers.Serializer):
             if not self.context.get('monto'):
                 raise serializers.ValidationError({'monto':'Se debe enviar el monto a pagar.'})
             booking_payment()
-        
+
         return value
 
 

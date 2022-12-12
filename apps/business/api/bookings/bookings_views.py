@@ -187,9 +187,11 @@ class BookingViewSet(viewsets.GenericViewSet):
             if check_out_serializer.validated_data['estado'] in ('COMPLETADO','CANCELADO'):
                 self.delete_booking(reserva.id, check_out_serializer.validated_data['estado'])
             
-            # TODO: Email
-            #from templates.emails.utils import sendEmailClient
-            #sendEmailClient(usuario.email,'Se ha actualizado el estado de tu checkout!',persona,'create_account/create-account.html')
+            booking = checkout.id_res
+            @prefix_decorator(email_type='client',page=5,client=persona,booking=booking)
+            def change_state():
+                print(check_out_serializer.validated_data['estado'])
+            change_state()
             return Response({'message' : 'Estado del checkout actualizado con exito!'}, status = status.HTTP_200_OK)
         return Response({'message' : 'No se pudo actualizar el estado del CheckOut!', 'error' : check_out_serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
 
