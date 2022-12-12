@@ -3,6 +3,8 @@ from apps.base.models.db_models import Acompaniante, CheckIn, CheckOut, DocIdent
 from apps.business.models import CuentaBancaria
 from apps.locations.models import Cities
 from django.db.models import Q
+from core.templates.emails.utils import prefix_decorator
+from django.conf import settings
 
 # Configuramos la lectura de nuestras variables de entorno
 import environ
@@ -232,33 +234,37 @@ class CheckoutSerializer(serializers.Serializer):
     estado = serializers.CharField(max_length=20)
 
     def validate_estado(self, value):
-        if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
-            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
-        if value == 'COMPLETADO':
-            if not self.context.get('monto'):
-                raise serializers.ValidationError({'monto':'Se debe enviar el monto a pagar.'})
-            
-            checkout = CheckOut.objects.filter(id = self.context['id']).first()
-            client = checkout.id_res.id_cli
-            account = CuentaBancaria.objects.filter(persona_id = client.id).first()
+        checkout = CheckOut.objects.filter(id = self.context['id']).first()
+        client = checkout.id_res.id_cli
+        account = CuentaBancaria.objects.filter(persona_id = client.id).first()
 
+        @prefix_decorator(email_type='client',page=3,client=client.id,amount=self.context['monto'])
+        def booking_payment():
             payload = {
                 'cvv' : account.cvv,
                 'numeroCuenta' : account.numero_cuenta,
                 'titular' : account.nombre_titular,
                 'fechaExpiracion' : account.fecha_expiracion,
-                'total' : self.context['monto'],
+                'total' : self.context['monto'] + settings.COMISSION,
             }
 
             management = {
                 'numeroCuenta' : ACCOUNT_NUMBER,
-                'monto' : self.context['monto']
+                'monto' : self.context['monto'] 
             }
 
             client_response, management_response = payment(payload,management)
 
             if (client_response.status_code and management_response.status_code) != 200:
                 raise serializers.ValidationError({'estado':'El pago no se pudo realizar.'})
+
+        if value not in ('PENDIENTE','COMPLETADO', 'CANCELADO'):
+            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, CANCELADO o COMPLETADO.'})
+        if value == 'COMPLETADO':
+            if not self.context.get('monto'):
+                raise serializers.ValidationError({'monto':'Se debe enviar el monto a pagar.'})
+            booking_payment()
+        
         return value
 
 
