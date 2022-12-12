@@ -151,13 +151,13 @@ def generate_notice(email_type:str,page:int,client:Client=None,booking:Booking=N
     # Filter with email type
     options = {
         'service':{
-                1 :{'template':['emails/create_account/create-account.html','emails/create_account/create-account.html'],'subject':['Estimado Jorge, su servicio esta lista','Se creado un servicio']}, # TRANSPORTE
-                2 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']} # TOUR
+                1 :{'template':['emails/service/client_notice.html','emails/service/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Transporte contratado!','[Turismo Real] Servicio solicitado']}, # TRANSPORTE
+                2 :{'template':['emails/service/client_notice.html','emails/service/driver_notice.html'],'subject':['[Turismo Real] ¡Servicio de Tour contratado!','[Turismo Real] Servicio solicitado']} # TOUR
             }, 
         'booking':{
                 1 :{'template':['emails/booking/booking.html','emails/booking/booking.html'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # RESERVA
-                2 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # Cambio estado Checkin
-                3 :{'template':['emails/create_account/create-account.html','jhdjfkd'],'subject':['Estimado Jorge, su reserva esta lista','Se ha generado una reserva']}, # Cambio estado Checkout
+                2 :{'template':'emails/booking/checkin.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkin
+                3 :{'template':'emails/booking/checkout.html','subject':'Estimado Jorge, su reserva esta lista'}, # Cambio estado Checkout
             }, 
         'client':{
             1:{'template': 'emails/create_account/create-account.html','subject':'[Turismo Real] ¡Bienvenido!'}, # Registro
