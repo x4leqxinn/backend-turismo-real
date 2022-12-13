@@ -6,7 +6,7 @@ class CuentaBancaria(BaseModel):
     fecha_expiracion = models.CharField(null=False, blank=False, max_length=5)
     nombre_titular = models.CharField(null=False, blank=False, max_length=200)
     numero_cuenta = models.CharField(null=False, blank=False, unique=True, max_length=100)
-    persona_id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='persona_id')
+    persona_id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='persona_id', verbose_name='Persona')
 
     class Meta:
         managed = True
@@ -14,3 +14,6 @@ class CuentaBancaria(BaseModel):
         verbose_name = "Cuenta bancaria"
         verbose_name_plural = "Cuentas bancarias"
         ordering = ['id']
+    
+    def __str__(self):
+        return '#' + str(self.id)

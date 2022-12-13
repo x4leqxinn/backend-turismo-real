@@ -22,7 +22,7 @@ class Acompaniante(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 
 class Cargo(BaseModel):
@@ -66,7 +66,7 @@ class CheckIn(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 class CheckOut(BaseModel):
     fecha_salida = models.DateField(null=False, blank=False)
     hora_salida = models.CharField(max_length=5, blank=False, null=False)
@@ -84,7 +84,7 @@ class CheckOut(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 class CliAcom(BaseModel):
     app_label = 'people'
     id_res = models.ForeignKey('business.Reserva', models.DO_NOTHING, db_column='id_res')
@@ -122,7 +122,7 @@ class Cliente(models.Model):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 
 class Color(BaseModel):
@@ -151,7 +151,7 @@ class Comentario(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id) + 'ID_CLIENTE : ' + str(self.id_cli)  
+        return '#' + str(self.id)  
 
 
 class Marca(BaseModel):
@@ -164,7 +164,7 @@ class Marca(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return self.nombre
 
 class Modelo(BaseModel):
     nombre = models.CharField(max_length=100, null=False, blank=False)
@@ -193,7 +193,7 @@ class Vehiculo(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return self.patente
 
 class Conductor(models.Model):
     id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Empleado')
@@ -208,7 +208,7 @@ class Conductor(models.Model):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 class DCheck(models.Model):
     id = models.OneToOneField('business.Documento', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -261,12 +261,12 @@ class Destino(BaseModel):
 
 
 class DetServMov(BaseModel):
-    id_con = models.ForeignKey('people.Conductor', models.DO_NOTHING, db_column='id_con')
-    id_mov = models.ForeignKey('business.Movilizacion', models.DO_NOTHING, db_column='id_mov')
+    id_con = models.ForeignKey('people.Conductor', models.DO_NOTHING, db_column='id_con',verbose_name='Conductor')
+    id_mov = models.ForeignKey('business.Movilizacion', models.DO_NOTHING, db_column='id_mov',verbose_name='Servicio de movilización')
     fecha_inicio = models.DateField(null=False, blank=False)
     hora_inicio = models.CharField(max_length=5, null=False, blank=False)
     fecha_termino = models.DateField(null=False, blank=False)
-    hora_termino = models.CharField(max_length=5, null=False, blank=False)
+    hora_termino = models.CharField(max_length=5, null=False, blank=False, verbose_name='Cantidad de pasajeros')
     cant_pasajeros = models.IntegerField()
     class Meta:
         app_label = 'business'
@@ -275,6 +275,9 @@ class DetServMov(BaseModel):
         verbose_name = "Detalles de servicio de Movilización"
         verbose_name_plural = "Detalle de servicios de Movilización"
         ordering = ['id']
+
+    def __str__(self):
+        return '#' + str(self.id)
 class DetalleMulta(BaseModel):
     id_mul = models.ForeignKey('Multa', models.DO_NOTHING, db_column='id_mul')
     id_che = models.ForeignKey(CheckOut, models.DO_NOTHING, db_column='id_che')
@@ -299,6 +302,8 @@ class DetalleProducto(BaseModel):
         verbose_name_plural = "Detalles de productos"
         ordering = ['id']
 
+    def __str__(self):
+        return '#' + str(self.id)
 
 class DetalleSala(BaseModel):
     id_inv = models.ForeignKey('business.Inventario', models.DO_NOTHING, db_column='id_inv',verbose_name='Inventario')
@@ -313,6 +318,8 @@ class DetalleSala(BaseModel):
         verbose_name_plural = "Detalles de salas"
         ordering = ['id']
 
+    def __str__(self):
+        return '#' + str(self.id)
 
 #class DetalleServicio(BaseModel):
 #    id_res = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='id_res')
@@ -374,7 +381,7 @@ class Documento(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 class Empleado(models.Model):
     id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Persona')
@@ -438,7 +445,7 @@ class GaleriaExterior(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID_VIVIENDA : ' + str(self.id_viv)
+        return 'Vivienda #' + str(self.id_viv)
 
 class GaleriaInterior(BaseModel):
     app_label = 'business'
@@ -453,7 +460,7 @@ class GaleriaInterior(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID_VIVIENDA : ' + str(self.id_viv)
+        return 'Vivienda #' + str(self.id_viv)
 
 class Genero(BaseModel):
     descripcion = models.CharField(max_length=20, null=False, blank=False)
@@ -479,6 +486,8 @@ class Inventario(BaseModel):
         verbose_name_plural = "Inventarios"
         ordering = ['id']
 
+    def __str__(self):
+        return '#' + str(self.id)
 class Movilizacion(models.Model):
     id = models.OneToOneField('business.Servicio', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Servicio')
     class Meta:
@@ -489,6 +498,8 @@ class Movilizacion(models.Model):
         verbose_name_plural = "Servicios de Movilización"
         ordering = ['id']
 
+    def __str__(self):
+        return '#' + str(self.id)
 class Multa(BaseModel):
     app_label = 'business'
     descripcion = models.CharField(max_length=200)
@@ -567,7 +578,7 @@ class Puntuacion(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 class Recepcionista(models.Model):
     id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Empleado')
@@ -901,3 +912,6 @@ class DetProyecto(BaseModel):
         verbose_name = "Detalle del proyecto"
         verbose_name_plural = "Detalles del proyecto"
         ordering = ['id']
+    
+    def __str__(self):
+        return '#' + str(self.id)
