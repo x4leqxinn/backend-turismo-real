@@ -391,7 +391,7 @@ class Empleado(models.Model):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
 
 class ErrorProceso(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -511,12 +511,12 @@ class Persona(BaseModel):
     dv = models.CharField(max_length=1, blank=True, null=True)
     pasaporte = models.CharField(unique=True, max_length=20, blank=True, null=True)
     nombre = models.CharField(max_length=50, null=False, blank=False)
-    snombre = models.CharField(max_length=50, blank=True, null=True)
-    ap_paterno = models.CharField(max_length=50, null=False, blank=False)
-    ap_materno = models.CharField(max_length=50, null=False, blank=False)
+    snombre = models.CharField(max_length=50, blank=True, null=True,verbose_name='Segundo nombre')
+    ap_paterno = models.CharField(max_length=50, null=False, blank=False,verbose_name='Apellido paterno')
+    ap_materno = models.CharField(max_length=50, null=False, blank=False,verbose_name='Apellido materno')
     fecha_nacimiento = models.DateField(null=False, blank=False)
     telefono = models.CharField(max_length=20, null=False, blank=False)
-    num_calle = models.CharField(max_length=10,null=False, blank=False)
+    num_calle = models.CharField(max_length=10,null=False, blank=False,verbose_name='Numero de calle')
     calle = models.CharField(max_length=30, null=False, blank=False)
     id_ciu = models.IntegerField(verbose_name='Ciudad')
     id_est = models.IntegerField(verbose_name='Estado pais')
@@ -534,7 +534,7 @@ class Persona(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id) + ' ' + self.nombre + ' ' + self.ap_paterno
+        return '#' + str(self.id) + ' ' + self.nombre + ' ' + self.ap_paterno
 
 
 
@@ -581,7 +581,7 @@ class Recepcionista(models.Model):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return '#' + str(self.id)
     
 class Registro(models.Model):
     id = models.OneToOneField('business.DCheck', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -603,7 +603,7 @@ class Reserva(BaseModel):
     abono = models.IntegerField(null=False, blank=False)
     monto_pagado = models.IntegerField(null=False, blank=False)
     total_pago = models.BigIntegerField(null=False,blank=False)
-    cant_acompaniante = models.IntegerField(verbose_name='Cantidad de compañantes')
+    cant_acompaniante = models.IntegerField(verbose_name='Cantidad de acompañantes')
     cant_total = models.IntegerField( verbose_name='Cantidad total arrendatarios')
 
     class Meta:
