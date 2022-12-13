@@ -99,8 +99,8 @@ class CliAcom(BaseModel):
 
 
 class CliCom(BaseModel):
-    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli')
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
+    id_cli = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cli',verbose_name='Cliente')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv',verbose_name='Vivienda')
     class Meta:
         app_label = 'users'
         managed = True
@@ -111,7 +111,7 @@ class CliCom(BaseModel):
 
 
 class Cliente(models.Model):
-    id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Persona')
 
     class Meta:
         app_label = 'people'
@@ -141,7 +141,7 @@ class Color(BaseModel):
 class Comentario(BaseModel):
     app_label = 'users'
     descripcion = models.CharField(max_length=200, null=False, blank=False)
-    id_cli = models.OneToOneField('users.CliCom', models.DO_NOTHING, db_column='id_cli')
+    id_cli = models.OneToOneField('users.CliCom', models.DO_NOTHING, db_column='id_cli',verbose_name='Cliente')
 
     class Meta:
         managed = True
@@ -180,11 +180,11 @@ class Modelo(BaseModel):
 
 class Vehiculo(BaseModel):
     patente = models.CharField(max_length=20, null=False, blank=False, unique=True)
-    id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod')
-    id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar')
-    id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col')
+    id_mod = models.ForeignKey(Modelo, models.DO_NOTHING, db_column='id_mod',verbose_name='Modelo')
+    id_mar = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_mar',verbose_name='Marca')
+    id_col = models.ForeignKey(Color, models.DO_NOTHING, db_column='id_col',verbose_name='Color')
     imagen = models.ImageField(upload_to='vehicle/')
-    capacidad = models.IntegerField()
+    capacidad = models.IntegerField(verbose_name='Capacidad de pasajeros')
     class Meta:
         managed = True
         db_table = 'vehiculo'
@@ -196,8 +196,8 @@ class Vehiculo(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Conductor(models.Model):
-    id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
-    id_veh = models.OneToOneField('base.Vehiculo', models.DO_NOTHING, db_column='id_veh')
+    id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Empleado')
+    id_veh = models.OneToOneField('base.Vehiculo', models.DO_NOTHING, db_column='id_veh',verbose_name='Vehículo')
 
     class Meta:
         app_label = 'people'
@@ -287,9 +287,9 @@ class DetalleMulta(BaseModel):
         ordering = ['id']
 
 class DetalleProducto(BaseModel):
-    id_est = models.ForeignKey('business.EstadoProducto', models.DO_NOTHING, db_column='id_est')
-    id_det = models.ForeignKey('business.DetalleSala', models.DO_NOTHING, db_column='id_det')
-    id_pro = models.ForeignKey('business.Producto', models.DO_NOTHING, db_column='id_pro')
+    id_est = models.ForeignKey('business.EstadoProducto', models.DO_NOTHING, db_column='id_est',verbose_name='Estado del producto')
+    id_det = models.ForeignKey('business.DetalleSala', models.DO_NOTHING, db_column='id_det',verbose_name='Detalle sala')
+    id_pro = models.ForeignKey('business.Producto', models.DO_NOTHING, db_column='id_pro',verbose_name='Producto')
 
     class Meta:
         app_label = 'business'
@@ -301,8 +301,8 @@ class DetalleProducto(BaseModel):
 
 
 class DetalleSala(BaseModel):
-    id_inv = models.ForeignKey('business.Inventario', models.DO_NOTHING, db_column='id_inv')
-    id_sal = models.ForeignKey('business.Sala', models.DO_NOTHING, db_column='id_sal')
+    id_inv = models.ForeignKey('business.Inventario', models.DO_NOTHING, db_column='id_inv',verbose_name='Inventario')
+    id_sal = models.ForeignKey('business.Sala', models.DO_NOTHING, db_column='id_sal',verbose_name='Sala')
     imagen_sala = models.ImageField(upload_to='rooms/')
 
     class Meta:
@@ -363,7 +363,7 @@ class DocIdentidad(BaseModel):
     def __str__(self) -> str:
         return self.descripcion
 class Documento(BaseModel):
-    id_tip = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='id_tip')
+    id_tip = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='id_tip',verbose_name='Tipo documento')
 
     class Meta:
         app_label = 'business'
@@ -377,10 +377,10 @@ class Documento(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Empleado(models.Model):
-    id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('people.Persona', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Persona')
     sueldo = models.IntegerField()
     fecha_contrato = models.DateField()
-    id_car = models.ForeignKey(Cargo, models.DO_NOTHING, db_column='id_car')
+    id_car = models.ForeignKey(Cargo, models.DO_NOTHING, db_column='id_car',verbose_name='Cargo')
 
     class Meta:
         app_label = 'people'
@@ -480,7 +480,7 @@ class Inventario(BaseModel):
         ordering = ['id']
 
 class Movilizacion(models.Model):
-    id = models.OneToOneField('business.Servicio', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('business.Servicio', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Servicio')
     class Meta:
         app_label = 'business'
         managed = True
@@ -518,12 +518,12 @@ class Persona(BaseModel):
     telefono = models.CharField(max_length=20, null=False, blank=False)
     num_calle = models.CharField(max_length=10,null=False, blank=False)
     calle = models.CharField(max_length=30, null=False, blank=False)
-    id_ciu = models.IntegerField()
-    id_est = models.IntegerField()
-    id_pai = models.IntegerField()
-    id_doc = models.ForeignKey(DocIdentidad, models.DO_NOTHING, db_column='id_doc')
-    id_est1 = models.ForeignKey(EstadoCivil, models.DO_NOTHING, db_column='id_est1')
-    id_gen = models.ForeignKey('people.Genero', models.DO_NOTHING, db_column='id_gen')
+    id_ciu = models.IntegerField(verbose_name='Ciudad')
+    id_est = models.IntegerField(verbose_name='Estado pais')
+    id_pai = models.IntegerField(verbose_name='Pais')
+    id_doc = models.ForeignKey(DocIdentidad, models.DO_NOTHING, db_column='id_doc',verbose_name='Documento de identidad')
+    id_est1 = models.ForeignKey(EstadoCivil, models.DO_NOTHING, db_column='id_est1',verbose_name='Estado civil')
+    id_gen = models.ForeignKey('people.Genero', models.DO_NOTHING, db_column='id_gen',verbose_name='Genero')
 
     class Meta:
         app_label = 'people'
@@ -539,7 +539,7 @@ class Persona(BaseModel):
 
 
 class Producto(BaseModel):
-    id_cat = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_cat')
+    id_cat = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_cat',verbose_name='Categoria producto')
     descripcion = models.CharField(max_length=100, null=False, blank=False)
     precio = models.IntegerField(null=False, blank=False)
     class Meta:
@@ -570,7 +570,7 @@ class Puntuacion(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Recepcionista(models.Model):
-    id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('people.Empleado', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Empleado')
 
     class Meta:
         app_label = 'people'
@@ -722,8 +722,8 @@ class TipoVivienda(BaseModel):
         return 'ID : ' + str(self.id)
 
 class Tour(models.Model):
-    id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True)
-    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
+    id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Servicio de movilizacion')
+    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans',verbose_name='Tipo ubicacion')
     class Meta:
         app_label = 'business'
         managed = True
@@ -759,7 +759,7 @@ class TramoMulta(BaseModel):
         verbose_name_plural = "Tramos de multas"
         ordering = ['id']
 class Transporte(models.Model):
-    id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Servicio de transporte')
     class Meta:
         app_label = 'business'
         managed = True
@@ -769,8 +769,8 @@ class Transporte(models.Model):
         ordering = ['id']
 
 class TransporteIda(BaseModel):
-    id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans')
-    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
+    id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans',verbose_name='Servicio de transporte')
+    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans',verbose_name='Tipo ubicacion')
 
     class Meta:
         app_label = 'business'
@@ -780,8 +780,8 @@ class TransporteIda(BaseModel):
         verbose_name_plural = "Servicios de transportes de ida"
         ordering = ['id']
 class TransporteVuelta(BaseModel):
-    id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans')
-    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans')
+    id_trans = models.OneToOneField('business.Transporte', models.DO_NOTHING, db_column='id_trans',verbose_name='Servicio de transporte')
+    id_ub_trans = models.ForeignKey('business.UbicacionTrans', models.DO_NOTHING, db_column='id_ub_trans',verbose_name='Tipo ubicacion')
 
     class Meta:
         app_label = 'business'
@@ -800,8 +800,8 @@ class TipoUbicacion(BaseModel):
         verbose_name_plural = "Tipos de ubicaciones"
         ordering = ['id']
 class UbicacionTrans(BaseModel):
-    id_tip = models.ForeignKey('business.TipoUbicacion', models.DO_NOTHING, db_column='id_tip')
-    id_ciu = models.IntegerField()
+    id_tip = models.ForeignKey('business.TipoUbicacion', models.DO_NOTHING, db_column='id_tip',verbose_name='Categoria')
+    id_ciu = models.IntegerField(verbose_name='Ciudad')
     nombre = models.CharField(max_length = 100, null=False, blank=False)
     categoria = models.CharField(max_length = 100, null=False, blank=False) 
     descripcion = models.CharField(max_length = 200, null=True, blank=True)
@@ -820,9 +820,9 @@ class UbicacionTrans(BaseModel):
 class Vivienda(BaseModel):
     latitud = models.CharField(max_length=100, null=False, blank=False)
     longitud = models.CharField(max_length=100, null=False, blank=False)
-    m2 = models.CharField(max_length=30, null=False, blank=False)
+    m2 = models.CharField(max_length=30, null=False, blank=False,verbose_name='m2')
     estrellas = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
-    id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis')
+    id_dis = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_dis',verbose_name='Disponibilidad')
     nombre = models.CharField(max_length=50, null=False, blank=False)
     descripcion = models.CharField(max_length=100, null=False, blank=False)
     direccion = models.CharField(max_length=100, null=False, blank=False)
@@ -830,15 +830,15 @@ class Vivienda(BaseModel):
     imagen_principal = models.ImageField(upload_to='viviendas/')
     valor_noche = models.IntegerField(null=False, blank=False)
     abono_base = models.IntegerField(null=False, blank=False)
-    id_pai = models.IntegerField(null=False, blank=False)
-    id_est = models.IntegerField(null=False, blank=False)
-    id_ciu = models.IntegerField(null=False, blank=False)
-    capacidad = models.IntegerField(null=False, blank=False)
+    id_pai = models.IntegerField(null=False, blank=False, verbose_name='Pais')
+    id_est = models.IntegerField(null=False, blank=False, verbose_name='Estado pais')
+    id_ciu = models.IntegerField(null=False, blank=False, verbose_name='Ciudad')
+    capacidad = models.IntegerField(null=False, blank=False, verbose_name='Capacidad de arrendatarios')
     internet = models.CharField(max_length=1, null=False, blank=False)
     agua = models.CharField(max_length=1, null=False, blank=False)
     luz = models.CharField(max_length=1, null=False, blank=False)
     gas = models.CharField(max_length=1, null=False, blank=False)
-    id_tip = models.ForeignKey(TipoVivienda, models.DO_NOTHING, db_column='id_tip')
+    id_tip = models.ForeignKey(TipoVivienda, models.DO_NOTHING, db_column='id_tip', verbose_name='Tipo vivienda')
 
     class Meta:
         app_label = 'business'
@@ -853,8 +853,8 @@ class Vivienda(BaseModel):
 
 
 class Compra(BaseModel):
-    id_reserva = models.OneToOneField('business.Reserva', models.DO_NOTHING, db_column='id_reserva')
-    id_cliente = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cliente')
+    id_reserva = models.OneToOneField('business.Reserva', models.DO_NOTHING, db_column='id_reserva',verbose_name='Reserva')
+    id_cliente = models.ForeignKey('people.Cliente', models.DO_NOTHING, db_column='id_cliente',verbose_name='Cliente')
     monto_final = models.IntegerField()
     class Meta:
         app_label = 'business'
@@ -865,8 +865,8 @@ class Compra(BaseModel):
         ordering = ['id']
 class Servicio(BaseModel):
     precio = models.IntegerField(null=False, blank=False)
-    id_tip = models.ForeignKey('business.TipoServicio', models.DO_NOTHING, db_column='id_tip')
-    id_reserva = models.ForeignKey('business.Reserva', models.DO_NOTHING, db_column='id_reserva')
+    id_tip = models.ForeignKey('business.TipoServicio', models.DO_NOTHING, db_column='id_tip',verbose_name='Tipo servicio')
+    id_reserva = models.ForeignKey('business.Reserva', models.DO_NOTHING, db_column='id_reserva', verbose_name='Reserva')
     class Meta:
         app_label = 'business'
         managed = True
@@ -884,8 +884,8 @@ class Servicio(BaseModel):
         }
 
 class DetProyecto(BaseModel):
-    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv')
-    id_emp = models.ForeignKey('people.Empleado', models.DO_NOTHING, db_column='id_emp')
+    id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv',verbose_name='Vivienda')
+    id_emp = models.ForeignKey('people.Empleado', models.DO_NOTHING, db_column='id_emp',verbose_name='Empleado')
     class Meta:
         app_label = 'business'
         managed = True
