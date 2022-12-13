@@ -614,6 +614,9 @@ class Reserva(BaseModel):
         verbose_name_plural = "Reservas"
         ordering = ['id']
 
+    def __str__(self):
+        return '#' + str(self.id)
+
 class ResumenDepto(models.Model):
     id = models.IntegerField(primary_key=True)
     id_depto = models.IntegerField()
@@ -708,6 +711,9 @@ class TipoServicio(BaseModel):
         verbose_name_plural = "Tipos de servicios"
         ordering = ['id']
 
+    def __str__(self):
+        return str(self.descripcion)
+
 class TipoVivienda(BaseModel):
     descripcion = models.CharField(max_length=100, null=False, blank=False)
     class Meta:
@@ -719,7 +725,7 @@ class TipoVivienda(BaseModel):
         ordering = ['id']
 
     def __str__(self) -> str:
-        return 'ID : ' + str(self.id)
+        return str(self.descripcion)
 
 class Tour(models.Model):
     id = models.OneToOneField('business.Movilizacion', models.DO_NOTHING, db_column='id', primary_key=True,verbose_name='Servicio de movilizacion')
@@ -883,6 +889,8 @@ class Servicio(BaseModel):
             'id_tip' : self.id_tip.id
         }
 
+    def __str__(self):
+        return str(self.id_tip.descripcion)
 class DetProyecto(BaseModel):
     id_viv = models.ForeignKey('business.Vivienda', models.DO_NOTHING, db_column='id_viv',verbose_name='Vivienda')
     id_emp = models.ForeignKey('people.Empleado', models.DO_NOTHING, db_column='id_emp',verbose_name='Empleado')
