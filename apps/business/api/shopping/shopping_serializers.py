@@ -459,7 +459,7 @@ class AddCompanionSerializer(serializers.Serializer):
         # Validar cantidad de acompañantes en la reserva
         count, available = len(data['companions']), (dwelling.capacidad - reserva.cant_total)
         if count > available:
-            message = 'no hay espacios disponibles.' if available == 0 else 'sólo quedan {available} espacios disponibles.'
+            message = 'no hay espacios disponibles.' if available == 0 else f'sólo quedan {available} espacios disponibles.'
             message = 'sólo queda 1 espacio disponible' if available == 1 else message
             msg = 'acompañante' if count == 1 else 'acompañantes'
             raise serializers.ValidationError({'capacidad':f'¡Se intentó añadir {count} {msg} y ' +  message})
