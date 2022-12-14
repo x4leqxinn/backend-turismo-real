@@ -4,9 +4,6 @@ from django.contrib.auth.models import Group
 from django.db import connections
 #from administration interface
 
-## DJANGO ADMIN
-#TEMAS : list[The]
-
 
 TRAMO_MULTAS : list[TramoMulta] = [
     TramoMulta(estado_prod = 1, porcentaje = 0),
@@ -111,50 +108,89 @@ PERSONAS : list[Persona] = [
     Persona(run = '4893284',dv = '2', nombre = 'Paula' , snombre = 'a' , ap_paterno = 'Piña', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[1], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
     
     ## CONDUCTORES
-    Persona(run = '11111111',dv = '1', nombre = 'Matias' , snombre = 'a' , ap_paterno = 'Menares', ap_materno = 'ijd', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
-    Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19294703',dv = '1', nombre = 'Matías' , snombre = 'a' , ap_paterno = 'Menares', ap_materno = 'ijd', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19083874',dv = '6', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'ijd', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '20262947',dv = '3', nombre = 'Tomás' , snombre = 'a' , ap_paterno = 'Campos', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19047843',dv = '5', nombre = 'Francisco' , snombre = 'a' , ap_paterno = 'Pizarro', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '17948473',dv = '4', nombre = 'Paula' , snombre = 'a' , ap_paterno = 'Bonnet', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '18847834',dv = '2', nombre = 'Franco' , snombre = 'a' , ap_paterno = 'Villanueva', ap_materno = 'fjklsdj', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 
     ## RECEPCIONISTAS
-    Persona(run = '33333333',dv = '1', nombre = 'Recepcionista' , snombre = 'Uno' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
-    Persona(run = '44444444',dv = '1', nombre = 'Recepcionista' , snombre = 'Dos' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
-    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
-    #Persona(run = '22222222',dv = '1', nombre = 'Alfonso' , snombre = 'a' , ap_paterno = 'Pacheco', ap_materno = 'Marin', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
-    
+    Persona(run = '19849395',dv = 'k', nombre = 'Carolina' , snombre = 'Uno' , ap_paterno = 'Díaz', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19377494',dv = '1', nombre = 'Catalina' , snombre = 'Dos' , ap_paterno = 'Flores', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19848433',dv = '5', nombre = 'Daniel' , snombre = 'Tres' , ap_paterno = 'Castillo', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19474374',dv = '3', nombre = 'Macarena' , snombre = 'Cuatro' , ap_paterno = 'Bravo', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19849023',dv = '8', nombre = 'Alondra' , snombre = 'Cinco' , ap_paterno = 'Rivas', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19376473',dv = '3', nombre = 'Rodrigo' , snombre = 'Seis' , ap_paterno = 'Alvarez', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+
     ## CLIENTES PARA TEST
-    Persona(run = '55555555',dv = '1', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '18683444',dv = '7', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '18844764',dv = '9', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19940043',dv = '0', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19843989',dv = '2', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19873730',dv = '3', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19373749',dv = '6', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
+    Persona(run = '19089384',dv = '7', nombre = 'Cliente' , snombre = 'Prueba' , ap_paterno = 'Prueba', ap_materno = 'Prueba', fecha_nacimiento = '2000-10-02', telefono = '965928439', num_calle = '1705', calle = 'Cerro Paranal', id_gen = GENEROS[0], id_doc = DOCUMENTOS_IDENTIDAD[0], id_est1 = ESTADO_CIVILES[0], id_ciu = '1', id_est = '1', id_pai = '1'),
 ]
 
 EMPLEADOS : list[Empleado] = [
-    Empleado(id = PERSONAS[0], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
-    Empleado(id = PERSONAS[1], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
-    Empleado(id = PERSONAS[2], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
-    Empleado(id = PERSONAS[3], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
-    Empleado(id = PERSONAS[4], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[0], sueldo = 2000000, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[1], sueldo = 2000000, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[2], sueldo = 2000000, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[3], sueldo = 2000000, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
+    Empleado(id = PERSONAS[4], sueldo = 2000000, fecha_contrato = '2022-08-01', id_car = CARGOS[1]),
     ## Conductores
-    Empleado(id = PERSONAS[5], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
-    Empleado(id = PERSONAS[6], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[5], sueldo = 700000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[6], sueldo = 700000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[7], sueldo = 650000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[8], sueldo = 650000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[9], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+    Empleado(id = PERSONAS[10], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[3]),
+
     ## Recepcionistas
-    Empleado(id = PERSONAS[7], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
-    Empleado(id = PERSONAS[8], sueldo = 99999, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[11], sueldo = 650000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[12], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[13], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[14], sueldo = 650000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[15], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
+    Empleado(id = PERSONAS[16], sueldo = 600000, fecha_contrato = '2022-08-01', id_car = CARGOS[2]),
 ]
 
 RECEPCIONISTAS : list[Recepcionista] = [
-    Recepcionista(id = EMPLEADOS[7]),
-    Recepcionista(id = EMPLEADOS[8]),
+    Recepcionista(id = EMPLEADOS[11]),
+    Recepcionista(id = EMPLEADOS[12]),
+    Recepcionista(id = EMPLEADOS[13]),
+    Recepcionista(id = EMPLEADOS[14]),
+    Recepcionista(id = EMPLEADOS[15]),
+    Recepcionista(id = EMPLEADOS[16]),
 ]
 
 VEHICULOS : list[Vehiculo] = [
     Vehiculo(patente = 'AO32FNV', id_mod = MODELOS[0], id_mar = MARCAS[0], id_col = COLORES[0], capacidad = 5, imagen = None),
     Vehiculo(patente = 'XDJN72', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'AIN54NL', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'AHNH456', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'SHNR732', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
+    Vehiculo(patente = 'AOS2383', id_mod = MODELOS[1], id_mar = MARCAS[1], id_col = COLORES[1], capacidad = 5, imagen = None),
 ]
 
 CONDUCTORES : list[Conductor] = [
     Conductor(id = EMPLEADOS[5], id_veh = VEHICULOS[0]),
     Conductor(id = EMPLEADOS[6], id_veh = VEHICULOS[1]),
+    Conductor(id = EMPLEADOS[7], id_veh = VEHICULOS[2]),
+    Conductor(id = EMPLEADOS[8], id_veh = VEHICULOS[3]),
+    Conductor(id = EMPLEADOS[9], id_veh = VEHICULOS[4]),
+    Conductor(id = EMPLEADOS[10], id_veh = VEHICULOS[5]),
 ]
 
 CLIENTES : list[Cliente] = [
-    Cliente(id = PERSONAS[7]),
+    Cliente(id = PERSONAS[17]),
+    Cliente(id = PERSONAS[18]),
+    Cliente(id = PERSONAS[19]),
+    Cliente(id = PERSONAS[20]),
+    Cliente(id = PERSONAS[21]),
+    Cliente(id = PERSONAS[22]),
+    Cliente(id = PERSONAS[23]),
 ]
 
 def get_user(email : str, role : UserRole, person : Persona, password : str) -> User:
