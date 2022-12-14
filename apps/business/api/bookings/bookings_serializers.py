@@ -166,6 +166,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
                 'descripcion' : instance.id_viv.descripcion,
                 'valor_noche' : instance.id_viv.valor_noche,
                 'direccion' : instance.id_viv.direccion,
+                'capacidad' : instance.id_viv.capacidad,
                 'pais' : {
                     'id' : city.country.id,
                     'nombre' : city.country.name,
