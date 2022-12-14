@@ -139,7 +139,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
             data = {
                 'id' : detail_partners[x].id_aco.id.id,
                 'nombre' : detail_partners[x].id_aco.id.nombre + ' ' + detail_partners[x].id_aco.id.ap_paterno,
-                'dni' : detail_partners[x].id_cli.id.run if detail_partners[x].id_cli.id.id_doc.id == 1 else detail_partners[x].id_cli.id.pasaporte
+                'dni' : detail_partners[x].id_aco.id.run if detail_partners[x].id_aco.id.id_doc.id == 1 else detail_partners[x].id_aco.id.pasaporte
             }
             partner_list.append(data)
 
