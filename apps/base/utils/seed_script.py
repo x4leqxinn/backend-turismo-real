@@ -208,19 +208,19 @@ USUARIOS : list[User] = [
     
     ## DRIVERS
     get_user('jorgealequinn@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
-    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[6],'Admin123!'),
-    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[7],'Admin123!'),
-    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[8],'Admin123!'),
-    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[9],'Admin123!'),
-    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[10],'Admin123!'),
+    get_user('conductor2@gmail.com',ROLES[1],PERSONAS[6],'Admin123!'),
+    get_user('conductor3@gmail.com',ROLES[1],PERSONAS[7],'Admin123!'),
+    get_user('conductor4@gmail.com',ROLES[1],PERSONAS[8],'Admin123!'),
+    get_user('conductor5@gmail.com',ROLES[1],PERSONAS[9],'Admin123!'),
+    get_user('conductor6@gmail.com',ROLES[1],PERSONAS[10],'Admin123!'),
     
     ## RECEPTIONISTS
     get_user('jo.quintui@duocuc.com',ROLES[1],PERSONAS[11],'Admin123!'),
     get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[12],'Admin123!'),
-    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[13],'Admin123!'),
-    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[14],'Admin123!'),
-    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[15],'Admin123!'),
-    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[16],'Admin123!'),
+    get_user('recepcionista3@gmail.com',ROLES[1],PERSONAS[13],'Admin123!'),
+    get_user('recepcionista4@gmail.com',ROLES[1],PERSONAS[14],'Admin123!'),
+    get_user('recepcionista5@gmail.com',ROLES[1],PERSONAS[15],'Admin123!'),
+    get_user('recepcionista6@gmail.com',ROLES[1],PERSONAS[16],'Admin123!'),
 
     ## CLIENTS
     get_user('cliente1@gmail.com',ROLES[2],PERSONAS[17],'Admin123!'),
@@ -500,6 +500,7 @@ def run_seed():
         run_dataframe()
 
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
 
