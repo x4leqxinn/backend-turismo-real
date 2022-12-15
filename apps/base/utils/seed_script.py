@@ -199,15 +199,37 @@ def get_user(email : str, role : UserRole, person : Persona, password : str) -> 
     return user
 
 USUARIOS : list[User] = [
-    get_user('jorgealequinn@gmail.com',ROLES[0],PERSONAS[0],'Admin123!'),
+    ## ADMINS
+    get_user('jorge@gmail.com',ROLES[0],PERSONAS[0],'Admin123!'),
     get_user('lucasmenaresaguirre@gmail.com',ROLES[0],PERSONAS[1],'Admin123!'),
     get_user('paulasotoretamal@gmail.com',ROLES[0],PERSONAS[2],'Admin123!'),
     get_user('joaking.twitch001@gmail.com',ROLES[0],PERSONAS[3],'Admin123!'),
     get_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
-    get_user('mats@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
+    
+    ## DRIVERS
+    get_user('jorgealequinn@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
     get_user('alcheco@gmail.com',ROLES[1],PERSONAS[6],'Admin123!'),
-    get_user('recepcionista1@gmail.com',ROLES[1],PERSONAS[7],'Recepcionista123!'),
-    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[8],'Recepcionista123!'),
+    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[7],'Admin123!'),
+    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[8],'Admin123!'),
+    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[9],'Admin123!'),
+    get_user('alcheco@gmail.com',ROLES[1],PERSONAS[10],'Admin123!'),
+    
+    ## RECEPTIONISTS
+    get_user('jo.quintui@duocuc.com',ROLES[1],PERSONAS[11],'Admin123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[12],'Admin123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[13],'Admin123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[14],'Admin123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[15],'Admin123!'),
+    get_user('recepcionista2@gmail.com',ROLES[1],PERSONAS[16],'Admin123!'),
+
+    ## CLIENTS
+    get_user('cliente1@gmail.com',ROLES[2],PERSONAS[17],'Admin123!'),
+    get_user('cliente2@gmail.com',ROLES[2],PERSONAS[18],'Admin123!'),
+    get_user('cliente3@gmail.com',ROLES[2],PERSONAS[19],'Admin123!'),
+    get_user('cliente4@gmail.com',ROLES[2],PERSONAS[20],'Admin123!'),
+    get_user('cliente5@gmail.com',ROLES[2],PERSONAS[21],'Admin123!'),
+    get_user('cliente6@gmail.com',ROLES[2],PERSONAS[22],'Admin123!'),
+    get_user('cliente7@gmail.com',ROLES[2],PERSONAS[23],'Admin123!'),
 ]
 
 PRODUCTOS : list[Producto] = [
@@ -284,10 +306,41 @@ VIVIENDAS : list[Vivienda] = [
 ]
 
 DETALLES_PROYECTOS : list[DetProyecto] = [
+    ## GRAN AVENIDA
+    ## DRIVERS 
     DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[5]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[11]),
+
+    ## Oe pucon
+    ## DRIVERS 
     DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[6]),
-    DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[7]),
-    DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[8]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[1], id_emp = EMPLEADOS[12]),
+
+    # Hiperplaya
+    ## DRIVERS 
+    DetProyecto(id_viv = VIVIENDAS[2], id_emp = EMPLEADOS[7]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[2], id_emp = EMPLEADOS[13]),
+
+    ## Serena grande
+    ## DRIVERS 
+    DetProyecto(id_viv = VIVIENDAS[3], id_emp = EMPLEADOS[8]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[3], id_emp = EMPLEADOS[14]),
+
+    ## Puerto lindo
+    ## DRIVERS 
+    DetProyecto(id_viv = VIVIENDAS[4], id_emp = EMPLEADOS[9]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[4], id_emp = EMPLEADOS[15]),
+
+    ## Provi grande
+    ## DRIVERS 
+    DetProyecto(id_viv = VIVIENDAS[5], id_emp = EMPLEADOS[10]),
+    ## RECEPTIONISTS
+    DetProyecto(id_viv = VIVIENDAS[5], id_emp = EMPLEADOS[16]),
 ]
 
 GALERIAS_EXTERIORES : list[GaleriaExterior] = [
