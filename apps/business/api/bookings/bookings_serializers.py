@@ -238,6 +238,7 @@ class CheckoutSerializer(serializers.Serializer):
         checkout = CheckOut.objects.filter(id = self.context['id']).first()
         client = checkout.id_res.id_cli
         account = CuentaBancaria.objects.filter(persona_id = client.id).first()
+        booking = checkout.id_res
 
         @prefix_decorator(email_type='client',page=3,client=client.id,amount=self.context['monto'])
         def booking_payment():
@@ -264,6 +265,8 @@ class CheckoutSerializer(serializers.Serializer):
         if value == 'COMPLETADO':
             if not self.context.get('monto'):
                 raise serializers.ValidationError({'monto':'Se debe enviar el monto a pagar.'})
+            booking.monto_pagado = booking.total_pago
+            booking.save() 
             booking_payment()
 
         return value
