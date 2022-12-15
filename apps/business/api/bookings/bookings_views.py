@@ -123,7 +123,7 @@ class BookingViewSet(viewsets.GenericViewSet):
             except:
                 pass
 
-            if check_in.estado_checkin in('PENDIENTE''PAGADO') and check_out.estado_checkout == 'PENDIENTE':
+            if check_in.estado_checkin in('PENDIENTE','COMPLETADO') and check_out.estado_checkout == 'PENDIENTE':
                 receptionist_list.append(booking)
         serializer = BookingDetailSerializer(receptionist_list, many = True)
         
