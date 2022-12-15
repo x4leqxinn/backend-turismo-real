@@ -226,8 +226,8 @@ class CheckinSerializer(serializers.Serializer):
     estado = serializers.CharField(max_length=20)
 
     def validate_estado(self, value):
-        if value not in ('PENDIENTE','PAGADO','CANCELADO'):
-            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, PAGADO o CANCELADO.'})
+        if value not in ('PENDIENTE','COMPLETADO','CANCELADO'):
+            raise serializers.ValidationError({'estado':'El estado debe ser PENDIENTE, COMPLETADO o CANCELADO.'})
         return value
 
 class CheckoutSerializer(serializers.Serializer):
