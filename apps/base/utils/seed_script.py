@@ -411,10 +411,10 @@ DETALLES_SALAS : list[DetalleSala] = [
     DetalleSala(id_inv = INVENTARIOS[4], id_sal = SALAS[0], imagen_sala = 'interior_gallery/puerto-lindo-1.jpeg'),
     DetalleSala(id_inv = INVENTARIOS[4], id_sal = SALAS[5], imagen_sala = 'rooms/puerto-lindo-dorm-1.jpeg'),
     ## Provi Grande
-    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[0], imagen_sala = 'interior_gallery/provi-grande-1.jpeg'),
-    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-1.jpeg'),
-    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-2.jpeg'),
-    DetalleSala(id_inv = INVENTARIOS[1], id_sal = SALAS[1], imagen_sala = 'rooms/oye-pucon-cocina-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[5], id_sal = SALAS[0], imagen_sala = 'interior_gallery/provi-grande-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[5], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-1.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[5], id_sal = SALAS[5], imagen_sala = 'rooms/oye-pucon-dorm-2.jpeg'),
+    DetalleSala(id_inv = INVENTARIOS[5], id_sal = SALAS[1], imagen_sala = 'rooms/oye-pucon-cocina-1.jpeg'),
 ]
 
 DETALLE_PRODUCTOS : list[DetalleProducto] = [
