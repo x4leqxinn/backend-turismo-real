@@ -194,17 +194,22 @@ CLIENTES : list[Cliente] = [
 ]
 
 def get_user(email : str, role : UserRole, person : Persona, password : str) -> User:
+    user = User(email = email, role = role, person = person, is_staff = False, is_superuser = False)
+    user.set_password(password)
+    return user
+
+def get_admin_user(email : str, role : UserRole, person : Persona, password : str) -> User:
     user = User(email = email, role = role, person = person, is_staff = True, is_superuser = True)
     user.set_password(password)
     return user
 
 USUARIOS : list[User] = [
     ## ADMINS
-    get_user('jorge@gmail.com',ROLES[0],PERSONAS[0],'Admin123!'),
-    get_user('lucasmenaresaguirre@gmail.com',ROLES[0],PERSONAS[1],'Admin123!'),
-    get_user('paulasotoretamal@gmail.com',ROLES[0],PERSONAS[2],'Admin123!'),
-    get_user('joaking.twitch001@gmail.com',ROLES[0],PERSONAS[3],'Admin123!'),
-    get_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
+    get_admin_user('jorge@gmail.com',ROLES[0],PERSONAS[0],'Admin123!'),
+    get_admin_user('lucasmenaresaguirre@gmail.com',ROLES[0],PERSONAS[1],'Admin123!'),
+    get_admin_user('paulasotoretamal@gmail.com',ROLES[0],PERSONAS[2],'Admin123!'),
+    get_admin_user('joaking.twitch001@gmail.com',ROLES[0],PERSONAS[3],'Admin123!'),
+    get_admin_user('paulapinamarin@gmail.com',ROLES[0],PERSONAS[4],'Admin123!'),
     
     ## DRIVERS
     get_user('jorgealequinn@gmail.com',ROLES[1],PERSONAS[5],'Admin123!'),
