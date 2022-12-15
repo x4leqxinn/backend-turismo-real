@@ -314,7 +314,6 @@ DETALLES_PROYECTOS : list[DetProyecto] = [
     ## GRAN AVENIDA
     ## DRIVERS 
     DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[5]),
-    DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[6]),
     ## RECEPTIONISTS
     DetProyecto(id_viv = VIVIENDAS[0], id_emp = EMPLEADOS[11]),
 
